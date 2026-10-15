@@ -92,6 +92,11 @@ THE SOFTWARE.
 /* The shared room stays prominent without crowding small screens. */
 .mp-global-card{margin:22px 0;padding:21px;border:1px solid #a6d5a66b;background:linear-gradient(135deg,#2b4737,#152d24);box-shadow:inset 0 1px #d9efc111}.mp-global-card .eyebrow{color:#b4cda6;font-size:9px;letter-spacing:2px}.mp-global-card h3{margin:10px 0 6px;font-size:27px;font-weight:500;letter-spacing:-.7px}.mp-global-card #mp-global-count{font-size:10px;color:#d6e8b8;letter-spacing:1px;margin:10px 0}.mp-global-card p{margin:8px 0 16px}.mp-global-card .primary{width:100%;font-size:11px;min-height:48px;justify-content:space-between}.mp-code-line strong{overflow-wrap:anywhere}#mp-roster{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:16px}#mp-roster li{overflow-wrap:anywhere}@media(max-width:420px){.mp-global-card{padding:16px}.mp-code-line strong{letter-spacing:3px;font-size:24px}}
 
+.mp-room-setting{display:flex!important;align-items:center;justify-content:space-between;gap:20px;background:#20382b;border:1px solid #99bc8b55;padding:18px;margin:20px 0}.mp-room-setting b{font-size:14px;color:#e8efd4}.mp-room-setting small{display:block;font:12px/1.7 Arial,sans-serif;color:#b8cdb8;margin-top:9px}.mp-room-setting input{width:24px;height:24px;flex-shrink:0}#mp-room-settings-impact{padding:12px 0;border-top:1px solid #b7cf8f33}#mp-room-settings-status{min-height:20px}#mp-room-settings-open{padding:8px 0}
+
+/* Host controls */
+.mp-room-setting select{min-width:105px;max-width:135px}.mp-host-tools{border-top:1px solid #a9bc9860;padding-top:12px;margin-top:20px}.mp-host-tools>.primary{width:100%;font-size:11px}.mp-map-panel{width:min(740px,100%)}#mp-map-canvas{display:block;width:min(100%,580px);height:auto;aspect-ratio:1;margin:16px auto;background:#0b1512;border:1px solid #8dba9650;touch-action:none;cursor:crosshair}#mp-map-canvas:focus{outline:2px solid #d8e7a2}#mp-map-status{min-height:30px;font-size:12px;color:#dfdcac}#mp-monitor-hud{position:fixed;z-index:9;top:76px;left:50%;transform:translateX(-50%);max-width:94vw;width:max-content;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;padding:12px;background:#102d2bf0;border:1px solid #8fdcc5;box-shadow:0 5px 30px #0008;font:11px 'Courier New',monospace;color:#d8fff0}#mp-monitor-hud span{flex-basis:100%;text-align:center;font-size:10px}#mp-monitor-hud button,#mp-monitor-hud select{min-height:40px;border:1px solid #a2c2ac70;color:#deffe4;background:#203c31;padding:6px 12px;font:11px 'Courier New',monospace}#mp-monitor-hud small{flex-basis:100%;text-align:center}#mp-fly-up,#mp-fly-down{touch-action:none;user-select:none}@media(max-height:500px){#mp-monitor-hud{top:12px;max-width:62vw;padding:5px;gap:4px}#mp-monitor-hud span{display:none}}
+
 </style>
 </head>
 <body>
@@ -137,13 +142,16 @@ THE SOFTWARE.
     <div id="touch-controls"><div id="joystick"><div id="stick"></div></div><div class="touch-actions"><button id="touch-run" aria-label="Hold to sprint">RUN</button><button id="touch-crouch" aria-label="Toggle crouch">CROUCH</button><button id="touch-jump" aria-label="Jump">JUMP</button><button id="touch-light" aria-label="Toggle flashlight">LIGHT</button></div></div>
   </div>
   <div id="transition" class="screen centered" hidden><div class="eyebrow">SIGNAL INTERRUPTED</div><h2 id="transition-title">There is another place.</h2><p id="transition-detail">Establishing connection / Tape 02</p><div class="loading-line"></div></div>
-  <div id="pause" class="screen centered panel-screen" hidden><div class="eyebrow">RECORDING SUSPENDED</div><h2>Hold your breath.</h2><p id="pause-copy">Your time is paused. Take a moment.</p><button id="resume" class="primary">RESUME RECORDING <span>↗</span></button><button id="multiplayer-open" class="primary collapse-test">MULTIPLAYER <span>↗</span></button><button id="pause-settings" class="text-button">SETTINGS</button><button id="quit" class="text-button muted">RETURN TO TITLE</button></div>
+  <div id="pause" class="screen centered panel-screen" hidden><div class="eyebrow">RECORDING SUSPENDED</div><h2>Hold your breath.</h2><p id="pause-copy">Your time is paused. Take a moment.</p><button id="resume" class="primary">RESUME RECORDING <span>↗</span></button><button id="multiplayer-open" class="primary collapse-test">MULTIPLAYER <span>↗</span></button><button id="mp-room-settings-open" class="text-button" hidden>ROOM SETTINGS</button><button id="pause-settings" class="text-button">SETTINGS</button><button id="quit" class="text-button muted">RETURN TO TITLE</button></div>
   <div id="mp-dialog" class="mp-backdrop" hidden><section class="mp-panel" role="dialog" aria-modal="true" aria-labelledby="mp-title"><div class="mp-heading"><span class="eyebrow">SHARED FREQUENCY / GLOBAL 16 · ROOMS 4</span><button id="mp-close" class="icon-button" aria-label="Close multiplayer">×</button></div><h2 id="mp-title">Don't go alone.</h2><p id="mp-status" role="status" aria-live="polite"></p>
     <div id="mp-offline" hidden><p>To play together on this computer, open <b>Play Multiplayer.cmd</b> from the game folder. Then use the multiplayer edition below.</p><a class="primary" href="http://localhost:8787/">OPEN MULTIPLAYER EDITION ↗</a><p class="mp-small">For friends on the internet, everyone will need the same hosted game link. The downloaded file still works for solo play.</p></div>
     <div id="mp-connect"><div class="mp-fields"><label>Your name<input id="mp-name" maxlength="18" value="Explorer" autocomplete="off"></label><label>Separate room starting level<select id="mp-level"><option value="1">1 · The Backrooms</option><option value="2">2 · The Haunted House</option><option value="3">3 · The Sewers</option><option value="4">4 · The School</option><option value="5">5 · Reality Collapse</option></select></label></div><div class="mp-global-card"><div><span class="eyebrow">ONE SHARED WORLD</span><h3>The global room.</h3><p id="mp-global-count" class="mono">UP TO 16 EXPLORERS</p><p>Start at the Backrooms spawn. Your own timer, your own progress. Meet other explorers on each level. No code or host needed.</p></div><button id="mp-global" class="primary">JOIN GLOBAL ROOM <span>↗</span></button></div><p class="mp-small">SEPARATE ROOMS · UP TO 4 PLAYERS<br>Create a fresh run at your chosen level, find a public room, or join a friend by code.</p><label class="mp-check"><input id="mp-public" type="checkbox"> Let other players find my room</label><div class="mp-buttons"><button id="mp-create" class="primary">CREATE ROOM</button><button id="mp-quick" class="primary collapse-test">FIND PLAYERS</button></div><div class="mp-join-row"><label>Friend's room code<input id="mp-code" maxlength="6" placeholder="ABC234" autocomplete="off" autocapitalize="characters" spellcheck="false"></label><button id="mp-join" class="primary collapse-test">JOIN ROOM</button></div></div>
-    <div id="mp-room" hidden><div class="mp-code-line"><strong id="mp-room-code"></strong><button id="mp-copy" class="text-button">COPY CODE</button></div><p id="mp-room-detail" class="mp-small"></p><ul id="mp-roster"></ul><p id="mp-room-rules" class="mp-small">Shared tools and objectives. If you are caught, choose Restart or Exit Room. Restart returns you to this room’s current checkpoint.</p><div class="mp-buttons"><button id="mp-start-room" class="primary">START TOGETHER</button><button id="mp-leave" class="text-button">LEAVE ROOM</button></div></div>
+    <div id="mp-room" hidden><div class="mp-code-line"><strong id="mp-room-code"></strong><button id="mp-copy" class="text-button">COPY CODE</button></div><p id="mp-room-detail" class="mp-small"></p><ul id="mp-roster"></ul><p id="mp-room-rules" class="mp-small">Shared tools and objectives. If you are caught, choose Restart or Exit Room. Restart returns you to this room’s current checkpoint.</p><div class="mp-buttons"><button id="mp-lobby-settings" class="text-button">ROOM SETTINGS</button><button id="mp-start-room" class="primary">START TOGETHER</button><button id="mp-leave" class="text-button">LEAVE ROOM</button></div></div>
   </section></div>
-  <div id="mp-composer" class="mp-backdrop" hidden><section class="mp-panel mp-composer-panel" role="dialog" aria-modal="true" aria-labelledby="mp-composer-title"><div class="mp-heading"><h2 id="mp-composer-title">Send a signal.</h2><button id="mp-composer-close" class="icon-button" aria-label="Close messages">×</button></div><p id="mp-chat-status" role="status"></p>
+  <div id="mp-room-settings" class="mp-backdrop" hidden><section class="mp-panel" role="dialog" aria-modal="true" aria-labelledby="mp-room-settings-title"><div class="mp-heading"><span class="eyebrow">YOUR ROOM / YOUR RULES</span><button id="mp-room-settings-close" class="icon-button" aria-label="Close room settings">×</button></div><h2 id="mp-room-settings-title">Room settings.</h2><p id="mp-room-settings-owner"></p><label class="mp-room-setting"><span><b>Independent progress</b><small>Give each explorer their own timer, level progression and checkpoints. Turn off to advance through the levels together.</small></span><input id="mp-independent-progress" type="checkbox" aria-describedby="mp-room-settings-impact"></label><label class="mp-room-setting"><span><b>Room speed</b><small>Slow down or speed up everyone, the monster, timers and level events together.</small></span><select id="mp-room-speed" aria-label="Room speed"><option value="0.25">¼ speed</option><option value="0.5">½ speed</option><option value="0.75">¾ speed</option><option value="1">Normal</option><option value="1.5">1½ speed</option><option value="2">Double</option></select></label><label class="mp-room-setting"><span><b>Death Link</b><small>One explorer dies, everyone still playing dies—even on other levels. Observers are exempt.</small></span><input id="mp-death-link" type="checkbox"></label><p id="mp-room-settings-impact" class="mp-small"></p><div class="mp-host-tools"><label class="mp-room-setting"><span><b>Monitor Mode · host only</b><small>Fly through walls and observe any level. Your explorer is safe while observing. Turning it off returns you to your own checkpoint. Applies immediately.</small></span><input id="mp-monitor-toggle" type="checkbox"></label><button id="mp-map-open" class="primary collapse-test">DRAG &amp; DROP PLAYERS ↗</button><p class="mp-small">Host tools become available after starting the room.</p></div><p id="mp-room-settings-status" role="status" aria-live="polite"></p><div class="mp-buttons"><button id="mp-room-settings-apply" class="primary">SAVE SETTINGS</button><button id="mp-room-settings-back" class="text-button">BACK</button></div></section></div>
+<div id="mp-host-map" class="mp-backdrop" hidden><section class="mp-panel mp-map-panel" role="dialog" aria-modal="true" aria-labelledby="mp-map-title"><div class="mp-heading"><div><span class="eyebrow">HOST CONTROL / LIVE FLOOR PLAN</span><h2 id="mp-map-title">Move an explorer.</h2></div><button id="mp-map-close" class="icon-button" aria-label="Close player map">×</button></div><div class="mp-grid"><label>Player<select id="mp-map-player"></select></label><label>Destination level<select id="mp-map-level"><option value="1">1 · The Backrooms</option><option value="2">2 · The Haunted House</option><option value="3">3 · The Sewers</option><option value="4">4 · The School</option><option value="5">5 · Reality Collapse</option><option value="run">5 · Final chase</option></select></label></div><p class="mp-small">Drag a player's dot onto clear floor, or select a player and tap their destination. With a keyboard, focus the map, move the target with arrow keys and press Enter. Moving between levels resets that player's timer and checkpoint. The room stays live.</p><canvas id="mp-map-canvas" width="640" height="640" tabindex="0" aria-label="Live room map. Select a player, then use arrow keys and Enter to move them."></canvas><p id="mp-map-status" role="status" aria-live="polite"></p></section></div>
+  <div id="mp-monitor-hud" hidden><b>MONITOR MODE</b><span>WASD fly · Space ↑ · Ctrl ↓ · 1–5 change level</span><select id="mp-monitor-level" aria-label="Monitor level"><option value="1">1 · Backrooms</option><option value="2">2 · Haunted House</option><option value="3">3 · Sewers</option><option value="4">4 · School</option><option value="5">5 · Reality Collapse</option><option value="run">Final chase</option></select><button id="mp-fly-up" aria-label="Fly up">↑</button><button id="mp-fly-down" aria-label="Fly down">↓</button><button id="mp-monitor-stop">RETURN TO PLAY</button><small id="mp-monitor-status" role="status"></small></div>
+    <div id="mp-composer" class="mp-backdrop" hidden><section class="mp-panel mp-composer-panel" role="dialog" aria-modal="true" aria-labelledby="mp-composer-title"><div class="mp-heading"><h2 id="mp-composer-title">Send a signal.</h2><button id="mp-composer-close" class="icon-button" aria-label="Close messages">×</button></div><p id="mp-chat-status" role="status"></p>
     <div class="mp-address-box"><label class="mp-check"><input id="mp-address" type="checkbox" aria-controls="mp-to-picker" aria-describedby="mp-address-help">Add “To” names <span class="mp-small">OPTIONAL</span></label><p id="mp-address-help" class="mp-small">Everyone in the room can see your message.</p><div id="mp-to-picker" hidden><div id="mp-to-list" role="group" aria-label="Players to address"></div><p id="mp-to-empty" class="mp-small" hidden>No other players are in the room yet.</p><p id="mp-to-summary" class="mp-small" role="status" aria-live="polite"></p></div></div>
     <div class="mp-tabs" role="tablist" aria-label="Communication"><button id="mp-tab-messages" role="tab" aria-selected="true" aria-controls="mp-messages">QUICK MESSAGES</button><button id="mp-tab-faces" role="tab" aria-selected="false" aria-controls="mp-faces">FACE EMOJIS</button></div><div id="mp-messages" role="tabpanel" aria-labelledby="mp-tab-messages"></div><div id="mp-faces" role="tabpanel" aria-labelledby="mp-tab-faces" hidden></div></section></div>
   <div id="end" class="screen centered panel-screen" hidden><div id="end-kicker" class="eyebrow">SIGNAL LOST</div><h2 id="end-title">You weren't alone.</h2><p id="end-description"></p><div id="result" class="result mono"></div><button id="retry" class="primary">TRY AGAIN <span>↗</span></button><button id="end-menu" class="text-button">RETURN TO TITLE</button></div>
@@ -1197,8 +1205,46 @@ function bindAvatar(){
 const mp={active:false,busy:false,token:null,id:null,snapshot:null,epoch:-1,life:-1,seq:0,peers:new Map(),lastEvent:0,lastSnapshot:0,rtt:100,menu:false,composer:false,dialog:false,connected:false,inputTimer:null,abort:null,feed:[],spectate:null,generation:0};
 const MP=BackroomsNetProtocol;
 mp.recipientIds=new Set();mp.recipientRosterKey='';
+mp.roomSettingsOpen=false;mp.roomSettingsBusy=false;
+function mpHideRoomSettings(){mpHideHostMap();mp.roomSettingsOpen=false;$('mp-room-settings').hidden=true;}
+function mpOpenRoomSettings(){
+  const s=mp.snapshot;if(!mp.active||s?.global||!s||['won','lost','transition'].includes(state))return;
+  mp.roomSettingsFrom=mp.dialog?'lobby':'pause';mp.menu=true;mp.dialog=false;$('mp-dialog').hidden=true;mpCloseComposer();
+  mp.roomSettingsOpen=true;mp.roomSettingsVersion=s.settingsVersion||0;$('mp-independent-progress').checked=!!s.roomSettings?.independentProgress;$('mp-room-speed').value=String(s.roomSettings?.roomSpeed||1);$('mp-death-link').checked=!!s.roomSettings?.deathLink;
+  $('mp-room-settings-status').textContent='';$('mp-room-settings').hidden=false;clearInput();releasePointer();mpUpdateRoomSettings();$('mp-room-settings-close').focus();
+}
+function mpUpdateRoomSettings(){
+  const s=mp.snapshot;if(!mp.roomSettingsOpen||!s)return;
+  const host=mp.id===s.hostId,version=s.settingsVersion||0,checkbox=$('mp-independent-progress');
+  if(version!==mp.roomSettingsVersion){mp.roomSettingsVersion=version;checkbox.checked=!!s.roomSettings?.independentProgress;$('mp-room-speed').value=String(s.roomSettings?.roomSpeed||1);$('mp-death-link').checked=!!s.roomSettings?.deathLink;$('mp-room-settings-status').textContent='Room settings updated.';}
+  if(!host){checkbox.checked=!!s.roomSettings?.independentProgress;$('mp-room-speed').value=String(s.roomSettings?.roomSpeed||1);$('mp-death-link').checked=!!s.roomSettings?.deathLink;}
+  const modeChanged=checkbox.checked!==!!s.roomSettings?.independentProgress,changed=modeChanged||Number($('mp-room-speed').value)!==(s.roomSettings?.roomSpeed||1)||$('mp-death-link').checked!==!!s.roomSettings?.deathLink,owner=(s.roster||s.players).find(p=>p.id===s.hostId);
+  $('mp-room-settings-owner').textContent=host?'You are the host. These settings apply to everyone in this room.':'Only '+(owner?.name||'the host')+' can change these settings. You can view them here.';
+  checkbox.disabled=$('mp-room-speed').disabled=$('mp-death-link').disabled=!host||mp.roomSettingsBusy;
+  $('mp-monitor-toggle').checked=!!s.monitor;$('mp-monitor-toggle').disabled=!host||s.phase==='lobby'||mp.monitorBusy;$('mp-map-open').disabled=!host||s.phase==='lobby';if(mp.hostMapOpen&&!host)mpCloseHostMap();
+  $('mp-room-settings-impact').textContent=s.phase==='lobby'?'Independent progress is '+(checkbox.checked?'ON: everyone has their own timer and advances at their own pace.':'OFF: the room shares a timer and advances through levels together.')+' Players on the same level share tools and objectives.':(modeChanged?'Applying this change restarts everyone at your current checkpoint, resetting timers and level objectives. The room code, players, names and avatars stay the same.':'Independent progress is '+(checkbox.checked?'ON. Each explorer follows their own timer and checkpoints.':'OFF. The room advances through levels together.')+' Changing this option during a run restarts everyone at the host’s current checkpoint.');
+  $('mp-room-settings-apply').hidden=!host;$('mp-room-settings-apply').disabled=!changed||mp.roomSettingsBusy;
+  $('mp-room-settings-apply').textContent=mp.roomSettingsBusy?'APPLYING…':s.phase!=='lobby'&&modeChanged?'APPLY & RESTART ROOM':'SAVE SETTINGS';if(!modeChanged)$('mp-room-settings-impact').textContent+=' Speed and Death Link changes apply immediately without a restart.';
+}
+function mpCloseRoomSettings(){
+  if(!mp.roomSettingsOpen)return;const from=mp.roomSettingsFrom;mpHideRoomSettings();
+  if(!mp.active)return;if(from==='lobby'){mpOpen();$('mp-lobby-settings').focus();}else{mpPause();$('mp-room-settings-open').focus();}
+}
+async function mpSaveRoomSettings(){
+  if(!mp.roomSettingsOpen||mp.roomSettingsBusy||mp.snapshot?.global||mp.id!==mp.snapshot?.hostId)return;
+  const desired=$('mp-independent-progress').checked;const speed=Number($('mp-room-speed').value),deathLink=$('mp-death-link').checked;if(desired===!!mp.snapshot.roomSettings?.independentProgress&&speed===(mp.snapshot.roomSettings?.roomSpeed||1)&&deathLink===!!mp.snapshot.roomSettings?.deathLink)return;
+  const generation=mp.generation;mp.roomSettingsBusy=true;$('mp-room-settings-status').textContent='Applying room settings…';mpUpdateRoomSettings();
+  try{
+    const out=await mpRequest('/api/room-settings',{independentProgress:desired,roomSpeed:speed,deathLink,settingsVersion:mp.roomSettingsVersion});
+    if(!mp.active||mp.generation!==generation)return;
+    // The live stream may have already delivered a newer view of this change.
+    if(out.snapshot.settingsVersion>(mp.snapshot.settingsVersion||0))mpApplySnapshot(out.snapshot);
+    if(mp.roomSettingsOpen){$('mp-room-settings-status').textContent='Settings saved.';mpCloseRoomSettings();}
+  }catch(e){if(mp.active&&mp.generation===generation)$('mp-room-settings-status').textContent=e.message;}
+  finally{mp.roomSettingsBusy=false;mpUpdateRoomSettings();}
+}
 function mpNotice(text){$('mp-status').textContent=text;}
-function mpCanControl(){const p=mp.snapshot?.players.find(p=>p.id===mp.id);return mp.active&&mp.connected&&mp.snapshot?.phase==='playing'&&p?.alive&&!p.escaped&&!p.crawling&&!mp.menu&&!mp.composer&&!mp.dialog&&$('settings').hidden&&performance.now()-mp.lastSnapshot<2500;}
+function mpCanControl(){const p=mp.snapshot?.players.find(p=>p.id===mp.id);return mp.active&&mp.connected&&mp.snapshot?.phase==='playing'&&p?.alive&&!p.escaped&&!p.crawling&&!mp.menu&&!mp.composer&&!mp.dialog&&!mp.roomSettingsOpen&&$('settings').hidden&&performance.now()-mp.lastSnapshot<2500;}
 async function mpRequest(route,data,token=mp.token){
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),8000);
   try{const res=await fetch(route,{method:data===undefined?'GET':'POST',headers:{...(data===undefined?{}:{'Content-Type':'application/json'}),...(token?{Authorization:'Bearer '+token}:{})},body:data===undefined?undefined:JSON.stringify(data),signal:controller.signal,cache:'no-store'});const out=await res.json();if(!res.ok)throw new Error(out.error||'Could not connect.');return out;}finally{clearTimeout(timer);}
@@ -1246,10 +1292,10 @@ async function mpReadStream(generation){
 function mpControls(){
   const k=input.keys;let f=(k.has('KeyW')||k.has('ArrowUp')?1:0)-(k.has('KeyS')||k.has('ArrowDown')?1:0)+input.forward,s=(k.has('KeyD')||k.has('ArrowRight')?1:0)-(k.has('KeyA')||k.has('ArrowLeft')?1:0)+input.strafe;
   const len=Math.hypot(f,s);if(len>1){f/=len;s/=len;}const active=mpCanControl()&&!document.hidden;
-  return {f:active?clamp(f,-1,1):0,s:active?clamp(s,-1,1):0,yaw:Math.atan2(Math.sin(player.yaw),Math.cos(player.yaw)),pitch:player.pitch,crouch:active&&(k.has('KeyC')||k.has('ControlLeft')||input.crouch),run:active&&(k.has('ShiftLeft')||k.has('ShiftRight')||input.run),flash:player.flash};
+  return {up:active&&mp.snapshot?.monitor?clamp((k.has('Space')||mp.flyUp?1:0)-(k.has('ControlLeft')||k.has('ControlRight')||mp.flyDown?1:0),-1,1):0,f:active?clamp(f,-1,1):0,s:active?clamp(s,-1,1):0,yaw:Math.atan2(Math.sin(player.yaw),Math.cos(player.yaw)),pitch:player.pitch,crouch:active&&(k.has('KeyC')||k.has('ControlLeft')||input.crouch),run:active&&(k.has('ShiftLeft')||k.has('ShiftRight')||input.run),flash:player.flash};
 }
 function mpAction(action){
-  if(!mpCanControl())return false;
+  if(!mpCanControl()||mp.snapshot?.monitor)return false;
   mpRequest('/api/action',{action,epoch:mp.epoch,life:mp.life}).catch(e=>mpNotice(e.message));return true;
 }
 async function mpSendInput(){
@@ -1257,35 +1303,35 @@ async function mpSendInput(){
   try{await mpRequest('/api/input',{...mpControls(),seq:++mp.seq,epoch:mp.epoch,life:mp.life});mp.rtt=mix(mp.rtt,Math.min(600,performance.now()-started),.2);}catch{if(mp.active&&generation===mp.generation&&performance.now()-mp.lastSnapshot>2500)mp.connected=false;}finally{mp.sending=false;}
 }
 function mpApplySnapshot(s,initial=false){
-  if(!mp.active||s.version!==MP.version)return;mp.snapshot=s;mp.connected=true;mp.lastSnapshot=performance.now();const me=s.players.find(p=>p.id===mp.id);if(!me)return;
+  if(!mp.active||s.version!==MP.version||(s.settingsVersion||0)<(mp.snapshot?.settingsVersion||0))return;mp.snapshot=s;$('mp-room-settings-open').hidden=!!s.global;$('mp-monitor-hud').hidden=!s.monitor;$('mp-monitor-level').value=s.run?'run':String(s.level);mp.connected=true;mp.lastSnapshot=performance.now();const me=s.players.find(p=>p.id===mp.id);if(!me)return;
   const wasEnd=!$('end').hidden,changed=mp.epoch!==s.epoch||mp.life!==me.life;
   if(mp.composer)mpUpdateRecipients();
   if(changed){mp.epoch=s.epoch;mp.life=me.life;mp.seq=0;mp.monsterStep=s.monster.walk;mpClearPeers();mpClearCheckpoint();reset(s.level);if(s.run){env.build(5,'escape');explored=Array.from({length:env.size},()=>Array(env.size).fill(false));}Object.assign(player,{x:me.x,z:me.z,y:me.y,yaw:me.yaw,pitch:me.pitch,eye:me.eye,ground:me.ground,vy:me.vy});mpBuildCheckpoint(s);state='playing';
     // A reconnect can miss the short event history; the checkpoint is authoritative.
-    if(!initial&&s.phase==='playing'){mp.menu=mp.dialog=mp.composer=false;$('mp-dialog').hidden=true;$('mp-composer').hidden=true;$('retry').disabled=false;setScreen('hud');clearInput();audio.start().catch(()=>{});}
+    if(!initial&&s.phase==='playing'){mpHideRoomSettings();mp.menu=mp.dialog=mp.composer=false;$('mp-dialog').hidden=true;$('mp-composer').hidden=true;$('retry').disabled=false;setScreen('hud');clearInput();audio.start().catch(()=>{});}
   }
   elapsed=s.elapsed;checkpoint=s.level;player.stamina=me.stamina;
   mpApplyObjectives(s,changed);
   if(initial)mp.lastEvent=Math.max(0,...s.events.map(e=>e.id));else for(const e of s.events)if(e.id>mp.lastEvent){mp.lastEvent=e.id;mpEvent(e);}
-  if(s.phase==='lobby')mpUpdateRoom();
+  if(s.phase==='lobby'||mp.dialog)mpUpdateRoom();
   const dead=!me.alive&&!me.waiting;
   if(dead||['won','lost'].includes(s.phase)){
     const won=!dead&&s.phase==='won';state=won?'won':'lost';setScreen('end');clearInput();releasePointer();mp.menu=mp.dialog=mp.composer=false;
-    $('mp-dialog').hidden=$('mp-composer').hidden=$('mp-online-hud').hidden=true;mpResetRecipients();$('danger').style.opacity=0;
+    mpHideRoomSettings();$('mp-dialog').hidden=$('mp-composer').hidden=$('mp-online-hud').hidden=true;mpResetRecipients();$('danger').style.opacity=0;
     $('end-kicker').textContent=won?'TRANSMISSION COMPLETE':'SIGNAL LOST';$('end-title').textContent=won?'You made it through.':"You weren't alone.";
-    $('end-description').textContent=s.global?(won?'You escaped all five levels. Restart to begin a fresh journey.':'Restart at this level’s checkpoint with a fresh timer. Other explorers keep playing.'):(dead?'Restart at this room’s current checkpoint. Other explorers keep playing.':'Your team made it through the final collapse.');
+    $('end-description').textContent=me.deathLinkCause?'Death Link: '+me.deathLinkCause+' was caught. Restart at your checkpoint or leave the room.':s.personal?(won?'You escaped all five levels. Restart to begin a fresh journey.':'Restart at this level’s checkpoint with a fresh timer. Other explorers keep playing.'):(dead?'Restart at this room’s current checkpoint. Other explorers keep playing.':'Your team made it through the final collapse.');
     $('result').textContent=(s.global?'GLOBAL ROOM':'ROOM '+s.code)+' / YOUR TIME '+formatTime(me.elapsed??s.elapsed);
-    $('retry').textContent='RESTART';$('retry').disabled=!s.global&&!dead&&mp.id!==s.hostId;if($('retry').disabled)$('retry').textContent='WAITING FOR HOST';
+    $('retry').textContent='RESTART';$('retry').disabled=!s.personal&&!dead&&mp.id!==s.hostId;if($('retry').disabled)$('retry').textContent='WAITING FOR HOST';
     $('end-menu').textContent='EXIT ROOM';if(!wasEnd){$('retry').focus();audio.end(won);const generation=mp.generation,life=mp.life;setTimeout(()=>{if(mp.active&&mp.generation===generation&&mp.life===life&&['won','lost'].includes(state))audio.pause();},2300);}
   }else if(s.personal&&s.phase==='transition'){
-    state='transition';setScreen('transition');clearInput();$('mp-online-hud').hidden=true;
+    mpHideRoomSettings();mp.menu=mp.dialog=mp.composer=false;$('mp-dialog').hidden=$('mp-composer').hidden=true;state='transition';setScreen('transition');clearInput();$('mp-online-hud').hidden=true;
     $('transition-title').textContent='Your next checkpoint.';$('transition-detail').textContent='Your journey continues. Other explorers stay on their own path.';
   }else if(state==='won'||state==='lost'||state==='transition'){state='playing';$('retry').disabled=false;setScreen('hud');}
-
+  mpUpdateRoomSettings();
 }
 function mpApplyObjectives(s,changed){
   const o=s.objectives;
-  if(s.level===3){sewer.hasHammer=o.hammer;env.hammerMesh.visible=env.hammerGlow.visible=!o.hammer;const me=s.players.find(p=>p.id===mp.id);env.heldHammer.visible=o.hammer&&me.alive&&!me.crawling&&!me.escaped;
+  if(s.level===3){sewer.hasHammer=o.hammer;env.hammerMesh.visible=env.hammerGlow.visible=!o.hammer;const me=s.players.find(p=>p.id===mp.id);env.heldHammer.visible=o.hammer&&!s.monitor&&me.alive&&!me.crawling&&!me.escaped;
     env.exits.forEach((e,i)=>{e.hits=o.hits[i];e.open=e.hits>=4;e.bars.forEach((bar,j)=>{bar.visible=!e.open;bar.rotation.z=j<e.hits?(j%2?1:-1)*.2*e.hits:0;bar.position.y=j<e.hits?.86-.04*e.hits:.925;});});
   }
   if(s.level===4){school.hasOpener=o.opener;school.unlocked=o.unlocked;school.searched=o.opened.length;env.schoolDoorOpen=o.doorOpen;env.map[24][21]=o.doorOpen>.85?0:1;
@@ -1298,7 +1344,7 @@ function mpApplyObjectives(s,changed){
 function mpEvent(e){
   if(e.kind==='chat'){mpAddChat(e);if(e.type==='emoji'){const peer=mp.peers.get(e.playerId);if(peer){mpPaintTag(peer.emote,e.text,true);peer.emoteUntil=performance.now()+4000;}}return;}
   if(e.kind==='start'||e.kind==='retry'||e.kind==='level'||e.kind==='escape'||e.kind==='respawn'&&e.playerId===mp.id){
-    mp.menu=mp.dialog=mp.composer=false;$('mp-dialog').hidden=true;$('mp-composer').hidden=true;state='playing';setScreen('hud');clearInput();audio.start().catch(()=>{});if(e.kind==='escape')audio.realityShift();else audio.transition();return;
+    mpHideRoomSettings();mp.menu=mp.dialog=mp.composer=false;$('mp-dialog').hidden=true;$('mp-composer').hidden=true;state='playing';setScreen('hud');clearInput();audio.start().catch(()=>{});if(e.kind==='escape')audio.realityShift();else audio.transition();return;
   }
   if(e.kind==='strike'){audio.hammer({x:e.x,y:1,z:e.z},e.hits>=4);if(e.playerId===mp.id)env.hammerSwing=.55;}
   if(e.kind==='drawer')audio.drawer({x:e.x,y:1,z:e.z});if(e.kind==='unlock')audio.unlock();if(e.kind==='hammer'||e.kind==='opener')audio.pickup();
@@ -1311,9 +1357,9 @@ function mpEvent(e){
 function mpUpdateRoom(){
   const s=mp.snapshot;if(!s)return;$('mp-room-code').textContent=s.global?'GLOBAL ROOM':s.code;$('mp-copy').hidden=!!s.global;$('mp-roster').replaceChildren();
   for(const p of s.roster||s.players){const li=document.createElement('li');li.textContent=p.name+(p.id===mp.id?' (you)':'')+(p.id===s.hostId?' · HOST':'')+(s.personal?' · LEVEL '+p.level+(p.run?' / FINAL CHASE':''):'');$('mp-roster').append(li);}
-  $('mp-start-room').hidden=s.global||s.phase!=='lobby';$('mp-start-room').disabled=mp.id!==s.hostId;$('mp-start-room').textContent=mp.id===s.hostId?'START TOGETHER':'WAITING FOR HOST';
+  $('mp-lobby-settings').hidden=!!s.global;$('mp-start-room').hidden=s.global||s.phase!=='lobby';$('mp-start-room').disabled=mp.id!==s.hostId;$('mp-start-room').textContent=mp.id===s.hostId?'START TOGETHER':'WAITING FOR HOST';
   $('mp-room-detail').textContent='LEVEL '+s.level+' · '+(s.playerCount||s.players.length)+' / '+(s.maxPlayers||4)+' PLAYERS · '+(s.global?'GLOBAL · AUTOMATIC START':s.publicRoom?'PUBLIC ROOM':'INVITE ONLY');
-  $('mp-room-rules').textContent=s.global?'Up to 16 explorers, each with their own timer and progress. New arrivals begin at the fixed Backrooms spawn. Each level has its own checkpoint, including the final chase. Restart returns only you to your checkpoint and resets your timer. Meet others on the same level and share its objectives. When caught, choose Restart or Exit Room.':'Shared tools and objectives. When caught, choose Restart or Exit Room. Restart returns you to this room’s current checkpoint without resetting other players.';
+  $('mp-room-rules').textContent=s.global?'Up to 16 explorers, each with their own timer and progress. New arrivals begin at the fixed Backrooms spawn. Each level has its own checkpoint, including the final chase. Restart returns only you to your checkpoint and resets your timer. Meet others on the same level and share its objectives. When caught, choose Restart or Exit Room.':s.personal?'Independent progress is ON. Each explorer has their own timer and checkpoints. New arrivals begin at the room’s starting checkpoint. Tools and objectives are shared with explorers on the same level. The host can change this in Room Settings.':'Independent progress is OFF. Shared timer, levels, tools and objectives. The host can change this in Room Settings. When caught, choose Restart or Exit Room. Restart returns you to this room’s current checkpoint without resetting other players.';
 }
 async function mpStart(){try{await mpRequest('/api/start',{});}catch(e){mpNotice(e.message);}}
 async function mpRestart(){if(mp.restarting)return;mp.restarting=true;$('retry').disabled=true;try{await audio.start();await mpRequest('/api/retry',{});}catch(e){$('end-description').textContent=e.message;}finally{mp.restarting=false;$('retry').disabled=false;}}
@@ -1323,9 +1369,9 @@ async function mpResume(){
 }
 async function mpLeave(){
   if(mp.active){mpRequest('/api/leave',{}).catch(()=>{});}
-  mp.active=false;mp.connected=false;mp.generation++;mp.token=null;mp.snapshot=null;mp.epoch=-1;mp.menu=mp.composer=mp.dialog=false;mp.abort?.abort();clearInterval(mp.inputTimer);mp.inputTimer=null;mpClearPeers();mpClearCheckpoint();
-  for(const id of ['mp-dialog','mp-composer','mp-online-hud'])$(id).hidden=true;
-  mpResetRecipients();mp.chatBusy=false;
+  mp.active=false;mp.connected=false;mp.generation++;mp.token=null;mp.snapshot=null;mp.epoch=-1;mpHideRoomSettings();$('mp-room-settings-open').hidden=true;mp.menu=mp.composer=mp.dialog=false;mp.abort?.abort();clearInterval(mp.inputTimer);mp.inputTimer=null;mpClearPeers();mpClearCheckpoint();
+  for(const id of ['mp-dialog','mp-composer','mp-online-hud','mp-monitor-hud'])$(id).hidden=true;
+  mpResetRecipients();mp.chatBusy=false;mp.flyUp=mp.flyDown=false;
   document.body.classList.toggle('online',false);$('retry').disabled=false;$('end-menu').textContent='RETURN TO TITLE';$('pause-copy').textContent='Your time is paused. Take a moment.';title();
 }
 function mpBuildComposer(){
@@ -1395,10 +1441,10 @@ function mpBuildCheckpoint(s){
 function mpFrame(dt){
   const s=mp.snapshot;if(!s)return;const me=s.players.find(p=>p.id===mp.id);if(!me)return;
   if(state==='lost'||state==='won'){env.render();return;}
-  const canMove=mpCanControl();if(canMove)stepPlayer(dt);else{clearInput();player.moving=player.running=false;player.bob=player.roll=0;player.noise=Math.max(0,player.noise-dt*.75);}
-  if(me.alive&&!me.escaped){
+  const canMove=mpCanControl(),gameDt=dt*(s.roomSettings?.roomSpeed||1);if(canMove){if(s.monitor)mpFly(dt);else stepPlayer(gameDt);}else{clearInput();player.moving=player.running=false;player.bob=player.roll=0;player.noise=Math.max(0,player.noise-dt*.75);}
+  if(me.alive&&!me.escaped&&!(s.monitor&&canMove)){
     const target={x:me.x,z:me.z,radius:.26};
-    if(canMove){const controls=mpControls(),ahead=clamp((performance.now()-mp.lastSnapshot+mp.rtt*.5)/1000,0,.2),speed=(me.crouch?1.9:me.running?6.2:3.8)*(level===3?.62:1);moveActor(target,(-Math.sin(me.yaw)*controls.f+Math.cos(me.yaw)*controls.s)*speed*ahead,(-Math.cos(me.yaw)*controls.f-Math.sin(me.yaw)*controls.s)*speed*ahead);}
+    if(canMove&&!s.monitor){const controls=mpControls(),ahead=clamp((performance.now()-mp.lastSnapshot+mp.rtt*.5)/1000,0,.2),speed=(me.crouch?1.9:me.running?6.2:3.8)*(level===3?.62:1)*(s.roomSettings?.roomSpeed||1);moveActor(target,(-Math.sin(me.yaw)*controls.f+Math.cos(me.yaw)*controls.s)*speed*ahead,(-Math.cos(me.yaw)*controls.f-Math.sin(me.yaw)*controls.s)*speed*ahead);}
     const d=Math.hypot(target.x-player.x,target.z-player.z),blend=d>2||me.crawling?1:1-Math.exp(-10*dt);player.x=mix(player.x,target.x,blend);player.z=mix(player.z,target.z,blend);
     player.y=mix(player.y,me.y,1-Math.exp(-14*dt));player.vy=me.vy;player.ground=me.ground;player.eye=mix(player.eye,me.eye,1-Math.exp(-12*dt));if(me.crawling)player.yaw=me.yaw;
   }
@@ -1406,9 +1452,9 @@ function mpFrame(dt){
   if((!me.alive||me.escaped)&&living.length){const target=living.find(p=>p.id===mp.spectate)||living[0];mp.spectate=target.id;pose={...player,...target,bob:0,roll:0};}
   const remote=s.monster,blend=Math.hypot(monster.x-remote.x,monster.z-remote.z)>4?1:1-Math.exp(-14*dt);monster.x=mix(monster.x,remote.x,blend);monster.z=mix(monster.z,remote.z,blend);monster.angle+=Math.atan2(Math.sin(remote.angle-monster.angle),Math.cos(remote.angle-monster.angle))*blend;monster.walk=mix(monster.walk,remote.walk,blend);monster.mode=remote.mode;
   const distance=Math.hypot(monster.x-pose.x,monster.z-pose.z);lastSeen=distance<25&&clearLine(monster.x,monster.z,pose.x,pose.z,false);
-  threat=s.run?clamp(1-(collapseRunProgress(pose.x,pose.z)-s.front)/35,.15,.95):clamp((18-distance)/17,0,1)*(lastSeen?1:.4);if(s.phase==='lobby')threat=0;
+  threat=s.run?clamp(1-(collapseRunProgress(pose.x,pose.z)-s.front)/35,.15,.95):clamp((18-distance)/17,0,1)*(lastSeen?1:.4);if(s.phase==='lobby'||s.monitor)threat=0;
   if(level===5){collapse.progress=collapseRunProgress(player.x,player.z);collapse.noticeTime=Math.max(0,collapse.noticeTime-dt);collapse.shake=Math.max(0,collapse.shake-dt*.65);}
-  for(const p of s.players){if(p.id===mp.id)continue;const peer=mp.peers.get(p.id)||mpMakePeer(p);peer.group.visible=p.alive&&!p.escaped&&(!s.global||Math.hypot(p.x-pose.x,p.z-pose.z)<(settings.quality==='low'?20:36));
+  for(const p of s.players){if(p.id===mp.id)continue;const peer=mp.peers.get(p.id)||mpMakePeer(p);peer.group.visible=!p.monitor&&p.alive&&!p.escaped&&(!s.global||Math.hypot(p.x-pose.x,p.z-pose.z)<(settings.quality==='low'?20:36));
     const blend=1-Math.exp(-14*dt);peer.group.position.lerp(new THREE.Vector3(p.x,p.y,p.z),blend);peer.group.rotation.y+=Math.atan2(Math.sin(p.yaw-peer.group.rotation.y),Math.cos(p.yaw-peer.group.rotation.y))*blend;peer.group.scale.y=p.crouch?.68:1;
     peer.limbs.forEach((limb,i)=>limb.rotation.x=p.moving?Math.sin(p.step*5+([0,3].includes(i)?0:Math.PI))*.35:0);peer.emote.visible=performance.now()<peer.emoteUntil;
     if(p.step-peer.step>1.65){if(Math.hypot(p.x-pose.x,p.z-pose.z)<20)audio.step(p.crouch,p.running,{x:p.x,y:.2,z:p.z});peer.step=p.step;}
@@ -1416,7 +1462,7 @@ function mpFrame(dt){
   for(const id of mp.peers.keys())if(!s.players.some(p=>p.id===id))mpRemovePeer(id);
   if(mp.spectate&&(!me.alive||me.escaped)){const peer=mp.peers.get(mp.spectate);if(peer)peer.group.visible=false;}
   if(monster.walk-mp.monsterStep>1.7*4.6){if(!s.run&&s.phase==='playing'&&distance<22)audio.step(false,false,{x:monster.x,y:.1,z:monster.z},true);mp.monsterStep=monster.walk;}
-  env.update(dt,worldTime,pose,monster,threat,s.phase==='lobby');if(s.phase==='playing')audio.update(dt,pose,monster,threat,lastSeen,canMove&&player.running,elapsed);
+  env.update(gameDt,worldTime,pose,monster,threat,s.phase==='lobby');if(s.phase==='playing')audio.update(gameDt,pose,monster,threat,lastSeen,canMove&&player.running,elapsed);
   hudClock-=dt;if(hudClock<=0){updateHud();mpUpdateHud();hudClock=.1;}env.render();
 }
 function mpUpdateHud(){
@@ -1425,10 +1471,12 @@ function mpUpdateHud(){
   const remaining=s.players.filter(p=>p.alive&&!p.escaped).length;
   $('mp-live-status').textContent=!mp.connected||performance.now()-mp.lastSnapshot>2500?'CONNECTION INTERRUPTED — RECONNECTING':s.phase==='lobby'?'WAITING IN LOBBY':s.phase==='transition'?'TEAM CHECKPOINT REACHED — NEXT LEVEL':me.waiting?'WATCHING — YOU JOIN AT THE NEXT CHECKPOINT':me.crawling?'CRAWLING TO SAFETY':!me.alive?'CHOOSE RESTART OR EXIT ROOM':me.escaped?'YOU ARE SAFE — WAITING FOR '+remaining+' EXPLORER'+(remaining===1?'':'S'):'I · MESSAGES & FACE EMOJIS';
   if(s.global&&s.phase==='playing'&&s.exitIn!==null&&s.exitIn!==undefined)$('mp-live-status').textContent+=' · EXIT CLOSES IN '+Math.ceil(s.exitIn)+'s';
-  if(!me.alive||me.escaped||me.crawling||s.phase!=='playing')$('interaction').hidden=true;
-  if(mp.dialog)mpUpdateRoom();
+  if(s.monitor||!me.alive||me.escaped||me.crawling||s.phase!=='playing')$('interaction').hidden=true;
+  if(s.monitor)$('mp-live-status').textContent='OBSERVING · Your explorer is safe';else if(!s.global)$('mp-live-status').textContent+=' · '+(s.roomSettings?.roomSpeed||1)+'× SPEED'+(s.roomSettings?.deathLink?' · DEATH LINK':'');if(mp.dialog)mpUpdateRoom();
 }
 function bindMultiplayer(){
+  mpBindHostTools();
+  $('mp-room-settings-open').onclick=$('mp-lobby-settings').onclick=mpOpenRoomSettings;$('mp-room-settings-close').onclick=$('mp-room-settings-back').onclick=mpCloseRoomSettings;$('mp-room-settings-apply').onclick=mpSaveRoomSettings;$('mp-independent-progress').onchange=()=>{$('mp-room-settings-status').textContent='';mpUpdateRoomSettings();};
   $('mp-global').onclick=()=>mpJoin('global');
   $('mp-address').onchange=()=>{$('mp-to-picker').hidden=!$('mp-address').checked;if(!$('mp-address').checked){mp.recipientIds.clear();mp.recipientRosterKey='';}mpUpdateRecipients();};
   $('multiplayer-open').onclick=mpOpen;$('mp-close').onclick=mpClose;$('mp-create').onclick=()=>mpJoin('create');$('mp-join').onclick=()=>mpJoin('join');$('mp-quick').onclick=()=>mpJoin('quick');$('mp-start-room').onclick=mpStart;$('mp-leave').onclick=mpLeave;
@@ -1436,9 +1484,72 @@ function bindMultiplayer(){
   $('mp-tab-faces').onclick=()=>{$('mp-messages').hidden=true;$('mp-faces').hidden=false;$('mp-tab-messages').setAttribute('aria-selected','false');$('mp-tab-faces').setAttribute('aria-selected','true');};
   $('mp-spectate').onclick=()=>{const live=mp.snapshot?.players.filter(p=>p.alive&&!p.escaped&&p.id!==mp.id)||[];if(live.length)mp.spectate=live[(live.findIndex(p=>p.id===mp.spectate)+1)%live.length].id;};
   $('mp-copy').onclick=async()=>{try{await navigator.clipboard.writeText(mp.snapshot.code);mpNotice('Room code copied.');}catch{mpNotice('Room code: '+mp.snapshot.code);}};
-  for(const id of ['mp-dialog','mp-composer'])$(id).addEventListener('keydown',e=>{if(e.key!=='Tab')return;const controls=[...$(id).querySelectorAll('button,input,select,a[href]')].filter(el=>!el.disabled&&el.getClientRects().length);if(!controls.length)return;if(e.shiftKey&&document.activeElement===controls[0]){controls.at(-1).focus();e.preventDefault();}else if(!e.shiftKey&&document.activeElement===controls.at(-1)){controls[0].focus();e.preventDefault();}});
+  for(const id of ['mp-dialog','mp-composer','mp-room-settings','mp-host-map'])$(id).addEventListener('keydown',e=>{if(e.key!=='Tab')return;const controls=[...$(id).querySelectorAll('button,input,select,a[href]')].filter(el=>!el.disabled&&el.getClientRects().length);if(!controls.length)return;if(e.shiftKey&&document.activeElement===controls[0]){controls.at(-1).focus();e.preventDefault();}else if(!e.shiftKey&&document.activeElement===controls.at(-1)){controls[0].focus();e.preventDefault();}});
   window.addEventListener('pagehide',()=>{if(mp.active)fetch('/api/leave',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+mp.token},body:'{}',keepalive:true}).catch(()=>{});});
 }
+
+async function mpSetMonitor(enabled,level){
+  if(!mp.active||mp.monitorBusy||mp.id!==mp.snapshot?.hostId)return;mp.monitorBusy=true;const generation=mp.generation;
+  $('mp-monitor-status').textContent='';$('mp-room-settings-status').textContent='';mpUpdateRoomSettings();
+  try{const out=await mpRequest('/api/monitor',{enabled,...(level===undefined?{}:{level})});if(!mp.active||mp.generation!==generation)return;mp.flyUp=mp.flyDown=false;mpApplySnapshot(out.snapshot);mpHideRoomSettings();mp.menu=mp.dialog=false;$('mp-dialog').hidden=true;setScreen('hud');clearInput();lockPointer();}
+  catch(e){$('mp-monitor-status').textContent=$('mp-room-settings-status').textContent=e.message;}
+  finally{mp.monitorBusy=false;mpUpdateRoomSettings();}
+}
+function mpFly(dt){
+  const c=mpControls(),len=Math.max(1,Math.hypot(c.f,c.s,c.up)),speed=(c.run?16:8)*dt/len,span=env.size*4;
+  player.x=clamp(player.x+(-Math.sin(player.yaw)*c.f+Math.cos(player.yaw)*c.s)*speed,-8,span+8);player.z=clamp(player.z+(-Math.cos(player.yaw)*c.f-Math.sin(player.yaw)*c.s)*speed,-8,span+8);player.y=clamp(player.y+c.up*speed,-4,30);player.eye=1.65;player.bob=player.roll=0;player.moving=player.running=false;
+}
+function mpHideHostMap(){mp.hostMapOpen=false;mp.mapDrag=null;mp.mapAim=null;mp.mapGeneration=(mp.mapGeneration||0)+1;clearInterval(mp.mapTimer);mp.mapTimer=null;$('mp-host-map').hidden=true;}
+async function mpOpenHostMap(){
+  if(!mp.active||mp.id!==mp.snapshot?.hostId||mp.snapshot?.global||mp.snapshot.phase==='lobby')return;
+  mp.hostMapOpen=true;mp.mapData=null;mp.mapAim=null;mp.mapGeneration=(mp.mapGeneration||0)+1;$('mp-host-map').hidden=false;$('mp-room-settings').hidden=true;
+  $('mp-map-level').value=mp.snapshot.personal?(mp.snapshot.run?'run':String(mp.snapshot.level)):'';$('mp-map-status').textContent='Loading the live floor plan…';clearInput();releasePointer();await mpLoadHostMap();
+  if(mp.hostMapOpen){mp.mapTimer=setInterval(()=>{if(!mp.mapDrag&&!mp.mapBusy)mpLoadHostMap();},1500);$('mp-map-player').focus();}
+}
+function mpCloseHostMap(){mpHideHostMap();if(mp.roomSettingsOpen){$('mp-room-settings').hidden=false;$('mp-map-open').focus();}}
+async function mpLoadHostMap(){
+  if(!mp.hostMapOpen||mp.mapLoading)return;mp.mapLoading=true;const generation=mp.mapGeneration,key=$('mp-map-level').value;
+  try{const data=await mpRequest('/api/host-map',{key});if(!mp.hostMapOpen||generation!==mp.mapGeneration||key!==$('mp-map-level').value)return;
+    mp.mapData=data;$('mp-map-level').value=data.key;const selected=$('mp-map-player').value,eligible=data.players.filter(p=>p.alive&&!p.monitor);$('mp-map-player').replaceChildren();
+    for(const p of eligible){const option=document.createElement('option');option.value=p.id;option.textContent=p.name+' · '+(p.key==='run'?'Final chase':'Level '+p.key);$('mp-map-player').append(option);}
+    $('mp-map-player').value=eligible.some(p=>p.id===selected)?selected:eligible[0]?.id||'';
+    $('mp-map-level').disabled=!mp.snapshot.personal;
+    if(!data.canDrop)$('mp-map-status').textContent='This is an observation map. Players can only move between levels when Independent Progress is on.';
+    else if(!eligible.length)$('mp-map-status').textContent='No active players to move. Observers and defeated players cannot be dragged.';
+    else if(!mp.mapStatusUntil||performance.now()>mp.mapStatusUntil)$('mp-map-status').textContent='Choose a player and a clear spot on the floor.';
+    mpDrawHostMap();
+  }catch(e){if(generation===mp.mapGeneration)$('mp-map-status').textContent=e.message;}finally{mp.mapLoading=false;}
+}
+function mpMapPoint(e){const data=mp.mapData,r=$('mp-map-canvas').getBoundingClientRect(),span=data.map.length*4;return {x:clamp((e.clientX-r.left)/r.width*span,0,span-.01),z:clamp((e.clientY-r.top)/r.height*span,0,span-.01)};}
+function mpMapFloor(p){const d=mp.mapData;if(!d||!p)return false;const cell=d.map[Math.floor(p.z/4)]?.[Math.floor(p.x/4)];return cell!==undefined&&![1,8,9].includes(cell)&&!d.obstacles.some(b=>p.x>b.minX-.3&&p.x<b.maxX+.3&&p.z>b.minZ-.3&&p.z<b.maxZ+.3);}
+function mpDrawHostMap(){
+  const d=mp.mapData;if(!d)return;const canvas=$('mp-map-canvas'),g=canvas.getContext('2d'),size=canvas.width||640,unit=size/d.map.length,k=unit/4;
+  g.clearRect(0,0,size,size);g.fillStyle='#08120f';g.fillRect(0,0,size,size);
+  d.map.forEach((row,r)=>row.forEach((cell,c)=>{g.fillStyle=[1,8,9].includes(cell)?'#1d352e':'#829179';g.fillRect(c*unit,r*unit,unit+.2,unit+.2);}));
+  g.fillStyle='#354c3e';for(const b of d.obstacles)g.fillRect(b.minX*k,b.minZ*k,(b.maxX-b.minX)*k,(b.maxZ-b.minZ)*k);
+  g.strokeStyle='#a1f6d7';g.lineWidth=2;g.strokeRect(d.spawn.x*k-5,d.spawn.z*k-5,10,10);
+  for(const p of d.players){if(p.key!==d.key||!p.alive||p.monitor)continue;const selected=p.id===$('mp-map-player').value;g.beginPath();g.arc(p.x*k,p.z*k,selected?9:6,0,Math.PI*2);g.fillStyle=selected?'#ffe4a6':'#143f59';g.fill();g.strokeStyle='#fff7d6';g.stroke();g.font='bold 13px Arial';g.textAlign=p.x*k>size-90?'right':'left';g.fillStyle='#fff7db';g.fillText(p.name,p.x*k+(p.x*k>size-90?-12:12),p.z*k-10);}
+  if(mp.mapAim){const x=mp.mapAim.x*k,z=mp.mapAim.z*k;g.strokeStyle=mpMapFloor(mp.mapAim)?'#ffffb8':'#ff8277';g.lineWidth=3;g.beginPath();g.arc(x,z,10,0,Math.PI*2);g.moveTo(x-16,z);g.lineTo(x+16,z);g.moveTo(x,z-16);g.lineTo(x,z+16);g.stroke();}
+}
+async function mpDropPlayer(point){
+  const data=mp.mapData,p=data?.players.find(p=>p.id===$('mp-map-player').value);if(!p||!data.canDrop||mp.mapBusy)return;
+  if(!mpMapFloor(point)){$('mp-map-status').textContent='Choose clear floor, away from walls and furniture.';mp.mapStatusUntil=performance.now()+5000;return;}
+  mp.mapBusy=true;const generation=mp.mapGeneration;$('mp-map-status').textContent='Moving '+p.name+'…';
+  try{await mpRequest('/api/teleport',{playerId:p.id,life:p.life,fromKey:p.key,key:data.key,mapEpoch:data.epoch,x:point.x,z:point.z});if(generation===mp.mapGeneration){$('mp-map-status').textContent=p.name+' moved. They have a moment of protection to get their bearings.';mp.mapStatusUntil=performance.now()+5000;}}
+  catch(e){if(generation===mp.mapGeneration){$('mp-map-status').textContent=e.message;mp.mapStatusUntil=performance.now()+5000;}}
+  finally{mp.mapBusy=false;if(generation===mp.mapGeneration){mp.mapAim=null;await mpLoadHostMap();}}
+}
+function mpBindHostTools(){
+  for(const id of ['mp-room-speed','mp-death-link'])$(id).onchange=()=>{$('mp-room-settings-status').textContent='';mpUpdateRoomSettings();};
+  $('mp-monitor-toggle').onchange=()=>mpSetMonitor($('mp-monitor-toggle').checked);$('mp-monitor-stop').onclick=()=>mpSetMonitor(false);$('mp-monitor-level').onchange=()=>mpSetMonitor(true,$('mp-monitor-level').value);
+  for(const [id,field]of [['mp-fly-up','flyUp'],['mp-fly-down','flyDown']]){$(id).onpointerdown=e=>{mp[field]=true;e.preventDefault();$(id).setPointerCapture(e.pointerId);};for(const event of ['pointerup','pointercancel','lostpointercapture'])$(id).addEventListener(event,()=>mp[field]=false);}
+  $('mp-map-open').onclick=mpOpenHostMap;$('mp-map-close').onclick=mpCloseHostMap;$('mp-map-level').onchange=()=>{mp.mapAim=null;mp.mapData=null;mpLoadHostMap();};$('mp-map-player').onchange=()=>{mp.mapAim=null;mpDrawHostMap();};
+  const canvas=$('mp-map-canvas');canvas.onpointerdown=e=>{if(!mp.mapData||mp.mapBusy)return;const point=mpMapPoint(e),radius=mp.mapData.map.length*4/canvas.getBoundingClientRect().width*18,p=mp.mapData.players.filter(p=>p.key===mp.mapData.key&&p.alive&&!p.monitor).sort((a,b)=>Math.hypot(a.x-point.x,a.z-point.z)-Math.hypot(b.x-point.x,b.z-point.z))[0];if(p&&Math.hypot(p.x-point.x,p.z-point.z)<radius)$('mp-map-player').value=p.id;mp.mapDrag=e.pointerId;mp.mapAim=point;canvas.setPointerCapture(e.pointerId);e.preventDefault();mpDrawHostMap();};
+  canvas.onpointermove=e=>{if(mp.mapDrag!==e.pointerId||!mp.mapData)return;mp.mapAim=mpMapPoint(e);mpDrawHostMap();};
+  canvas.onpointerup=e=>{if(mp.mapDrag!==e.pointerId)return;mp.mapDrag=null;return mpDropPlayer(mpMapPoint(e));};canvas.onpointercancel=()=>{mp.mapDrag=null;mp.mapAim=null;mpDrawHostMap();};
+  canvas.addEventListener('keydown',e=>{if(!mp.mapData)return;if(e.key==='Enter'&&mp.mapAim){e.preventDefault();mpDropPlayer(mp.mapAim);return;}if(!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key))return;e.preventDefault();const d=mp.mapData,p=d.players.find(p=>p.id===$('mp-map-player').value);mp.mapAim??=p?.key===d.key?{x:p.x,z:p.z}:{x:d.spawn.x,z:d.spawn.z};mp.mapAim.x=clamp(mp.mapAim.x+(e.key==='ArrowLeft'?-.5:e.key==='ArrowRight'?.5:0),0,d.map.length*4-.01);mp.mapAim.z=clamp(mp.mapAim.z+(e.key==='ArrowUp'?-.5:e.key==='ArrowDown'?.5:0),0,d.map.length*4-.01);mpDrawHostMap();});
+}
+
 
 </script>
 <script>
@@ -1548,10 +1659,13 @@ function bind(){
   $('settings').addEventListener('keydown',e=>{if(e.key==='Tab'){const els=[...$('settings').querySelectorAll('button,input,select')];if(e.shiftKey&&document.activeElement===els[0]){els.at(-1).focus();e.preventDefault();}else if(!e.shiftKey&&document.activeElement===els.at(-1)){els[0].focus();e.preventDefault();}}});
   window.addEventListener('keydown',e=>{
     if(typeof avatarEditor!=='undefined'&&avatarEditor.open){if(e.code==='Escape'){e.preventDefault();avatarClose();}return;}
+    if(typeof mp!=='undefined'&&mp.hostMapOpen){if(e.code==='Escape'){e.preventDefault();mpCloseHostMap();}return;}
+    if(typeof mp!=='undefined'&&mp.roomSettingsOpen){if(e.code==='Escape'){e.preventDefault();mpCloseRoomSettings();}return;}
     if(e.code==='KeyI'&&!e.repeat&&typeof mp!=='undefined'&&mp.active){e.preventDefault();mpToggleComposer();return;}
     if(e.code==='Escape'){if(typeof mp!=='undefined'&&mp.composer){mpCloseComposer();return;}if(typeof mp!=='undefined'&&mp.dialog){mpClose();return;}if(!$('settings').hidden)closeSettings();else if(state==='paused'||(typeof mp!=='undefined'&&mp.active&&mp.menu))resume();else pause();return;}
     if(typeof mp!=='undefined'&&(mp.dialog||mp.composer))return;
     if(!$('settings').hidden)return;if(e.code==='KeyP'&&!e.repeat){state==='paused'||(typeof mp!=='undefined'&&mp.active&&mp.menu)?resume():pause();return;}if(state!=='playing'||(typeof mp!=='undefined'&&mp.active&&!mpCanControl()))return;
+    if(typeof mp!=='undefined'&&mp.active&&mp.snapshot?.monitor&&/^(Digit|Numpad)[1-5]$/.test(e.code)){e.preventDefault();mpSetMonitor(true,e.code.at(-1));return;}
     if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Tab'].includes(e.code))e.preventDefault();input.keys.add(e.code);if(e.repeat)return;if(e.code==='Space')jump();if(e.code==='KeyE'&&level>=3)useInteraction('use');if(e.code==='Enter'){e.preventDefault();interactSewer('crawl');}if(e.code==='KeyF')toggleFlash();if(e.code==='KeyM'){settings.map=!settings.map;saveSettings();}
   });window.addEventListener('keyup',e=>input.keys.delete(e.code));window.addEventListener('blur',()=>{clearInput();pause();});document.addEventListener('visibilitychange',()=>{if(document.hidden){clearInput();pause();}});
   document.addEventListener('pointerlockchange',()=>{if(!document.pointerLockElement&&state==='playing'&&!(typeof mp!=='undefined'&&mp.active&&(mp.menu||mp.composer||mp.dialog||!mpCanControl())))pause();});
@@ -1565,7 +1679,7 @@ function bind(){
   window.addEventListener('resize',()=>env.resize());$('world').addEventListener('webglcontextlost',e=>{e.preventDefault();pause();$('error-text').textContent='The graphics connection was interrupted. Close unused browser tabs, then reload to reconnect.';$('error').hidden=false;});
 }
 function loop(now){
-  requestAnimationFrame(loop);const dt=Math.min((now-last)/1000||0,.08);last=now;worldTime+=dt;
+  requestAnimationFrame(loop);const dt=Math.min((now-last)/1000||0,.08);last=now;worldTime+=dt*(typeof mp!=='undefined'&&mp.active?(mp.snapshot?.roomSettings?.roomSpeed||1):1);
   if(document.hidden)return;
   if(typeof avatarEditor!=='undefined'&&avatarEditor.open){if(avatarEditor.dirty){avatarEditor.dirty=false;avatarPreviewBuild();}avatarPreviewFrame(now);return;}
   if(typeof mp!=='undefined'&&mp.active){mpFrame(dt);return;}

@@ -1,6 +1,6 @@
 'use strict';
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),zlib=require('node:zlib');
-const {Room,GlobalRoom,GameError,protocol}=require('./engine.cjs');
+const {Room,GlobalRoom,changeRoomSettings,setMonitor,hostMap,teleportPlayer,GameError,protocol}=require('./engine.cjs');
 function createServer({maxRooms=32,now=()=>Date.now()}={}){
   const rooms=new Map(),sessions=new Map(),ipLimits=new Map();
   const html=fs.readFileSync(path.join(__dirname,'Backrooms-Enhanced.html'));
@@ -44,12 +44,17 @@ function createServer({maxRooms=32,now=()=>Date.now()}={}){
         sendSnapshot(session,snapshotMessage(session.room,session.playerId));
         res.on('close',()=>{gzip?.destroy();if(session.stream===res){session.stream=null;session.gzip=null;}});return;
       }
-      if(req.method==='POST'&&['/api/input','/api/action','/api/chat','/api/start','/api/retry','/api/leave'].includes(route)){
-        const {session:s,p}=authorization(req),t=now();if(t-s.window>=1000){s.window=t;s.requests=0;s.actions=0;}if(++s.requests>55)throw new GameError('Slow down your requests.',429);
-        const data=await body(req);if(route==='/api/input'){s.room.input(p,data);json(res,200,{ok:true});return;}
+      if(req.method==='POST'&&['/api/input','/api/action','/api/chat','/api/start','/api/retry','/api/leave','/api/room-settings','/api/monitor','/api/host-map','/api/teleport'].includes(route)){
+        const {session:s}=authorization(req),t=now();if(t-s.window>=1000){s.window=t;s.requests=0;s.actions=0;}if(++s.requests>55)throw new GameError('Slow down your requests.',429);
+        const data=await body(req),p=s.room.players.get(s.playerId);if(!sessions.has(s.token)||!p)throw new GameError('You are no longer in this room.',401);
+        if(route==='/api/input'){s.room.input(p,data);json(res,200,{ok:true});return;}
         if(++s.actions>8)throw new GameError('Give your last action a moment.',429);
         if(route==='/api/action'){json(res,200,{ok:s.room.action(p,data.action,data.epoch,data.life)});return;}
         if(route==='/api/chat')s.room.chat(p,data.kind,data.index,t,data.to);
+        if(route==='/api/room-settings'){const old=s.room,next=changeRoomSettings(old,p.id,data);if(next!==old){rooms.set(next.code,next);for(const member of sessions.values())if(member.room===old)member.room=next;}json(res,200,{ok:true,snapshot:next.snapshot(p.id)});return;}
+        if(route==='/api/monitor'){setMonitor(s.room,p.id,data);json(res,200,{ok:true,snapshot:s.room.snapshot(p.id)});return;}
+        if(route==='/api/host-map'){json(res,200,hostMap(s.room,p.id,data.key));return;}
+        if(route==='/api/teleport'){teleportPlayer(s.room,p.id,data);json(res,200,{ok:true});return;}
         if(route==='/api/start')s.room.start(p.id);
         if(route==='/api/retry')s.room.retry(p.id);
         if(route==='/api/leave')leave(s.token);
