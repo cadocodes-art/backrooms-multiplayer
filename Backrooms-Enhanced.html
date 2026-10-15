@@ -101,6 +101,9 @@ THE SOFTWARE.
 
 .online-count-box{display:flex;align-items:center;gap:9px;flex-shrink:0;padding:10px 13px;border:1px solid #bac5a348;background:#152119b8;color:#bdc7ab;font:11px/1.4 'Courier New',monospace;letter-spacing:.2px;text-transform:uppercase}.online-count-box>i{width:6px;height:6px;border-radius:50%;background:#949b83;flex-shrink:0}.online-count-box.is-live>i{background:#b6df9d;box-shadow:0 0 9px #a8dc8a66}.online-count-box.is-live{color:#e1edcc}@media(max-width:600px){.masthead{flex-wrap:wrap;gap:14px}.online-count-box{font-size:9px;padding:7px 9px}}
 
+/* Direct multiplayer entry stays visible beside solo play. */
+.menu-global{background:#b6d8b4;border-color:#b6d8b4}.menu-global:hover{background:#d6f0d1}.menu-tools{display:flex;align-items:center;gap:26px;margin-top:9px}.start-row{row-gap:12px}@media(max-width:800px),(max-height:700px){#menu{overflow-y:auto}.intro{position:relative;left:auto;top:auto;margin-top:44px}.menu-footer{position:relative;left:auto;right:auto;bottom:auto;margin-top:32px}}@media(max-height:480px){.intro{margin-top:18px}.menu-tools{margin-top:3px}}
+
 </style>
 </head>
 <body>
@@ -113,7 +116,8 @@ THE SOFTWARE.
       <div class="eyebrow"><span class="pulse"></span> A PLACE YOU WERE NEVER MEANT TO FIND</div>
       <h1>THE<br>ROOMS</h1>
       <p class="description">The lights are still on.<br>Something else is still here.</p>
-      <div class="start-row"><button id="start" class="primary">ENTER THE ROOMS <span>↗</span></button><button id="avatar-open" class="primary collapse-test">CHANGE AVATAR <span>↗</span></button><button id="settings-open" class="text-button">SETTINGS</button></div>
+      <div class="start-row"><button id="start" class="primary">ENTER THE ROOMS <span>↗</span></button><button id="mp-global-menu" class="primary menu-global" aria-label="Join global room. Play online with up to 16 explorers.">JOIN GLOBAL ROOM <span>↗</span></button></div>
+      <div class="menu-tools"><button id="avatar-open" class="text-button">CHANGE AVATAR</button><button id="settings-open" class="text-button">SETTINGS</button></div>
       <p id="avatar-summary" class="mono" role="status"></p>
       <p class="audio-note"><span>◖◗</span> Headphones recommended · Sound begins when you enter</p>
     </section>
@@ -1311,10 +1315,17 @@ async function mpOpen(){
   if(!['http:','https:'].includes(location.protocol)){$('mp-connect').hidden=true;$('mp-offline').hidden=false;mpNotice('The downloaded edition plays solo. Open the multiplayer edition to join people.');return;}
   if(mp.active){mpUpdateRoom();mpNotice('The world keeps running while this menu is open.');$('mp-close').focus();return;}
   mpNotice('Checking multiplayer connection…');mpSetBusy(true);
-  try{const health=await mpRequest('/api/health');if(health.version!==MP.version)throw Error('Refresh the game to update multiplayer.');$('mp-global-count').textContent=health.globalMaxPlayers?health.globalPlayers+' / '+health.globalMaxPlayers+' EXPLORERS · START AT LEVEL 1':'Refresh after the server update to use the global room.';mpNotice('Join the global room, create a room, or join a friend.');if(mp.dialog)$('mp-name').focus();}catch{mpNotice('This page is not connected to a multiplayer server. Open the game through the multiplayer launcher.');}finally{mpSetBusy(false);}
+  try{const health=await mpRequest('/api/health');if(health.version!==MP.version)throw Error('Refresh the game to update multiplayer.');$('mp-global-count').textContent=health.globalMaxPlayers?health.globalPlayers+' / '+health.globalMaxPlayers+' EXPLORERS · START AT LEVEL 1':'Refresh after the server update to use the global room.';mpNotice('Join the global room, create a room, or join a friend.');if(mp.dialog)$('mp-name').focus();return true;}catch{mpNotice('Could not reach multiplayer. The server may be waking up—try again shortly.');return false;}finally{mpSetBusy(false);}
 }
-function mpClose(){mp.dialog=false;$('mp-dialog').hidden=true;if(mp.active){if(mp.snapshot?.phase==='lobby'){mpPause();}else{mp.menu=false;setScreen('hud');lockPointer();}}else $('resume').focus();}
-function mpSetBusy(on){mp.busy=on;for(const id of ['mp-create','mp-join','mp-quick','mp-global'])$(id).disabled=on;}
+async function mpJoinGlobalFromMenu(){
+  if(mp.busy||mp.active||state!=='title')return;
+  // Unlock sound during the click, before network requests consume the user gesture.
+  if(['http:','https:'].includes(location.protocol))audio.start().then(()=>{if(state==='title'&&!mp.active)audio.pause();}).catch(()=>{});
+  const ready=await mpOpen();if(ready&&mp.dialog&&state==='title'&&!mp.active)await mpJoin('global');
+  if(mp.dialog&&!mp.active)($('mp-offline').hidden?$('mp-global'):$('mp-close')).focus();
+}
+function mpClose(){mp.dialog=false;$('mp-dialog').hidden=true;if(mp.active){if(mp.snapshot?.phase==='lobby'){mpPause();}else{mp.menu=false;setScreen('hud');lockPointer();}}else if(state==='title'){audio.pause();$('mp-global-menu').focus();}else $('resume').focus();}
+function mpSetBusy(on){mp.busy=on;for(const id of ['mp-create','mp-join','mp-quick','mp-global','mp-global-menu'])$(id).disabled=on;}
 async function mpJoin(kind){
   if(mp.busy||mp.active)return;mpSetBusy(true);mpNotice('Connecting…');
   const data={version:MP.version,name:MP.cleanName($('mp-name').value),avatar:avatarEditor.profile.avatar,level:Number($('mp-level').value),publicRoom:$('mp-public').checked,code:$('mp-code').value};
@@ -1532,6 +1543,7 @@ function mpUpdateHud(){
   if(s.monitor)$('mp-live-status').textContent='OBSERVING · Your explorer is safe';else if(!s.global)$('mp-live-status').textContent+=' · '+(s.roomSettings?.roomSpeed||1)+'× SPEED'+(s.roomSettings?.deathLink?' · DEATH LINK':'')+(s.roomSettings?.monsterEnabled===false?' · MONSTER OFF':'')+(s.roomSettings?.infiniteStamina?' · ∞ STAMINA':'');if(mp.dialog)mpUpdateRoom();
 }
 function bindMultiplayer(){
+  $('mp-global-menu').onclick=mpJoinGlobalFromMenu;
   mpStartPresence();window.addEventListener('pagehide',mpStopPresence);window.addEventListener('pageshow',mpStartPresence);document.addEventListener('visibilitychange',()=>{if(!document.hidden)mpRefreshPresence();});
   mpBindHostTools();
   $('mp-room-settings-open').onclick=$('mp-lobby-settings').onclick=mpOpenRoomSettings;$('mp-room-settings-close').onclick=$('mp-room-settings-back').onclick=mpCloseRoomSettings;$('mp-room-settings-apply').onclick=mpSaveRoomSettings;$('mp-independent-progress').onchange=()=>{$('mp-room-settings-status').textContent='';mpUpdateRoomSettings();};
