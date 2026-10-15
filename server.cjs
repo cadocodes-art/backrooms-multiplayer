@@ -96,7 +96,7 @@ function createServer({maxRooms=32,maxPresence=5000,now=()=>Date.now()}={}){
 }
 if(require.main===module){
   const {server}=createServer(),port=Number(process.env.PORT)||8787,host=process.env.HOST||'0.0.0.0';
-  server.listen(port,host,()=>{console.log('Backrooms multiplayer is running.');console.log('On this computer: http://localhost:'+port);console.log('Keep this window open while playing. Press Ctrl+C to stop.');});
+  server.listen(port,host,()=>{console.log('The Rooms multiplayer is running.');console.log('On this computer: http://localhost:'+port);console.log('Keep this window open while playing. Press Ctrl+C to stop.');});
   server.on('error',e=>{console.error(e.code==='EADDRINUSE'?'Port '+port+' is already in use. The multiplayer server may already be running.':e.message);process.exitCode=1;});
   for(const signal of ['SIGINT','SIGTERM'])process.on(signal,()=>server.shutdown().then(()=>process.exit(0)));
 }
