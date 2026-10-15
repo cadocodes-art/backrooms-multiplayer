@@ -1,6 +1,6 @@
 'use strict';
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),zlib=require('node:zlib');
-const {Room,GlobalRoom,changeRoomSettings,setMonitor,hostMap,teleportPlayer,GameError,protocol}=require('./engine.cjs');
+const {IndependentRoom,GlobalRoom,changeRoomSettings,setMonitor,hostMap,teleportPlayer,GameError,protocol}=require('./engine.cjs');
 function createServer({maxRooms=32,now=()=>Date.now()}={}){
   const rooms=new Map(),sessions=new Map(),ipLimits=new Map();
   const html=fs.readFileSync(path.join(__dirname,'Backrooms-Enhanced.html'));
@@ -32,7 +32,7 @@ function createServer({maxRooms=32,now=()=>Date.now()}={}){
         else if(route==='/api/join'){const code=String(data.code||'').trim().toUpperCase();if(!/^[A-HJ-NP-Z2-9]{6}$/.test(code))throw new GameError('Enter the six-character room code.');room=rooms.get(code);if(!room)throw new GameError('Room not found. Check the code or ask your friend to create a room.',404);}
         else{
           if(route==='/api/quick')room=[...rooms.values()].find(r=>!r.global&&r.publicRoom&&r.level===data.level&&r.phase==='lobby'&&r.players.size<r.maxPlayers);
-          if(!room){if(rooms.size-(rooms.has('GLOBAL')?1:0)>=maxRooms)throw new GameError('The server is full. Try again shortly.',503);room=new Room(roomCode(),{level:data.level,publicRoom:route==='/api/quick'||data.publicRoom===true});rooms.set(room.code,room);}
+          if(!room){if(rooms.size-(rooms.has('GLOBAL')?1:0)>=maxRooms)throw new GameError('The server is full. Try again shortly.',503);room=new IndependentRoom(roomCode(),{level:data.level,publicRoom:route==='/api/quick'||data.publicRoom===true});rooms.set(room.code,room);}
         }
         json(res,201,join(room,data.name,data.avatar));return;
       }
