@@ -97,6 +97,8 @@ THE SOFTWARE.
 /* Host controls */
 .mp-room-setting select{min-width:105px;max-width:135px}.mp-host-tools{border-top:1px solid #a9bc9860;padding-top:12px;margin-top:20px}.mp-host-tools>.primary{width:100%;font-size:11px}.mp-map-panel{width:min(740px,100%)}#mp-map-canvas{display:block;width:min(100%,580px);height:auto;aspect-ratio:1;margin:16px auto;background:#0b1512;border:1px solid #8dba9650;touch-action:none;cursor:crosshair}#mp-map-canvas:focus{outline:2px solid #d8e7a2}#mp-map-status{min-height:30px;font-size:12px;color:#dfdcac}#mp-monitor-hud{position:fixed;z-index:9;top:76px;left:50%;transform:translateX(-50%);max-width:94vw;width:max-content;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;padding:12px;background:#102d2bf0;border:1px solid #8fdcc5;box-shadow:0 5px 30px #0008;font:11px 'Courier New',monospace;color:#d8fff0}#mp-monitor-hud span{flex-basis:100%;text-align:center;font-size:10px}#mp-monitor-hud button,#mp-monitor-hud select{min-height:40px;border:1px solid #a2c2ac70;color:#deffe4;background:#203c31;padding:6px 12px;font:11px 'Courier New',monospace}#mp-monitor-hud small{flex-basis:100%;text-align:center}#mp-fly-up,#mp-fly-down{touch-action:none;user-select:none}@media(max-height:500px){#mp-monitor-hud{top:12px;max-width:62vw;padding:5px;gap:4px}#mp-monitor-hud span{display:none}}
 
+.mp-role-section{border-top:1px solid #a9bc9860;padding-top:16px;margin-top:18px}.mp-role-section h3{font-size:18px;font-weight:500}.mp-panel .mp-role-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid #a4b59c22}.mp-role-row span{overflow-wrap:anywhere;min-width:0}.mp-role-row select{width:115px;flex-shrink:0;margin:0}.mp-panel select:disabled,.mp-panel input:disabled{opacity:.55}#mp-role-status{min-height:20px;color:#dce7b5}
+
 </style>
 </head>
 <body>
@@ -148,7 +150,7 @@ THE SOFTWARE.
     <div id="mp-connect"><div class="mp-fields"><label>Your name<input id="mp-name" maxlength="18" value="Explorer" autocomplete="off"></label><label>Separate room starting level<select id="mp-level"><option value="1">1 · The Backrooms</option><option value="2">2 · The Haunted House</option><option value="3">3 · The Sewers</option><option value="4">4 · The School</option><option value="5">5 · Reality Collapse</option></select></label></div><div class="mp-global-card"><div><span class="eyebrow">ONE SHARED WORLD</span><h3>The global room.</h3><p id="mp-global-count" class="mono">UP TO 16 EXPLORERS</p><p>Start at the Backrooms spawn. Your own timer, your own progress. Meet other explorers on each level. No code or host needed.</p></div><button id="mp-global" class="primary">JOIN GLOBAL ROOM <span>↗</span></button></div><p class="mp-small">SEPARATE ROOMS · UP TO 4 PLAYERS<br>Create a fresh run at your chosen level, find a public room, or join a friend by code.</p><label class="mp-check"><input id="mp-public" type="checkbox"> Let other players find my room</label><div class="mp-buttons"><button id="mp-create" class="primary">CREATE ROOM</button><button id="mp-quick" class="primary collapse-test">FIND PLAYERS</button></div><div class="mp-join-row"><label>Friend's room code<input id="mp-code" maxlength="6" placeholder="ABC234" autocomplete="off" autocapitalize="characters" spellcheck="false"></label><button id="mp-join" class="primary collapse-test">JOIN ROOM</button></div></div>
     <div id="mp-room" hidden><div class="mp-code-line"><strong id="mp-room-code"></strong><button id="mp-copy" class="text-button">COPY CODE</button></div><p id="mp-room-detail" class="mp-small"></p><ul id="mp-roster"></ul><p id="mp-room-rules" class="mp-small">Shared tools and objectives. If you are caught, choose Restart or Exit Room. Restart returns you to this room’s current checkpoint.</p><div class="mp-buttons"><button id="mp-lobby-settings" class="text-button">ROOM SETTINGS</button><button id="mp-start-room" class="primary">START TOGETHER</button><button id="mp-leave" class="text-button">LEAVE ROOM</button></div></div>
   </section></div>
-  <div id="mp-room-settings" class="mp-backdrop" hidden><section class="mp-panel" role="dialog" aria-modal="true" aria-labelledby="mp-room-settings-title"><div class="mp-heading"><span class="eyebrow">YOUR ROOM / YOUR RULES</span><button id="mp-room-settings-close" class="icon-button" aria-label="Close room settings">×</button></div><h2 id="mp-room-settings-title">Room settings.</h2><p id="mp-room-settings-owner"></p><label class="mp-room-setting"><span><b>Independent progress</b><small>On by default. Each explorer has their own timer, level progression and checkpoints. Turn off to advance through the levels together.</small></span><input id="mp-independent-progress" type="checkbox" aria-describedby="mp-room-settings-impact"></label><label class="mp-room-setting"><span><b>Room speed</b><small>Slow down or speed up everyone, the monster, timers and level events together.</small></span><select id="mp-room-speed" aria-label="Room speed"><option value="0.25">¼ speed</option><option value="0.5">½ speed</option><option value="0.75">¾ speed</option><option value="1">Normal</option><option value="1.5">1½ speed</option><option value="2">Double</option></select></label><label class="mp-room-setting"><span><b>Death Link</b><small>One explorer dies, everyone still playing dies—even on other levels. Observers are exempt.</small></span><input id="mp-death-link" type="checkbox"></label><p id="mp-room-settings-impact" class="mp-small"></p><div class="mp-host-tools"><label class="mp-room-setting"><span><b>Monitor Mode · host only</b><small>Fly through walls and observe any level. Your explorer is safe while observing. Turning it off returns you to your own checkpoint. Applies immediately.</small></span><input id="mp-monitor-toggle" type="checkbox"></label><button id="mp-map-open" class="primary collapse-test">DRAG &amp; DROP PLAYERS ↗</button><p class="mp-small">Host tools become available after starting the room.</p></div><p id="mp-room-settings-status" role="status" aria-live="polite"></p><div class="mp-buttons"><button id="mp-room-settings-apply" class="primary">SAVE SETTINGS</button><button id="mp-room-settings-back" class="text-button">BACK</button></div></section></div>
+  <div id="mp-room-settings" class="mp-backdrop" hidden><section class="mp-panel" role="dialog" aria-modal="true" aria-labelledby="mp-room-settings-title"><div class="mp-heading"><span class="eyebrow">YOUR ROOM / YOUR RULES</span><button id="mp-room-settings-close" class="icon-button" aria-label="Close room settings">×</button></div><h2 id="mp-room-settings-title">Room settings.</h2><p id="mp-room-settings-owner"></p><label class="mp-room-setting"><span><b>Independent progress</b><small>On by default. Each explorer has their own timer, level progression and checkpoints. Turn off to advance through the levels together.</small></span><input id="mp-independent-progress" type="checkbox" aria-describedby="mp-room-settings-impact"></label><label class="mp-room-setting"><span><b>Room speed</b><small>Slow down or speed up everyone, the monster, timers and level events together.</small></span><select id="mp-room-speed" aria-label="Room speed"><option value="0.25">¼ speed</option><option value="0.5">½ speed</option><option value="0.75">¾ speed</option><option value="1">Normal</option><option value="1.5">1½ speed</option><option value="2">Double</option></select></label><label class="mp-room-setting"><span><b>Monster enabled</b><small>Turn off creatures and the final chase threat. Timers and objectives keep running. Turning it back on gives everyone a brief head start.</small></span><input id="mp-monster-enabled" type="checkbox"></label><label class="mp-room-setting"><span><b>Monster speed</b><small>Change only the monster’s movement and final chase speed. This multiplies with Room speed.</small></span><select id="mp-monster-speed" aria-label="Monster speed"><option value="0.25">¼ speed</option><option value="0.5">½ speed</option><option value="0.75">¾ speed</option><option value="1">Normal</option><option value="1.5">1½ speed</option><option value="2">Double</option><option value="3">Triple</option></select></label><label class="mp-room-setting"><span><b>Infinite stamina</b><small>Everyone can sprint endlessly. Switch off to return to normal stamina use.</small></span><input id="mp-infinite-stamina" type="checkbox"></label><label class="mp-room-setting"><span><b>Death Link</b><small>One explorer dies, everyone still playing dies—even on other levels. Observers are exempt.</small></span><input id="mp-death-link" type="checkbox"></label><p id="mp-room-settings-impact" class="mp-small"></p><div class="mp-role-section"><h3>Players &amp; roles</h3><p class="mp-small">Multiple hosts can change settings and use host tools. Any host can assign roles. Keep at least one host. Role changes apply immediately.</p><div id="mp-role-list"></div><p id="mp-role-status" role="status" aria-live="polite"></p></div><div class="mp-host-tools"><label class="mp-room-setting"><span><b>Monitor Mode · hosts only</b><small>Fly through walls and observe any level. Your explorer is safe while observing. Turning it off returns you to your own checkpoint. Applies immediately.</small></span><input id="mp-monitor-toggle" type="checkbox"></label><button id="mp-map-open" class="primary collapse-test">DRAG &amp; DROP PLAYERS ↗</button><p class="mp-small">Host tools become available after starting the room.</p></div><p id="mp-room-settings-status" role="status" aria-live="polite"></p><div class="mp-buttons"><button id="mp-room-settings-apply" class="primary">SAVE SETTINGS</button><button id="mp-room-settings-back" class="text-button">BACK</button></div></section></div>
 <div id="mp-host-map" class="mp-backdrop" hidden><section class="mp-panel mp-map-panel" role="dialog" aria-modal="true" aria-labelledby="mp-map-title"><div class="mp-heading"><div><span class="eyebrow">HOST CONTROL / LIVE FLOOR PLAN</span><h2 id="mp-map-title">Move an explorer.</h2></div><button id="mp-map-close" class="icon-button" aria-label="Close player map">×</button></div><div class="mp-grid"><label>Player<select id="mp-map-player"></select></label><label>Destination level<select id="mp-map-level"><option value="1">1 · The Backrooms</option><option value="2">2 · The Haunted House</option><option value="3">3 · The Sewers</option><option value="4">4 · The School</option><option value="5">5 · Reality Collapse</option><option value="run">5 · Final chase</option></select></label></div><p class="mp-small">Drag a player's dot onto clear floor, or select a player and tap their destination. With a keyboard, focus the map, move the target with arrow keys and press Enter. Moving between levels resets that player's timer and checkpoint. The room stays live.</p><canvas id="mp-map-canvas" width="640" height="640" tabindex="0" aria-label="Live room map. Select a player, then use arrow keys and Enter to move them."></canvas><p id="mp-map-status" role="status" aria-live="polite"></p></section></div>
   <div id="mp-monitor-hud" hidden><b>MONITOR MODE</b><span>WASD fly · Q down / E up · V mouse cursor · 1–5 levels</span><select id="mp-monitor-level" aria-label="Monitor level"><option value="1">1 · Backrooms</option><option value="2">2 · Haunted House</option><option value="3">3 · Sewers</option><option value="4">4 · School</option><option value="5">5 · Reality Collapse</option><option value="run">Final chase</option></select><button id="mp-fly-up" aria-label="Fly up">↑</button><button id="mp-fly-down" aria-label="Fly down">↓</button><button id="mp-monitor-cursor" aria-pressed="false">FREE MOUSE · V</button><button id="mp-monitor-stop">RETURN TO PLAY</button><small id="mp-monitor-status" role="status"></small></div>
     <div id="mp-composer" class="mp-backdrop" hidden><section class="mp-panel mp-composer-panel" role="dialog" aria-modal="true" aria-labelledby="mp-composer-title"><div class="mp-heading"><h2 id="mp-composer-title">Send a signal.</h2><button id="mp-composer-close" class="icon-button" aria-label="Close messages">×</button></div><p id="mp-chat-status" role="status"></p>
@@ -1205,44 +1207,70 @@ function bindAvatar(){
 const mp={active:false,busy:false,token:null,id:null,snapshot:null,epoch:-1,life:-1,seq:0,peers:new Map(),lastEvent:0,lastSnapshot:0,rtt:100,menu:false,composer:false,dialog:false,connected:false,inputTimer:null,abort:null,feed:[],spectate:null,generation:0};
 const MP=BackroomsNetProtocol;
 mp.recipientIds=new Set();mp.recipientRosterKey='';
-mp.roomSettingsOpen=false;mp.roomSettingsBusy=false;
+mp.roomSettingsOpen=false;mp.roomSettingsBusy=false;mp.roleBusy=false;
+const mpSettingFields={independentProgress:['mp-independent-progress',true],roomSpeed:['mp-room-speed',1],deathLink:['mp-death-link',false],monsterEnabled:['mp-monster-enabled',true],monsterSpeed:['mp-monster-speed',1],infiniteStamina:['mp-infinite-stamina',false]};
+function mpIsHost(s=mp.snapshot,id=mp.id){return !!s&&!s.global&&(s.hostIds||[s.hostId]).includes(id);}
+function mpCurrentSettings(){return Object.fromEntries(Object.entries(mpSettingFields).map(([key,[,fallback]])=>[key,mp.snapshot?.roomSettings?.[key]??fallback]));}
+function mpReadSettings(){return Object.fromEntries(Object.entries(mpSettingFields).map(([key,[id,fallback]])=>[key,typeof fallback==='boolean'?$(id).checked:Number($(id).value)]));}
+function mpSyncSettings(){for(const [key,[id,fallback]]of Object.entries(mpSettingFields)){const value=mpCurrentSettings()[key];if(typeof fallback==='boolean')$(id).checked=value;else $(id).value=String(value);}}
 function mpHideRoomSettings(){mpHideHostMap();mp.roomSettingsOpen=false;$('mp-room-settings').hidden=true;}
 function mpOpenRoomSettings(){
   const s=mp.snapshot;if(!mp.active||s?.global||!s||['won','lost','transition'].includes(state))return;
   mp.roomSettingsFrom=mp.dialog?'lobby':'pause';mp.menu=true;mp.dialog=false;$('mp-dialog').hidden=true;mpCloseComposer();
-  mp.roomSettingsOpen=true;mp.roomSettingsVersion=s.settingsVersion||0;$('mp-independent-progress').checked=!!s.roomSettings?.independentProgress;$('mp-room-speed').value=String(s.roomSettings?.roomSpeed||1);$('mp-death-link').checked=!!s.roomSettings?.deathLink;
-  $('mp-room-settings-status').textContent='';$('mp-room-settings').hidden=false;clearInput();releasePointer();mpUpdateRoomSettings();$('mp-room-settings-close').focus();
+  mp.roomSettingsOpen=true;mp.roomSettingsVersion=s.settingsVersion||0;mpSyncSettings();mp.roleRosterKey='';
+  $('mp-room-settings-status').textContent='';$('mp-role-status').textContent='';$('mp-room-settings').hidden=false;clearInput();releasePointer();mpUpdateRoomSettings();$('mp-room-settings-close').focus();
 }
 function mpUpdateRoomSettings(){
   const s=mp.snapshot;if(!mp.roomSettingsOpen||!s)return;
-  const host=mp.id===s.hostId,version=s.settingsVersion||0,checkbox=$('mp-independent-progress');
-  if(version!==mp.roomSettingsVersion){mp.roomSettingsVersion=version;checkbox.checked=!!s.roomSettings?.independentProgress;$('mp-room-speed').value=String(s.roomSettings?.roomSpeed||1);$('mp-death-link').checked=!!s.roomSettings?.deathLink;$('mp-room-settings-status').textContent='Room settings updated.';}
-  if(!host){checkbox.checked=!!s.roomSettings?.independentProgress;$('mp-room-speed').value=String(s.roomSettings?.roomSpeed||1);$('mp-death-link').checked=!!s.roomSettings?.deathLink;}
-  const modeChanged=checkbox.checked!==!!s.roomSettings?.independentProgress,changed=modeChanged||Number($('mp-room-speed').value)!==(s.roomSettings?.roomSpeed||1)||$('mp-death-link').checked!==!!s.roomSettings?.deathLink,owner=(s.roster||s.players).find(p=>p.id===s.hostId);
-  $('mp-room-settings-owner').textContent=host?'You are the host. These settings apply to everyone in this room.':'Only '+(owner?.name||'the host')+' can change these settings. You can view them here.';
-  checkbox.disabled=$('mp-room-speed').disabled=$('mp-death-link').disabled=!host||mp.roomSettingsBusy;
+  const host=mpIsHost(s),version=s.settingsVersion||0;
+  if(version!==mp.roomSettingsVersion){mp.roomSettingsVersion=version;mpSyncSettings();$('mp-room-settings-status').textContent='Room settings updated.';}
+  if(!host)mpSyncSettings();
+  const desired=mpReadSettings(),current=mpCurrentSettings(),modeChanged=desired.independentProgress!==current.independentProgress,changed=Object.keys(current).some(key=>desired[key]!==current[key]);
+  $('mp-room-settings-owner').textContent=host?'You are a host. These settings apply to everyone in this room.':'Only room hosts can change these settings. You can view them here.';
+  for(const [id]of Object.values(mpSettingFields))$(id).disabled=!host||mp.roomSettingsBusy;
+  $('mp-monster-speed').disabled=!host||mp.roomSettingsBusy||!desired.monsterEnabled;
   $('mp-monitor-toggle').checked=!!s.monitor;$('mp-monitor-toggle').disabled=!host||s.phase==='lobby'||mp.monitorBusy;$('mp-map-open').disabled=!host||s.phase==='lobby';if(mp.hostMapOpen&&!host)mpCloseHostMap();
-  $('mp-room-settings-impact').textContent=s.phase==='lobby'?'Independent progress is '+(checkbox.checked?'ON: everyone has their own timer and advances at their own pace.':'OFF: the room shares a timer and advances through levels together.')+' Players on the same level share tools and objectives.':(modeChanged?'Applying this change restarts everyone at your current checkpoint, resetting timers and level objectives. The room code, players, names and avatars stay the same.':'Independent progress is '+(checkbox.checked?'ON. Each explorer follows their own timer and checkpoints.':'OFF. The room advances through levels together.')+' Changing this option during a run restarts everyone at the host’s current checkpoint.');
+  $('mp-room-settings-impact').textContent=s.phase==='lobby'?'Independent progress is '+(desired.independentProgress?'ON: everyone has their own timer and advances at their own pace.':'OFF: the room shares a timer and advances through levels together.')+' Players on the same level share tools and objectives.':(modeChanged?'Applying this change restarts everyone at your current checkpoint, resetting timers and level objectives. The room code, players, names and avatars stay the same.':'Independent progress is '+(desired.independentProgress?'ON. Each explorer follows their own timer and checkpoints.':'OFF. The room advances through levels together.')+' Changing this option during a run restarts everyone at the checkpoint of the host making the change.');
   $('mp-room-settings-apply').hidden=!host;$('mp-room-settings-apply').disabled=!changed||mp.roomSettingsBusy;
-  $('mp-room-settings-apply').textContent=mp.roomSettingsBusy?'APPLYING…':s.phase!=='lobby'&&modeChanged?'APPLY & RESTART ROOM':'SAVE SETTINGS';if(!modeChanged)$('mp-room-settings-impact').textContent+=' Speed and Death Link changes apply immediately without a restart.';
+  $('mp-room-settings-apply').textContent=mp.roomSettingsBusy?'APPLYING…':s.phase!=='lobby'&&modeChanged?'APPLY & RESTART ROOM':'SAVE SETTINGS';if(!modeChanged)$('mp-room-settings-impact').textContent+=' Speed, monster, stamina and Death Link changes apply immediately without a restart.';
+  mpRenderRoles();
 }
 function mpCloseRoomSettings(){
   if(!mp.roomSettingsOpen)return;const from=mp.roomSettingsFrom;mpHideRoomSettings();
   if(!mp.active)return;if(from==='lobby'){mpOpen();$('mp-lobby-settings').focus();}else{mpPause();$('mp-room-settings-open').focus();}
 }
 async function mpSaveRoomSettings(){
-  if(!mp.roomSettingsOpen||mp.roomSettingsBusy||mp.snapshot?.global||mp.id!==mp.snapshot?.hostId)return;
-  const desired=$('mp-independent-progress').checked;const speed=Number($('mp-room-speed').value),deathLink=$('mp-death-link').checked;if(desired===!!mp.snapshot.roomSettings?.independentProgress&&speed===(mp.snapshot.roomSettings?.roomSpeed||1)&&deathLink===!!mp.snapshot.roomSettings?.deathLink)return;
+  if(!mp.roomSettingsOpen||mp.roomSettingsBusy||!mpIsHost())return;
+  const desired=mpReadSettings(),current=mpCurrentSettings();if(Object.keys(current).every(key=>desired[key]===current[key]))return;
   const generation=mp.generation;mp.roomSettingsBusy=true;$('mp-room-settings-status').textContent='Applying room settings…';mpUpdateRoomSettings();
   try{
-    const out=await mpRequest('/api/room-settings',{independentProgress:desired,roomSpeed:speed,deathLink,settingsVersion:mp.roomSettingsVersion});
+    const out=await mpRequest('/api/room-settings',{...desired,settingsVersion:mp.roomSettingsVersion});
     if(!mp.active||mp.generation!==generation)return;
-    // The live stream may have already delivered a newer view of this change.
     if(out.snapshot.settingsVersion>(mp.snapshot.settingsVersion||0))mpApplySnapshot(out.snapshot);
     if(mp.roomSettingsOpen){$('mp-room-settings-status').textContent='Settings saved.';mpCloseRoomSettings();}
   }catch(e){if(mp.active&&mp.generation===generation)$('mp-room-settings-status').textContent=e.message;}
   finally{mp.roomSettingsBusy=false;mpUpdateRoomSettings();}
 }
+function mpRenderRoles(){
+  const s=mp.snapshot,roster=s.roster||s.players,hosts=roster.filter(p=>mpIsHost(s,p.id)),key=JSON.stringify([roster.map(p=>[p.id,p.name]),hosts.map(p=>p.id),s.roleVersion,mp.roleBusy,mpIsHost(s)]);
+  if(key===mp.roleRosterKey)return;mp.roleRosterKey=key;const focused=document.activeElement?.id,controls=new Map();$('mp-role-list').replaceChildren();
+  for(const p of roster){
+    const row=document.createElement('label'),name=document.createElement('span'),select=document.createElement('select');row.className='mp-role-row';name.textContent=p.name+(p.id===mp.id?' (you)':'');
+    select.id='mp-role-'+p.id;select.setAttribute('aria-label','Role for '+p.name);select.replaceChildren();
+    for(const [value,text]of [['host','Host'],['player','Player']]){const option=document.createElement('option');option.value=value;option.textContent=text;select.append(option);}
+    select.value=mpIsHost(s,p.id)?'host':'player';select.disabled=!mpIsHost(s)||mp.roleBusy||(hosts.length===1&&mpIsHost(s,p.id));
+    if(hosts.length===1&&mpIsHost(s,p.id))select.title='Make another player a host before demoting this host.';
+    select.onchange=()=>mpChangeRole(p.id,select.value);row.append(name,select);$('mp-role-list').append(row);controls.set(select.id,select);
+  }
+  if(focused?.startsWith('mp-role-')){const control=controls.get(focused);if(control&&!control.disabled)control.focus();else $('mp-room-settings-close').focus();}
+}
+async function mpChangeRole(playerId,role){
+  if(!mp.active||mp.roleBusy||!mpIsHost())return;const generation=mp.generation;mp.roleBusy=true;mpRenderRoles();$('mp-role-status').textContent='Updating player role…';
+  try{const out=await mpRequest('/api/player-role',{playerId,role,roleVersion:mp.snapshot.roleVersion||0});if(!mp.active||generation!==mp.generation)return;mpApplySnapshot(out.snapshot);$('mp-role-status').textContent='Player role updated.';}
+  catch(e){if(mp.active&&generation===mp.generation)$('mp-role-status').textContent=e.message;}
+  finally{mp.roleBusy=false;if(mp.active&&generation===mp.generation)mpRenderRoles();}
+}
+
 function mpNotice(text){$('mp-status').textContent=text;}
 function mpCanControl(){const p=mp.snapshot?.players.find(p=>p.id===mp.id);return mp.active&&mp.connected&&mp.snapshot?.phase==='playing'&&p?.alive&&!p.escaped&&!p.crawling&&!mp.menu&&!mp.composer&&!mp.dialog&&!mp.roomSettingsOpen&&$('settings').hidden&&performance.now()-mp.lastSnapshot<2500;}
 async function mpRequest(route,data,token=mp.token){
@@ -1268,7 +1296,7 @@ async function mpJoin(kind){
     mp.active=true;mp.connected=true;mp.token=result.token;mp.id=result.playerId;mp.epoch=-1;mp.lastEvent=0;mp.generation++;mp.feed=[];mp.spectate=null;mp.menu=false;
     avatarSetName(data.name);try{await audio.start();}catch{}
     audio.setVolume(settings.volume);state='playing';setScreen('hud');document.body.classList.toggle('online',true);mpApplySnapshot(result.snapshot,true);
-    $('mp-connect').hidden=true;$('mp-room').hidden=false;mpNotice('Share the room code. The host starts when everyone is ready.');
+    $('mp-connect').hidden=true;$('mp-room').hidden=false;mpNotice('Share the room code. Any host can start when everyone is ready.');
     for(const chat of result.snapshot.messages||[])mpAddChat(chat);
     if(result.snapshot.global){mp.dialog=false;$('mp-dialog').hidden=true;if(result.snapshot.phase==='playing')lockPointer();}
     mp.inputTimer=setInterval(mpSendInput,result.snapshot.global?100:60);mpReadStream(mp.generation);
@@ -1303,7 +1331,7 @@ async function mpSendInput(){
   try{await mpRequest('/api/input',{...mpControls(),seq:++mp.seq,epoch:mp.epoch,life:mp.life});mp.rtt=mix(mp.rtt,Math.min(600,performance.now()-started),.2);}catch{if(mp.active&&generation===mp.generation&&performance.now()-mp.lastSnapshot>2500)mp.connected=false;}finally{mp.sending=false;}
 }
 function mpApplySnapshot(s,initial=false){
-  if(!mp.active||s.version!==MP.version||(s.settingsVersion||0)<(mp.snapshot?.settingsVersion||0))return;mp.snapshot=s;$('mp-room-settings-open').hidden=!!s.global;$('mp-monitor-hud').hidden=!s.monitor;$('mp-monitor-level').value=s.run?'run':String(s.level);mp.connected=true;mp.lastSnapshot=performance.now();const me=s.players.find(p=>p.id===mp.id);if(!me)return;
+  if(!mp.active||s.version!==MP.version||((s.settingsVersion||0)<(mp.snapshot?.settingsVersion||0)||(s.roleVersion||0)<(mp.snapshot?.roleVersion||0)))return;mp.snapshot=s;$('mp-room-settings-open').hidden=!!s.global;$('mp-monitor-hud').hidden=!s.monitor;$('mp-monitor-level').value=s.run?'run':String(s.level);mp.connected=true;mp.lastSnapshot=performance.now();const me=s.players.find(p=>p.id===mp.id);if(!me)return;
   if(!s.monitor)mp.monitorCursor=false;mpUpdateMonitorCursor();
   const wasEnd=!$('end').hidden,changed=mp.epoch!==s.epoch||mp.life!==me.life;
   if(mp.composer)mpUpdateRecipients();
@@ -1322,7 +1350,7 @@ function mpApplySnapshot(s,initial=false){
     $('end-kicker').textContent=won?'TRANSMISSION COMPLETE':'SIGNAL LOST';$('end-title').textContent=won?'You made it through.':"You weren't alone.";
     $('end-description').textContent=me.deathLinkCause?'Death Link: '+me.deathLinkCause+' was caught. Restart at your checkpoint or leave the room.':s.personal?(won?'You escaped all five levels. Restart to begin a fresh journey.':'Restart at this level’s checkpoint with a fresh timer. Other explorers keep playing.'):(dead?'Restart at this room’s current checkpoint. Other explorers keep playing.':'Your team made it through the final collapse.');
     $('result').textContent=(s.global?'GLOBAL ROOM':'ROOM '+s.code)+' / YOUR TIME '+formatTime(me.elapsed??s.elapsed);
-    $('retry').textContent='RESTART';$('retry').disabled=!s.personal&&!dead&&mp.id!==s.hostId;if($('retry').disabled)$('retry').textContent='WAITING FOR HOST';
+    $('retry').textContent='RESTART';$('retry').disabled=!s.personal&&!dead&&!mpIsHost(s);if($('retry').disabled)$('retry').textContent='WAITING FOR HOST';
     $('end-menu').textContent='EXIT ROOM';if(!wasEnd){$('retry').focus();audio.end(won);const generation=mp.generation,life=mp.life;setTimeout(()=>{if(mp.active&&mp.generation===generation&&mp.life===life&&['won','lost'].includes(state))audio.pause();},2300);}
   }else if(s.personal&&s.phase==='transition'){
     mpHideRoomSettings();mp.menu=mp.dialog=mp.composer=false;$('mp-dialog').hidden=$('mp-composer').hidden=true;state='transition';setScreen('transition');clearInput();$('mp-online-hud').hidden=true;
@@ -1351,16 +1379,16 @@ function mpEvent(e){
   if(e.kind==='drawer')audio.drawer({x:e.x,y:1,z:e.z});if(e.kind==='unlock')audio.unlock();if(e.kind==='hammer'||e.kind==='opener')audio.pickup();
   if(e.kind==='anchor'){audio.anchor(e.anchor,{x:e.x,y:1.6,z:e.z});collapse.notice='ANCHOR '+(e.anchor+1)+' SECURED BY YOUR TEAM';collapse.noticeTime=5;}
   if(e.kind==='warning')audio.shiftWarning();if(e.kind==='shift'){audio.realityShift();collapse.shake=.7;}
-  if(e.kind==='giant'){audio.giantStep({x:63,y:4,z:3});collapse.shake=1;}
+  if(e.kind==='giant'&&mp.snapshot?.roomSettings?.monsterEnabled!==false){audio.giantStep({x:63,y:4,z:3});collapse.shake=1;}
   if(e.kind==='caught'&&e.playerId===mp.id){clearInput();releasePointer();}
   if(e.kind==='joined'||e.kind==='left')mpNotice(e.name+(e.kind==='joined'?' joined the room.':' left the room.'));
 }
 function mpUpdateRoom(){
   const s=mp.snapshot;if(!s)return;$('mp-room-code').textContent=s.global?'GLOBAL ROOM':s.code;$('mp-copy').hidden=!!s.global;$('mp-roster').replaceChildren();
-  for(const p of s.roster||s.players){const li=document.createElement('li');li.textContent=p.name+(p.id===mp.id?' (you)':'')+(p.id===s.hostId?' · HOST':'')+(s.personal?' · LEVEL '+p.level+(p.run?' / FINAL CHASE':''):'');$('mp-roster').append(li);}
-  $('mp-lobby-settings').hidden=!!s.global;$('mp-start-room').hidden=s.global||s.phase!=='lobby';$('mp-start-room').disabled=mp.id!==s.hostId;$('mp-start-room').textContent=mp.id===s.hostId?'START TOGETHER':'WAITING FOR HOST';
+  for(const p of s.roster||s.players){const li=document.createElement('li');li.textContent=p.name+(p.id===mp.id?' (you)':'')+(mpIsHost(s,p.id)?' · HOST':'')+(s.personal?' · LEVEL '+p.level+(p.run?' / FINAL CHASE':''):'');$('mp-roster').append(li);}
+  $('mp-lobby-settings').hidden=!!s.global;$('mp-start-room').hidden=s.global||s.phase!=='lobby';$('mp-start-room').disabled=!mpIsHost(s);$('mp-start-room').textContent=mpIsHost(s)?'START TOGETHER':'WAITING FOR HOST';
   $('mp-room-detail').textContent='LEVEL '+s.level+' · '+(s.playerCount||s.players.length)+' / '+(s.maxPlayers||4)+' PLAYERS · '+(s.global?'GLOBAL · AUTOMATIC START':s.publicRoom?'PUBLIC ROOM':'INVITE ONLY');
-  $('mp-room-rules').textContent=s.global?'Up to 16 explorers, each with their own timer and progress. New arrivals begin at the fixed Backrooms spawn. Each level has its own checkpoint, including the final chase. Restart returns only you to your checkpoint and resets your timer. Meet others on the same level and share its objectives. When caught, choose Restart or Exit Room.':s.personal?'Independent progress is ON. Each explorer has their own timer and checkpoints. New arrivals begin at the room’s starting checkpoint. Tools and objectives are shared with explorers on the same level. The host can change this in Room Settings.':'Independent progress is OFF. Shared timer, levels, tools and objectives. The host can change this in Room Settings. When caught, choose Restart or Exit Room. Restart returns you to this room’s current checkpoint without resetting other players.';
+  $('mp-room-rules').textContent=s.global?'Up to 16 explorers, each with their own timer and progress. New arrivals begin at the fixed Backrooms spawn. Each level has its own checkpoint, including the final chase. Restart returns only you to your checkpoint and resets your timer. Meet others on the same level and share its objectives. When caught, choose Restart or Exit Room.':s.personal?'Independent progress is ON. Each explorer has their own timer and checkpoints. New arrivals begin at the room’s starting checkpoint. Tools and objectives are shared with explorers on the same level. Hosts can change this in Room Settings.':'Independent progress is OFF. Shared timer, levels, tools and objectives. Hosts can change this in Room Settings. When caught, choose Restart or Exit Room. Restart returns you to this room’s current checkpoint without resetting other players.';
 }
 async function mpStart(){try{await mpRequest('/api/start',{});}catch(e){mpNotice(e.message);}}
 async function mpRestart(){if(mp.restarting)return;mp.restarting=true;$('retry').disabled=true;try{await audio.start();await mpRequest('/api/retry',{});}catch(e){$('end-description').textContent=e.message;}finally{mp.restarting=false;$('retry').disabled=false;}}
@@ -1452,8 +1480,8 @@ function mpFrame(dt){
   const living=s.players.filter(p=>p.alive&&!p.escaped&&p.id!==mp.id);let pose=player;
   if((!me.alive||me.escaped)&&living.length){const target=living.find(p=>p.id===mp.spectate)||living[0];mp.spectate=target.id;pose={...player,...target,bob:0,roll:0};}
   const remote=s.monster,blend=Math.hypot(monster.x-remote.x,monster.z-remote.z)>4?1:1-Math.exp(-14*dt);monster.x=mix(monster.x,remote.x,blend);monster.z=mix(monster.z,remote.z,blend);monster.angle+=Math.atan2(Math.sin(remote.angle-monster.angle),Math.cos(remote.angle-monster.angle))*blend;monster.walk=mix(monster.walk,remote.walk,blend);monster.mode=remote.mode;
-  const distance=Math.hypot(monster.x-pose.x,monster.z-pose.z);lastSeen=distance<25&&clearLine(monster.x,monster.z,pose.x,pose.z,false);
-  threat=s.run?clamp(1-(collapseRunProgress(pose.x,pose.z)-s.front)/35,.15,.95):clamp((18-distance)/17,0,1)*(lastSeen?1:.4);if(s.phase==='lobby'||s.monitor)threat=0;
+  const monsterEnabled=s.roomSettings?.monsterEnabled!==false,distance=Math.hypot(monster.x-pose.x,monster.z-pose.z);lastSeen=monsterEnabled&&distance<25&&clearLine(monster.x,monster.z,pose.x,pose.z,false);
+  threat=s.run?clamp(1-(collapseRunProgress(pose.x,pose.z)-s.front)/35,.15,.95):clamp((18-distance)/17,0,1)*(lastSeen?1:.4);if(s.phase==='lobby'||s.monitor||!monsterEnabled)threat=0;
   if(level===5){collapse.progress=collapseRunProgress(player.x,player.z);collapse.noticeTime=Math.max(0,collapse.noticeTime-dt);collapse.shake=Math.max(0,collapse.shake-dt*.65);}
   for(const p of s.players){if(p.id===mp.id)continue;const peer=mp.peers.get(p.id)||mpMakePeer(p);peer.group.visible=!p.monitor&&p.alive&&!p.escaped&&(!s.global||Math.hypot(p.x-pose.x,p.z-pose.z)<(settings.quality==='low'?20:36));
     const blend=1-Math.exp(-14*dt);peer.group.position.lerp(new THREE.Vector3(p.x,p.y,p.z),blend);peer.group.rotation.y+=Math.atan2(Math.sin(p.yaw-peer.group.rotation.y),Math.cos(p.yaw-peer.group.rotation.y))*blend;peer.group.scale.y=p.crouch?.68:1;
@@ -1462,8 +1490,8 @@ function mpFrame(dt){
   }
   for(const id of mp.peers.keys())if(!s.players.some(p=>p.id===id))mpRemovePeer(id);
   if(mp.spectate&&(!me.alive||me.escaped)){const peer=mp.peers.get(mp.spectate);if(peer)peer.group.visible=false;}
-  if(monster.walk-mp.monsterStep>1.7*4.6){if(!s.run&&s.phase==='playing'&&distance<22)audio.step(false,false,{x:monster.x,y:.1,z:monster.z},true);mp.monsterStep=monster.walk;}
-  env.update(gameDt,worldTime,pose,monster,threat,s.phase==='lobby');if(s.phase==='playing')audio.update(gameDt,pose,monster,threat,lastSeen,canMove&&player.running,elapsed);
+  if(monster.walk-mp.monsterStep>1.7*4.6){if(monsterEnabled&&!s.run&&s.phase==='playing'&&distance<22)audio.step(false,false,{x:monster.x,y:.1,z:monster.z},true);mp.monsterStep=monster.walk;}
+  env.update(gameDt,worldTime,pose,monster,threat,s.phase==='lobby');if(!monsterEnabled)env.monster.visible=false;if(level===5){if(env.collapseGiant)env.collapseGiant.visible=monsterEnabled;if(env.collapseFront)env.collapseFront.visible=monsterEnabled&&s.run&&s.front>=0;}if(s.phase==='playing')audio.update(gameDt,pose,monster,threat,lastSeen,canMove&&player.running,elapsed);
   hudClock-=dt;if(hudClock<=0){updateHud();mpUpdateHud();hudClock=.1;}env.render();
 }
 function mpUpdateHud(){
@@ -1473,7 +1501,7 @@ function mpUpdateHud(){
   $('mp-live-status').textContent=!mp.connected||performance.now()-mp.lastSnapshot>2500?'CONNECTION INTERRUPTED — RECONNECTING':s.phase==='lobby'?'WAITING IN LOBBY':s.phase==='transition'?'TEAM CHECKPOINT REACHED — NEXT LEVEL':me.waiting?'WATCHING — YOU JOIN AT THE NEXT CHECKPOINT':me.crawling?'CRAWLING TO SAFETY':!me.alive?'CHOOSE RESTART OR EXIT ROOM':me.escaped?'YOU ARE SAFE — WAITING FOR '+remaining+' EXPLORER'+(remaining===1?'':'S'):'I · MESSAGES & FACE EMOJIS';
   if(s.global&&s.phase==='playing'&&s.exitIn!==null&&s.exitIn!==undefined)$('mp-live-status').textContent+=' · EXIT CLOSES IN '+Math.ceil(s.exitIn)+'s';
   if(s.monitor||!me.alive||me.escaped||me.crawling||s.phase!=='playing')$('interaction').hidden=true;
-  if(s.monitor)$('mp-live-status').textContent='OBSERVING · Your explorer is safe';else if(!s.global)$('mp-live-status').textContent+=' · '+(s.roomSettings?.roomSpeed||1)+'× SPEED'+(s.roomSettings?.deathLink?' · DEATH LINK':'');if(mp.dialog)mpUpdateRoom();
+  if(s.monitor)$('mp-live-status').textContent='OBSERVING · Your explorer is safe';else if(!s.global)$('mp-live-status').textContent+=' · '+(s.roomSettings?.roomSpeed||1)+'× SPEED'+(s.roomSettings?.deathLink?' · DEATH LINK':'')+(s.roomSettings?.monsterEnabled===false?' · MONSTER OFF':'')+(s.roomSettings?.infiniteStamina?' · ∞ STAMINA':'');if(mp.dialog)mpUpdateRoom();
 }
 function bindMultiplayer(){
   mpBindHostTools();
@@ -1490,7 +1518,7 @@ function bindMultiplayer(){
 }
 
 async function mpSetMonitor(enabled,level){
-  if(!mp.active||mp.monitorBusy||mp.id!==mp.snapshot?.hostId)return;mp.monitorBusy=true;const generation=mp.generation;
+  if(!mp.active||mp.monitorBusy||!mpIsHost())return;mp.monitorBusy=true;const generation=mp.generation;
   $('mp-monitor-status').textContent='';$('mp-room-settings-status').textContent='';mpUpdateRoomSettings();
   try{const out=await mpRequest('/api/monitor',{enabled,...(level===undefined?{}:{level})});if(!mp.active||mp.generation!==generation)return;mp.flyUp=mp.flyDown=false;mpApplySnapshot(out.snapshot);mpHideRoomSettings();mp.menu=mp.dialog=false;$('mp-dialog').hidden=true;setScreen('hud');clearInput();lockPointer();}
   catch(e){$('mp-monitor-status').textContent=$('mp-room-settings-status').textContent=e.message;}
@@ -1511,7 +1539,7 @@ function mpFly(dt){
 }
 function mpHideHostMap(){mp.hostMapOpen=false;mp.mapDrag=null;mp.mapAim=null;mp.mapGeneration=(mp.mapGeneration||0)+1;clearInterval(mp.mapTimer);mp.mapTimer=null;$('mp-host-map').hidden=true;}
 async function mpOpenHostMap(){
-  if(!mp.active||mp.id!==mp.snapshot?.hostId||mp.snapshot?.global||mp.snapshot.phase==='lobby')return;
+  if(!mp.active||!mpIsHost()||mp.snapshot?.global||mp.snapshot.phase==='lobby')return;
   mp.hostMapOpen=true;mp.mapData=null;mp.mapAim=null;mp.mapGeneration=(mp.mapGeneration||0)+1;$('mp-host-map').hidden=false;$('mp-room-settings').hidden=true;
   $('mp-map-level').value=mp.snapshot.personal?(mp.snapshot.run?'run':String(mp.snapshot.level)):'';$('mp-map-status').textContent='Loading the live floor plan…';clearInput();releasePointer();await mpLoadHostMap();
   if(mp.hostMapOpen){mp.mapTimer=setInterval(()=>{if(!mp.mapDrag&&!mp.mapBusy)mpLoadHostMap();},1500);$('mp-map-player').focus();}
@@ -1551,7 +1579,7 @@ async function mpDropPlayer(point){
 }
 function mpBindHostTools(){
   $('mp-monitor-cursor').onclick=mpToggleMonitorCursor;
-  for(const id of ['mp-room-speed','mp-death-link'])$(id).onchange=()=>{$('mp-room-settings-status').textContent='';mpUpdateRoomSettings();};
+  for(const id of ['mp-room-speed','mp-death-link','mp-monster-enabled','mp-monster-speed','mp-infinite-stamina'])$(id).onchange=()=>{$('mp-room-settings-status').textContent='';mpUpdateRoomSettings();};
   $('mp-monitor-toggle').onchange=()=>mpSetMonitor($('mp-monitor-toggle').checked);$('mp-monitor-stop').onclick=()=>mpSetMonitor(false);$('mp-monitor-level').onchange=()=>mpSetMonitor(true,$('mp-monitor-level').value);
   for(const [id,field]of [['mp-fly-up','flyUp'],['mp-fly-down','flyDown']]){$(id).onpointerdown=e=>{mp[field]=true;e.preventDefault();$(id).setPointerCapture(e.pointerId);};for(const event of ['pointerup','pointercancel','lostpointercapture'])$(id).addEventListener(event,()=>mp[field]=false);}
   $('mp-map-open').onclick=mpOpenHostMap;$('mp-map-close').onclick=mpCloseHostMap;$('mp-map-level').onchange=()=>{mp.mapAim=null;mp.mapData=null;mpLoadHostMap();};$('mp-map-player').onchange=()=>{mp.mapAim=null;mpDrawHostMap();};
@@ -1619,11 +1647,12 @@ function stepPlayer(dt){
   const k=input.keys,crouch=k.has('KeyC')||k.has('ControlLeft')||input.crouch;player.crouch=crouch;
   let f=(k.has('KeyW')||k.has('ArrowUp')?1:0)-(k.has('KeyS')||k.has('ArrowDown')?1:0)+input.forward,s=(k.has('KeyD')||k.has('ArrowRight')?1:0)-(k.has('KeyA')||k.has('ArrowLeft')?1:0)+input.strafe;
   const length=Math.hypot(f,s);if(length>1){f/=length;s/=length;}if(k.has('KeyQ'))player.yaw+=dt*1.6;if(k.has('KeyE')&&level<3)player.yaw-=dt*1.6;
+  const infiniteStamina=typeof mp!=='undefined'&&mp.active&&mp.snapshot?.roomSettings?.infiniteStamina;if(infiniteStamina){player.stamina=100;player.exhausted=false;}
   const wantsRun=(k.has('ShiftLeft')||k.has('ShiftRight')||input.run)&&!crouch&&length>.1;player.running=wantsRun&&player.stamina>1;
   // A depleted sprint needs a little recovery before it can restart.
   if(player.stamina<=1)player.exhausted=true;if(!wantsRun||player.stamina>25)player.exhausted=false;if(player.exhausted)player.running=false;
   const speed=(crouch?1.9:player.running?6.2:3.8)*(level===3?SEWER_WATER_SPEED:1),dx=(-Math.sin(player.yaw)*f+Math.cos(player.yaw)*s)*speed*dt,dz=(-Math.cos(player.yaw)*f-Math.sin(player.yaw)*s)*speed*dt,ox=player.x,oz=player.z;moveActor(player,dx,dz);const moved=Math.hypot(player.x-ox,player.z-oz);player.moving=moved>dt*.2;
-  player.stamina=clamp(player.stamina+(player.running&&player.moving?-21:13)*dt,0,100);player.eye=mix(player.eye,crouch?1.02:1.65,1-Math.exp(-12*dt));
+  player.stamina=infiniteStamina?100:clamp(player.stamina+(player.running&&player.moving?-21:13)*dt,0,100);player.eye=mix(player.eye,crouch?1.02:1.65,1-Math.exp(-12*dt));
   if(!player.ground){player.vy-=13.5*dt;player.y+=player.vy*dt;if(player.y<=0){player.y=0;player.vy=0;player.ground=true;audio.land();player.noise=1;}}
   if(player.moving&&player.ground){player.stride+=moved*(player.running?5:6);player.stepDistance+=moved;if(player.stepDistance>(crouch?1.25:player.running?1.75:1.6)){audio.step(crouch,player.running);player.stepDistance=0;}player.noise=Math.max(player.noise,crouch?.07:player.running?1:.42);}else{player.stepDistance=0;}
   player.noise=Math.max(0,player.noise-dt*.75);const targetBob=player.moving&&player.ground?Math.sin(player.stride)*(crouch?.009:player.running?.035:.02):0;player.bob=mix(player.bob,targetBob,1-Math.exp(-12*dt));player.roll=mix(player.roll,player.moving?-s*.011:0,1-Math.exp(-8*dt));const targetFov=player.running&&player.moving&&!settings.reduced?77:72;env.camera.fov=mix(env.camera.fov,targetFov,1-Math.exp(-5*dt));env.camera.updateProjectionMatrix();
