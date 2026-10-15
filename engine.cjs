@@ -4,17 +4,17 @@ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),mix=(a,b,t)=>a+(b-a)*t,dist=(a,b)
 const copy=v=>JSON.parse(JSON.stringify(v));
 class GameError extends Error{constructor(message,status=400){super(message);this.status=status;}}
 class Room{
-  constructor(code,{level=1,publicRoom=false,global=false}={}){
-    this.code=code;this.global=global;this.maxPlayers=global?protocol.globalMaxPlayers:protocol.maxPlayers;this.publicRoom=publicRoom||global;this.players=new Map();this.hostId=null;this.phase=global?'playing':'lobby';this.epoch=0;this.events=[];this.eventId=0;this.messages=[];this.closedAt=0;this.configure(level);
+  constructor(code,{level=1,publicRoom=false,global=false,personal=false}={}){
+    this.code=code;this.global=global;this.personal=personal;this.maxPlayers=global?protocol.globalMaxPlayers:protocol.maxPlayers;this.publicRoom=publicRoom||global;this.players=new Map();this.hostId=null;this.phase=global?'playing':'lobby';this.epoch=0;this.events=[];this.eventId=0;this.messages=[];this.closedAt=0;this.configure(level);
   }
-  configure(level,run=false){
+  configure(level,run=false,revive=true){
     this.level=level;this.epoch++;this.elapsed=0;this.transition=0;this.run=run;this.runTime=0;this.front=-24;this.restartIn=0;this.exitIn=null;
     this.base=worlds[level];this.map=copy(run?worlds.run.map:this.base.map);this.obstacles=run?[]:this.base.obstacles;this.edges=level===4?new Set(this.base.edges):null;
     this.floors=run?worlds.run.path:this.base.floors;this.spawnPoint=run?worlds.run.spawn:this.base.spawn;
     this.monster={...this.base.monster,angle:0,walk:0,mode:'patrol',target:null,path:[],memory:0,repath:0};
     this.objectives={hammer:false,hits:[0,0,0,0,0],opened:[],opener:false,unlocked:false,doorOpen:0,anchors:run?[true,true,true]:[false,false,false],gates:(this.base.gates||[]).map(()=>false),warning:0,shifts:0};
     this.hiddenOpener=level===4?crypto.randomInt(this.base.units.length):-1;this.revealedOpener=-1;this.openTimes={};this.hammerCooldown=0;this.shiftIn=24;this.footIn=13;this.finalCheckpoint=run;
-    const placed=[];for(const p of this.players.values()){this.spawnPlayer(p,this.spawnPoint,placed);placed.push(p);}
+    const placed=[];for(const p of this.players.values()){const dead=!p.alive;this.spawnPlayer(p,this.spawnPoint,placed);if(dead&&!revive)p.alive=false;placed.push(p);}
   }
   spawnPlayer(p,origin=this.spawnPoint,peers=[...this.players.values()]){
     // Keep cameras out of teammates' heads, including at checkpoints and late joins.
@@ -31,22 +31,28 @@ class Room{
       }
     }
     if(!position)throw new GameError('There is no clear space beside your team. Try joining again in a moment.',409);
-    Object.assign(p,{...origin,...position,y:0,vy:0,ground:true,eye:1.65,pitch:0,stamina:100,exhausted:false,noise:0,crouch:false,running:false,moving:false,flash:true,alive:true,escaped:false,waiting:false,crawl:null,cooldown:0,grace:7,step:0,seq:0,input:{f:0,s:0,yaw:origin.yaw,pitch:0,crouch:false,run:false,flash:true},inputAge:0});
+    Object.assign(p,{...origin,...position,life:(p.life||0)+1,elapsed:0,runTime:0,y:0,vy:0,ground:true,eye:1.65,pitch:0,stamina:100,exhausted:false,noise:0,crouch:false,running:false,moving:false,flash:true,alive:true,escaped:false,waiting:false,crawl:null,cooldown:0,grace:7,step:0,seq:0,input:{f:0,s:0,yaw:origin.yaw,pitch:0,crouch:false,run:false,flash:true},inputAge:0});
   }
   addPlayer(name,avatar){
     if(this.players.size>=this.maxPlayers)throw new GameError(this.global?'The global room is full (16/16). Try again when someone leaves, or join a separate room.':'This room is full.',409);
     if(!this.global&&['won','lost'].includes(this.phase))throw new GameError('This room has finished. Create a new room.',409);
     const id=crypto.randomBytes(8).toString('hex');
     const p={id,name:protocol.cleanName(name),avatar:protocol.normalizeAvatar(avatar),color:this.players.size,lastChat:-Infinity,lastSeen:Date.now(),rate:0};let origin=this.spawnPoint;
-    const waiting=this.global&&(this.phase!=='playing'||this.run||this.exitIn!==null||this.players.size>0&&![...this.players.values()].some(q=>q.alive&&!q.escaped&&!q.crawl));
-    if(this.phase==='playing'&&!waiting&&this.players.size){const buddy=[...this.players.values()].find(q=>q.alive&&!q.escaped&&!q.crawl);if(buddy)origin={x:buddy.x,z:buddy.z,yaw:buddy.yaw};else throw new GameError('Wait for the next checkpoint before joining.',409);}
+    const waiting=this.global&&!this.personal&&(this.phase!=='playing'||this.run||this.exitIn!==null||this.players.size>0&&![...this.players.values()].some(q=>q.alive&&!q.escaped&&!q.crawl));
+    if(!this.personal&&this.phase==='playing'&&!waiting&&this.players.size){const buddy=[...this.players.values()].find(q=>q.alive&&!q.escaped&&!q.crawl);if(buddy)origin={x:buddy.x,z:buddy.z,yaw:buddy.yaw};else throw new GameError('Wait for the next checkpoint before joining.',409);}
     this.spawnPlayer(p,origin);
     if(waiting){p.alive=false;p.waiting=true;}
     this.players.set(id,p);if(!this.global&&!this.hostId)this.hostId=id;this.emit('joined',{playerId:id,name:p.name});return p;
   }
   removePlayer(id){const p=this.players.get(id);if(!p)return;this.players.delete(id);this.emit('left',{playerId:id,name:p.name});if(this.hostId===id){this.hostId=this.players.keys().next().value||null;this.emit('host',{playerId:this.hostId});}this.checkResolved();}
   start(id){if(this.global)throw new GameError('The global room starts automatically.',403);if(id!==this.hostId)throw new GameError('Only the room host can start.',403);if(this.phase!=='lobby')throw new GameError('The room has already started.',409);this.phase='playing';this.emit('start');}
-  retry(id){if(this.global)throw new GameError('The global room restarts automatically.',403);if(id!==this.hostId)throw new GameError('Only the host can restart the checkpoint.',403);if(!['lost','won'].includes(this.phase))throw new GameError('This run is still in progress.',409);this.restart();}
+  retry(id){
+    const p=this.players.get(id);if(!p)throw new GameError('You are no longer in this room.',401);
+    if(!p.alive){this.spawnPlayer(p);if(this.phase==='lost'||this.phase==='won')this.phase='playing';this.emit('respawn',{playerId:id});return;}
+    if(this.global)throw new GameError('You can restart after your run ends.',409);
+    if(id!==this.hostId)throw new GameError('Only the host can start a new campaign.',403);
+    if(this.phase!=='won')throw new GameError('This run is still in progress.',409);this.restart();
+  }
   restart(){const won=this.phase==='won';this.configure(won?1:this.level,!won&&this.finalCheckpoint);this.phase='playing';this.emit('retry');}
   emit(kind,data={}){this.events.push({...data,id:++this.eventId,kind});if(this.events.length>64)this.events.shift();}
   chat(p,kind,index,now=Date.now(),to=[]){
@@ -59,7 +65,7 @@ class Room{
     const event={id:++this.eventId,kind:'chat',playerId:p.id,name:p.name,type:kind,text:list[index],to:recipients.map(player=>({id:player.id,name:player.name}))};this.events.push(event);if(this.events.length>64)this.events.shift();this.messages.push(event);if(this.messages.length>8)this.messages.shift();return event;
   }
   input(p,data){
-    if(data.epoch!==this.epoch)return false;
+    if(data.epoch!==this.epoch||data.life!==undefined&&data.life!==p.life)return false;
     if(!Number.isSafeInteger(data.seq)||data.seq<=p.seq)return false;
     for(const k of ['f','s','yaw','pitch'])if(!Number.isFinite(data[k]))throw new GameError('Invalid movement.');
     if(Math.abs(data.f)>1||Math.abs(data.s)>1||Math.abs(data.yaw)>Math.PI*4||Math.abs(data.pitch)>1.3)throw new GameError('Invalid movement.');
@@ -83,8 +89,8 @@ class Room{
     if(result.length&&!this.line(a,result[0],true,.29))result.unshift({x:(sc+.5)*4,z:(sr+.5)*4});return result;
   }
   reach(p,x,z,range){const dx=x-p.x,dz=z-p.z,d=Math.hypot(dx,dz);return d<range&&(d<.35||(-Math.sin(p.yaw)*dx-Math.cos(p.yaw)*dz)/d>.45)&&this.line(p,{x,z},true,.04);}
-  action(p,action,epoch){
-    if(epoch!==this.epoch||this.phase!=='playing'||!p.alive||p.escaped||p.crawl)return false;
+  action(p,action,epoch,life){
+    if(epoch!==this.epoch||life!==undefined&&life!==p.life||this.phase!=='playing'||!p.alive||p.escaped||p.crawl)return false;
     if(action==='jump'){if(p.ground&&!p.crouch){p.ground=false;p.vy=4.8;p.noise=1;}return true;}
     if(!['use','crawl'].includes(action))throw new GameError('Unknown action.');
     const o=this.objectives;
@@ -105,12 +111,12 @@ class Room{
     if(this.level===5&&!this.run&&action==='use'){
       const a=this.base.anchors.find(a=>!o.anchors[a.id]&&this.reach(p,a.x,a.z,2.3));
       if(a){o.anchors[a.id]=true;p.stamina=100;this.base.gates.forEach((g,i)=>{if(g.zone===a.id){o.gates[i]=false;this.map[g.r][g.c]=0;}});this.monster.path=[];this.monster.repath=0;this.emit('anchor',{anchor:a.id,playerId:p.id,x:a.x,z:a.z});return true;}
-      const gate=this.base.gate;if(o.anchors.every(Boolean)&&this.reach(p,gate.x,gate.z,2.3)){this.configure(5,true);this.phase='playing';this.emit('escape');return true;}
+      const gate=this.base.gate;if(o.anchors.every(Boolean)&&this.reach(p,gate.x,gate.z,2.3)){if(this.personal){p.escapeReady=true;return true;}this.configure(5,true,false);this.phase='playing';this.emit('escape');return true;}
     }return false;
   }
   stepPlayer(p,dt){
     p.inputAge+=dt;p.grace=Math.max(0,p.grace-dt);p.cooldown=Math.max(0,p.cooldown-dt);p.noise=Math.max(0,p.noise-dt*.75);
-    if(!p.alive||p.escaped)return;
+    if(!p.alive||p.escaped)return;p.elapsed+=dt;
     if(p.crawl){const e=this.base.exits[p.crawl.exit-1];p.crawl.time+=dt;const lower=clamp(p.crawl.time/.55,0,1),travel=clamp((p.crawl.time-.55)/2.6,0,1),smooth=travel*travel*(3-2*travel);p.x=mix(p.crawl.x,e.x-e.dc*3.2,smooth);p.z=mix(p.crawl.z,e.z-e.dr*3.2,smooth);p.eye=mix(1.65,.79,lower);p.yaw=Math.atan2(e.dc,e.dr);if(p.crawl.time>=3.2){p.crawl=null;p.escaped=true;this.emit('escaped',{playerId:p.id});}return;}
     const input=p.input;let f=p.inputAge>.4?0:input.f,s=p.inputAge>.4?0:input.s,len=Math.hypot(f,s);if(len>1){f/=len;s/=len;}
     p.yaw=input.yaw;p.pitch=input.pitch;p.crouch=input.crouch;p.flash=input.flash;
@@ -147,7 +153,7 @@ class Room{
   }
   runProgress(p){let best=Infinity,result=0;const path=worlds.run.path;for(let i=0;i<path.length-1;i++){const a=path[i],b=path[i+1],dx=b.x-a.x,dz=b.z-a.z,t=clamp(((p.x-a.x)*dx+(p.z-a.z)*dz)/16,0,1),d=(p.x-a.x-dx*t)**2+(p.z-a.z-dz*t)**2;if(d<best){best=d;result=(i+t)*4;}}return result;}
   checkResolved(){
-    if(this.phase!=='playing'||!this.players.size)return;
+    if(this.personal||this.phase!=='playing'||!this.players.size)return;
     const players=[...this.players.values()];if(players.some(p=>p.alive&&!p.escaped))return;
     if(players.some(p=>p.escaped)||this.global&&this.exitIn!==null){if(this.level===5){this.phase='won';this.emit('won');}else this.nextLevel();}
     else{this.phase='lost';this.emit('lost');}
@@ -157,11 +163,11 @@ class Room{
   tick(dt){
     if(this.global&&!this.players.size)return;
     if(this.global&&['won','lost'].includes(this.phase)){this.restartIn=Math.max(0,this.restartIn-dt);if(this.restartIn===0)this.restart();return;}
-    if(this.phase==='transition'){this.transition-=dt;if(this.transition<=0){this.configure(this.level+1);this.phase='playing';this.emit('level');}return;}
+    if(this.phase==='transition'){this.transition-=dt;if(this.transition<=0){this.configure(this.level+1,false,false);this.phase='playing';this.emit('level');}return;}
     if(this.phase!=='playing')return;
     this.elapsed+=dt;this.hammerCooldown=Math.max(0,this.hammerCooldown-dt);for(const p of this.players.values())this.stepPlayer(p,dt);
     const o=this.objectives;
-    if(this.run){this.runTime+=dt;this.front=-24+this.runTime*3.25;for(const p of this.players.values()){if(!p.alive||p.escaped)continue;p.progress=this.runProgress(p);if(this.front>=0&&p.progress<=this.front+.5){p.alive=false;this.emit('caught',{playerId:p.id});}else if(p.progress>worlds.run.length-1.4&&dist(p,worlds.run.path.at(-1))<1.5){p.escaped=true;this.emit('escaped',{playerId:p.id});}}}
+    if(this.run){this.runTime+=dt;this.front=-24+this.runTime*3.25;for(const p of this.players.values()){if(!p.alive||p.escaped)continue;p.runTime+=dt;const front=-24+p.runTime*3.25;p.progress=this.runProgress(p);if(front>=0&&p.progress<=front+.5){p.alive=false;this.emit('caught',{playerId:p.id});}else if(p.progress>worlds.run.length-1.4&&dist(p,worlds.run.path.at(-1))<1.5){p.escaped=true;this.emit('escaped',{playerId:p.id});}}}
     else this.stepMonster(dt);
     if(this.level===4){
       if(o.opened.includes(this.hiddenOpener)&&this.elapsed-this.openTimes[this.hiddenOpener]>.4)this.revealedOpener=this.hiddenOpener;
@@ -170,16 +176,67 @@ class Room{
     if(this.level===5){this.footIn-=dt;if(this.footIn<=0){this.footIn=this.run?3.6:15;this.emit('giant');}
       if(!this.run&&!o.anchors.every(Boolean)){if(o.warning>0){o.warning=Math.max(0,o.warning-dt);if(o.warning===0){this.shift();this.shiftIn=25;}}else{this.shiftIn-=dt;if(this.shiftIn<=0){o.warning=4;this.emit('warning');}}}else o.warning=0;
     }
-    if(this.global&&this.level>=3&&(this.exitIn!==null||[...this.players.values()].some(p=>p.escaped))){
+    if(this.global&&!this.personal&&this.level>=3&&(this.exitIn!==null||[...this.players.values()].some(p=>p.escaped))){
       if(this.exitIn===null){this.exitIn=45;this.emit('exit-countdown');}else this.exitIn=Math.max(0,this.exitIn-dt);
       if(this.exitIn===0)for(const p of this.players.values())if(p.alive&&!p.escaped){p.alive=false;p.moving=false;this.emit('caught',{playerId:p.id,reason:'exit-closed'});}
     }
-    this.checkResolved();if(this.phase==='playing'&&this.level<3&&this.elapsed>=(this.level===1?120:300))this.nextLevel();
+    this.checkResolved();if(!this.personal&&this.phase==='playing'&&this.level<3&&this.elapsed>=(this.level===1?120:300))this.nextLevel();
   }
-  snapshot(){
-    const players=[...this.players.values()].map(p=>{const out={};for(const k of ['id','name','avatar','color','x','z','y','vy','ground','eye','yaw','pitch','stamina','crouch','running','moving','flash','alive','escaped','waiting','seq','grace','step'])out[k]=p[k];out.crawling=!!p.crawl;return out;});
-    const m=this.monster;return {version:protocol.version,code:this.code,hostId:this.hostId,global:this.global,maxPlayers:this.maxPlayers,publicRoom:this.publicRoom,phase:this.phase,level:this.level,epoch:this.epoch,elapsed:this.elapsed,transition:this.transition,restartIn:this.restartIn,exitIn:this.exitIn,run:this.run,runTime:this.runTime,front:this.front,players,monster:{x:m.x,z:m.z,angle:m.angle,walk:m.walk,mode:m.mode},objectives:{...this.objectives,revealedOpener:this.revealedOpener},events:this.events.slice(-24),messages:this.messages};
+  snapshot(viewerId){
+    const players=[...this.players.values()].map(p=>{const out={};for(const k of ['id','name','avatar','color','x','z','y','vy','ground','eye','yaw','pitch','stamina','crouch','running','moving','flash','alive','escaped','waiting','seq','grace','step','life','elapsed'])out[k]=p[k];out.crawling=!!p.crawl;return out;});
+    const m=this.monster,viewer=this.players.get(viewerId),runTime=viewer?viewer.runTime:this.runTime;return {version:protocol.version,code:this.code,hostId:this.hostId,global:this.global,maxPlayers:this.maxPlayers,publicRoom:this.publicRoom,phase:this.phase,level:this.level,epoch:this.epoch,elapsed:this.elapsed,transition:this.transition,restartIn:this.restartIn,exitIn:this.exitIn,run:this.run,runTime,front:this.run?-24+runTime*3.25:this.front,players,monster:{x:m.x,z:m.z,angle:m.angle,walk:m.walk,mode:m.mode},objectives:{...this.objectives,revealedOpener:this.revealedOpener},events:this.events.slice(-24),messages:this.messages};
+  }
+}
+
+// One global membership/chat roster, with shared worlds and independent journeys.
+class GlobalRoom{
+  constructor(code='GLOBAL'){
+    this.code=code;this.global=true;this.personal=true;this.maxPlayers=protocol.globalMaxPlayers;this.publicRoom=true;this.hostId=null;this.level=1;
+    this.players=new Map();this.worlds=new Map();this.events=[];this.messages=[];this.eventId=0;this.epoch=0;
+  }
+  emit(kind,data={}){Room.prototype.emit.call(this,kind,data);}
+  world(key){
+    if(!this.worlds.has(key)){
+      const room=new Room(this.code,{global:true,personal:true,level:key==='run'?5:Number(key)});if(key==='run')room.configure(5,true);
+      room.emit=(kind,data={})=>this.emit(kind,{...data,worldKey:key});this.worlds.set(key,room);
+    }return this.worlds.get(key);
+  }
+  addPlayer(name,avatar){
+    if(this.players.size>=this.maxPlayers)throw new GameError('The global room is full (16/16). Try again when someone leaves, or join a separate room.',409);
+    const p=this.world('1').addPlayer(name,avatar);Object.assign(p,{worldKey:'1',epoch:++this.epoch,phase:'playing',transit:null});this.players.set(p.id,p);return p;
+  }
+  detach(p){const old=this.worlds.get(p.worldKey);old.players.delete(p.id);if(!old.players.size)this.worlds.delete(p.worldKey);}
+  enter(p,key,kind='level'){
+    if(p.worldKey!==key)this.detach(p);const world=this.world(key);world.spawnPlayer(p);world.players.set(p.id,p);
+    Object.assign(p,{worldKey:key,epoch:++this.epoch,phase:'playing',transit:null,escapeReady:false});this.emit(kind,{playerId:p.id,only:p.id,worldKey:key});
+  }
+  removePlayer(id){const p=this.players.get(id);if(!p)return;this.detach(p);this.players.delete(id);this.emit('left',{playerId:id,name:p.name});}
+  start(){throw new GameError('The global room starts automatically.',403);}
+  retry(id){const p=this.players.get(id);if(!p)throw new GameError('You are no longer in this room.',401);if(p.alive&&p.phase!=='won')throw new GameError('You can restart after your run ends.',409);this.enter(p,p.phase==='won'?'1':p.worldKey,'retry');}
+  chat(...args){return Room.prototype.chat.apply(this,args);}
+  input(p,data){if(data.epoch!==p.epoch)return false;const world=this.worlds.get(p.worldKey);return world.input(p,{...data,epoch:world.epoch});}
+  action(p,action,epoch,life){
+    if(epoch!==p.epoch||p.phase!=='playing')return false;const world=this.worlds.get(p.worldKey),result=world.action(p,action,world.epoch,life);
+    if(p.escapeReady){p.escapeReady=false;this.transition(p,'run');}return result;
+  }
+  transition(p,key){p.escaped=true;p.moving=p.running=false;p.phase='transition';p.transit={key,time:2.8};this.emit('transition',{only:p.id,worldKey:p.worldKey,nextLevel:key==='run'?5:Number(key)});}
+  tick(dt){
+    for(const world of this.worlds.values())world.tick(dt);
+    for(const p of this.players.values()){
+      if(p.transit){p.transit.time-=dt;if(p.transit.time<=0)this.enter(p,p.transit.key,p.transit.key==='run'?'escape':'level');continue;}
+      if(!p.alive||p.phase==='won')continue;
+      const world=this.worlds.get(p.worldKey),duration=world.level===1?120:300;
+      if(world.level<3&&p.elapsed>=duration){p.elapsed=duration;this.transition(p,String(world.level+1));}
+      else if(p.escaped){if(world.run){p.phase='won';this.emit('won',{only:p.id,worldKey:p.worldKey});}else this.transition(p,String(world.level+1));}
+    }
+  }
+  snapshot(viewerId=this.players.keys().next().value){
+    const p=this.players.get(viewerId);if(!p)throw new GameError('You are no longer in this room.',401);
+    const world=this.worlds.get(p.worldKey),snapshot=world.snapshot(p.id);
+    return {...snapshot,personal:true,checkpoint:{...world.spawnPoint,label:world.run?'FINAL CHASE CHECKPOINT':'LEVEL '+world.level+' CHECKPOINT'},epoch:p.epoch,phase:!p.alive?'lost':p.phase,elapsed:p.elapsed,transition:p.transit?.time||0,restartIn:0,exitIn:null,playerCount:this.players.size,
+      roster:[...this.players.values()].map(q=>({id:q.id,name:q.name,level:q.worldKey==='run'?5:Number(q.worldKey),run:q.worldKey==='run',alive:q.alive})),
+      events:this.events.filter(e=>(!e.only||e.only===p.id)&&(!e.worldKey||e.worldKey===p.worldKey||e.kind==='chat')).slice(-24),messages:this.messages};
   }
 }
 const cleanName=protocol.cleanName;
-module.exports={Room,GameError,cleanName,worlds,protocol};
+module.exports={Room,GlobalRoom,GameError,cleanName,worlds,protocol};

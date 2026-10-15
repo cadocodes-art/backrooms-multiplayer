@@ -104,7 +104,7 @@ THE SOFTWARE.
       <div class="eyebrow"><span class="pulse"></span> A PLACE YOU WERE NEVER MEANT TO FIND</div>
       <h1>THE<br>BACKROOMS<span>AFTER HOURS</span></h1>
       <p class="description">The lights are still on.<br>Something else is still here.</p>
-      <div class="start-row"><button id="start" class="primary">ENTER THE BACKROOMS <span>↗</span></button><button id="collapse-start" class="primary collapse-test" title="Start directly in Reality Collapse">TEST LEVEL 5 <span>↗</span></button><button id="avatar-open" class="primary collapse-test">CHANGE AVATAR <span>↗</span></button><button id="settings-open" class="text-button">SETTINGS</button></div>
+      <div class="start-row"><button id="start" class="primary">ENTER THE BACKROOMS <span>↗</span></button><button id="avatar-open" class="primary collapse-test">CHANGE AVATAR <span>↗</span></button><button id="settings-open" class="text-button">SETTINGS</button></div>
       <p id="avatar-summary" class="mono" role="status"></p>
       <p class="audio-note"><span>◖◗</span> Headphones recommended · Sound begins when you enter</p>
     </section>
@@ -140,8 +140,8 @@ THE SOFTWARE.
   <div id="pause" class="screen centered panel-screen" hidden><div class="eyebrow">RECORDING SUSPENDED</div><h2>Hold your breath.</h2><p id="pause-copy">Your time is paused. Take a moment.</p><button id="resume" class="primary">RESUME RECORDING <span>↗</span></button><button id="multiplayer-open" class="primary collapse-test">MULTIPLAYER <span>↗</span></button><button id="pause-settings" class="text-button">SETTINGS</button><button id="quit" class="text-button muted">RETURN TO TITLE</button></div>
   <div id="mp-dialog" class="mp-backdrop" hidden><section class="mp-panel" role="dialog" aria-modal="true" aria-labelledby="mp-title"><div class="mp-heading"><span class="eyebrow">SHARED FREQUENCY / GLOBAL 16 · ROOMS 4</span><button id="mp-close" class="icon-button" aria-label="Close multiplayer">×</button></div><h2 id="mp-title">Don't go alone.</h2><p id="mp-status" role="status" aria-live="polite"></p>
     <div id="mp-offline" hidden><p>To play together on this computer, open <b>Play Multiplayer.cmd</b> from the game folder. Then use the multiplayer edition below.</p><a class="primary" href="http://localhost:8787/">OPEN MULTIPLAYER EDITION ↗</a><p class="mp-small">For friends on the internet, everyone will need the same hosted game link. The downloaded file still works for solo play.</p></div>
-    <div id="mp-connect"><div class="mp-fields"><label>Your name<input id="mp-name" maxlength="18" value="Explorer" autocomplete="off"></label><label>Separate room starting level<select id="mp-level"><option value="1">1 · The Backrooms</option><option value="2">2 · The Haunted House</option><option value="3">3 · The Sewers</option><option value="4">4 · The School</option><option value="5">5 · Reality Collapse</option></select></label></div><div class="mp-global-card"><div><span class="eyebrow">ONE SHARED WORLD</span><h3>The global room.</h3><p id="mp-global-count" class="mono">UP TO 16 EXPLORERS</p><p>Drop into the current level with everyone. No code or host needed. The next run starts automatically.</p></div><button id="mp-global" class="primary">JOIN GLOBAL ROOM <span>↗</span></button></div><p class="mp-small">SEPARATE ROOMS · UP TO 4 PLAYERS<br>Create a fresh run at your chosen level, find a public room, or join a friend by code.</p><label class="mp-check"><input id="mp-public" type="checkbox"> Let other players find my room</label><div class="mp-buttons"><button id="mp-create" class="primary">CREATE ROOM</button><button id="mp-quick" class="primary collapse-test">FIND PLAYERS</button></div><div class="mp-join-row"><label>Friend's room code<input id="mp-code" maxlength="6" placeholder="ABC234" autocomplete="off" autocapitalize="characters" spellcheck="false"></label><button id="mp-join" class="primary collapse-test">JOIN ROOM</button></div></div>
-    <div id="mp-room" hidden><div class="mp-code-line"><strong id="mp-room-code"></strong><button id="mp-copy" class="text-button">COPY CODE</button></div><p id="mp-room-detail" class="mp-small"></p><ul id="mp-roster"></ul><p id="mp-room-rules" class="mp-small">Shared tools and objectives. Separate survival. Caught players can watch teammates and return at the next level. Everyone must escape or be caught before the team advances.</p><div class="mp-buttons"><button id="mp-start-room" class="primary">START TOGETHER</button><button id="mp-leave" class="text-button">LEAVE ROOM</button></div></div>
+    <div id="mp-connect"><div class="mp-fields"><label>Your name<input id="mp-name" maxlength="18" value="Explorer" autocomplete="off"></label><label>Separate room starting level<select id="mp-level"><option value="1">1 · The Backrooms</option><option value="2">2 · The Haunted House</option><option value="3">3 · The Sewers</option><option value="4">4 · The School</option><option value="5">5 · Reality Collapse</option></select></label></div><div class="mp-global-card"><div><span class="eyebrow">ONE SHARED WORLD</span><h3>The global room.</h3><p id="mp-global-count" class="mono">UP TO 16 EXPLORERS</p><p>Start at the Backrooms spawn. Your own timer, your own progress. Meet other explorers on each level. No code or host needed.</p></div><button id="mp-global" class="primary">JOIN GLOBAL ROOM <span>↗</span></button></div><p class="mp-small">SEPARATE ROOMS · UP TO 4 PLAYERS<br>Create a fresh run at your chosen level, find a public room, or join a friend by code.</p><label class="mp-check"><input id="mp-public" type="checkbox"> Let other players find my room</label><div class="mp-buttons"><button id="mp-create" class="primary">CREATE ROOM</button><button id="mp-quick" class="primary collapse-test">FIND PLAYERS</button></div><div class="mp-join-row"><label>Friend's room code<input id="mp-code" maxlength="6" placeholder="ABC234" autocomplete="off" autocapitalize="characters" spellcheck="false"></label><button id="mp-join" class="primary collapse-test">JOIN ROOM</button></div></div>
+    <div id="mp-room" hidden><div class="mp-code-line"><strong id="mp-room-code"></strong><button id="mp-copy" class="text-button">COPY CODE</button></div><p id="mp-room-detail" class="mp-small"></p><ul id="mp-roster"></ul><p id="mp-room-rules" class="mp-small">Shared tools and objectives. If you are caught, choose Restart or Exit Room. Restart returns you to this room’s current checkpoint.</p><div class="mp-buttons"><button id="mp-start-room" class="primary">START TOGETHER</button><button id="mp-leave" class="text-button">LEAVE ROOM</button></div></div>
   </section></div>
   <div id="mp-composer" class="mp-backdrop" hidden><section class="mp-panel mp-composer-panel" role="dialog" aria-modal="true" aria-labelledby="mp-composer-title"><div class="mp-heading"><h2 id="mp-composer-title">Send a signal.</h2><button id="mp-composer-close" class="icon-button" aria-label="Close messages">×</button></div><p id="mp-chat-status" role="status"></p>
     <div class="mp-address-box"><label class="mp-check"><input id="mp-address" type="checkbox" aria-controls="mp-to-picker" aria-describedby="mp-address-help">Add “To” names <span class="mp-small">OPTIONAL</span></label><p id="mp-address-help" class="mp-small">Everyone in the room can see your message.</p><div id="mp-to-picker" hidden><div id="mp-to-list" role="group" aria-label="Players to address"></div><p id="mp-to-empty" class="mp-small" hidden>No other players are in the room yet.</p><p id="mp-to-summary" class="mp-small" role="status" aria-live="polite"></p></div></div>
@@ -1194,7 +1194,7 @@ function bindAvatar(){
 </script>
 <script>
 // Same-origin multiplayer: HTTP commands and a streaming authoritative world.
-const mp={active:false,busy:false,token:null,id:null,snapshot:null,epoch:-1,seq:0,peers:new Map(),lastEvent:0,lastSnapshot:0,rtt:100,menu:false,composer:false,dialog:false,connected:false,inputTimer:null,abort:null,feed:[],spectate:null,generation:0};
+const mp={active:false,busy:false,token:null,id:null,snapshot:null,epoch:-1,life:-1,seq:0,peers:new Map(),lastEvent:0,lastSnapshot:0,rtt:100,menu:false,composer:false,dialog:false,connected:false,inputTimer:null,abort:null,feed:[],spectate:null,generation:0};
 const MP=BackroomsNetProtocol;
 mp.recipientIds=new Set();mp.recipientRosterKey='';
 function mpNotice(text){$('mp-status').textContent=text;}
@@ -1209,7 +1209,7 @@ async function mpOpen(){
   if(!['http:','https:'].includes(location.protocol)){$('mp-connect').hidden=true;$('mp-offline').hidden=false;mpNotice('The downloaded edition plays solo. Open the multiplayer edition to join people.');return;}
   if(mp.active){mpUpdateRoom();mpNotice('The world keeps running while this menu is open.');$('mp-close').focus();return;}
   mpNotice('Checking multiplayer connection…');mpSetBusy(true);
-  try{const health=await mpRequest('/api/health');if(health.version!==MP.version)throw Error('Refresh the game to update multiplayer.');$('mp-global-count').textContent=health.globalMaxPlayers?health.globalPlayers+' / '+health.globalMaxPlayers+' EXPLORERS · LEVEL '+health.globalLevel:'Refresh after the server update to use the global room.';mpNotice('Join the global room, create a room, or join a friend.');if(mp.dialog)$('mp-name').focus();}catch{mpNotice('This page is not connected to a multiplayer server. Open the game through the multiplayer launcher.');}finally{mpSetBusy(false);}
+  try{const health=await mpRequest('/api/health');if(health.version!==MP.version)throw Error('Refresh the game to update multiplayer.');$('mp-global-count').textContent=health.globalMaxPlayers?health.globalPlayers+' / '+health.globalMaxPlayers+' EXPLORERS · START AT LEVEL 1':'Refresh after the server update to use the global room.';mpNotice('Join the global room, create a room, or join a friend.');if(mp.dialog)$('mp-name').focus();}catch{mpNotice('This page is not connected to a multiplayer server. Open the game through the multiplayer launcher.');}finally{mpSetBusy(false);}
 }
 function mpClose(){mp.dialog=false;$('mp-dialog').hidden=true;if(mp.active){if(mp.snapshot?.phase==='lobby'){mpPause();}else{mp.menu=false;setScreen('hud');lockPointer();}}else $('resume').focus();}
 function mpSetBusy(on){mp.busy=on;for(const id of ['mp-create','mp-join','mp-quick','mp-global'])$(id).disabled=on;}
@@ -1250,17 +1250,17 @@ function mpControls(){
 }
 function mpAction(action){
   if(!mpCanControl())return false;
-  mpRequest('/api/action',{action,epoch:mp.epoch}).catch(e=>mpNotice(e.message));return true;
+  mpRequest('/api/action',{action,epoch:mp.epoch,life:mp.life}).catch(e=>mpNotice(e.message));return true;
 }
 async function mpSendInput(){
   if(!mp.active||mp.sending)return;mp.sending=true;const started=performance.now(),generation=mp.generation;
-  try{await mpRequest('/api/input',{...mpControls(),seq:++mp.seq,epoch:mp.epoch});mp.rtt=mix(mp.rtt,Math.min(600,performance.now()-started),.2);}catch{if(mp.active&&generation===mp.generation&&performance.now()-mp.lastSnapshot>2500)mp.connected=false;}finally{mp.sending=false;}
+  try{await mpRequest('/api/input',{...mpControls(),seq:++mp.seq,epoch:mp.epoch,life:mp.life});mp.rtt=mix(mp.rtt,Math.min(600,performance.now()-started),.2);}catch{if(mp.active&&generation===mp.generation&&performance.now()-mp.lastSnapshot>2500)mp.connected=false;}finally{mp.sending=false;}
 }
 function mpApplySnapshot(s,initial=false){
   if(!mp.active||s.version!==MP.version)return;mp.snapshot=s;mp.connected=true;mp.lastSnapshot=performance.now();const me=s.players.find(p=>p.id===mp.id);if(!me)return;
-  const changed=mp.epoch!==s.epoch;
+  const wasEnd=!$('end').hidden,changed=mp.epoch!==s.epoch||mp.life!==me.life;
   if(mp.composer)mpUpdateRecipients();
-  if(changed){mp.epoch=s.epoch;mp.seq=0;mp.monsterStep=s.monster.walk;mpClearPeers();reset(s.level);if(s.run){env.build(5,'escape');explored=Array.from({length:env.size},()=>Array(env.size).fill(false));}Object.assign(player,{x:me.x,z:me.z,y:me.y,yaw:me.yaw,pitch:me.pitch,eye:me.eye,ground:me.ground,vy:me.vy});state='playing';
+  if(changed){mp.epoch=s.epoch;mp.life=me.life;mp.seq=0;mp.monsterStep=s.monster.walk;mpClearPeers();mpClearCheckpoint();reset(s.level);if(s.run){env.build(5,'escape');explored=Array.from({length:env.size},()=>Array(env.size).fill(false));}Object.assign(player,{x:me.x,z:me.z,y:me.y,yaw:me.yaw,pitch:me.pitch,eye:me.eye,ground:me.ground,vy:me.vy});mpBuildCheckpoint(s);state='playing';
     // A reconnect can miss the short event history; the checkpoint is authoritative.
     if(!initial&&s.phase==='playing'){mp.menu=mp.dialog=mp.composer=false;$('mp-dialog').hidden=true;$('mp-composer').hidden=true;$('retry').disabled=false;setScreen('hud');clearInput();audio.start().catch(()=>{});}
   }
@@ -1268,12 +1268,20 @@ function mpApplySnapshot(s,initial=false){
   mpApplyObjectives(s,changed);
   if(initial)mp.lastEvent=Math.max(0,...s.events.map(e=>e.id));else for(const e of s.events)if(e.id>mp.lastEvent){mp.lastEvent=e.id;mpEvent(e);}
   if(s.phase==='lobby')mpUpdateRoom();
-  if(['won','lost'].includes(s.phase)){
-    state=s.phase;setScreen('end');releasePointer();$('mp-dialog').hidden=true;mp.dialog=false;$('mp-composer').hidden=true;mp.composer=false;
-    $('end-kicker').textContent=s.phase==='won'?'TEAM TRANSMISSION COMPLETE':'TEAM SIGNAL LOST';$('end-title').textContent=s.phase==='won'?'You escaped together.':'The last signal went quiet.';
-    $('end-description').textContent=s.global?(s.phase==='won'?'Your team escaped! A new global run starts automatically.':'The global room will restart this checkpoint automatically.'):(s.phase==='won'?'Your team made it through the final collapse.':'No explorers remain in the level. The host can restart this checkpoint.');$('result').textContent=(s.global?'GLOBAL ROOM':'ROOM '+s.code)+' / '+s.players.length+' EXPLORERS';
-    $('retry').textContent=s.global?'RESTARTING IN '+Math.ceil(s.restartIn)+'s':mp.id===s.hostId?(s.phase==='won'?'START NEW CAMPAIGN':'RETRY CHECKPOINT'):'WAITING FOR HOST';$('retry').disabled=s.global||mp.id!==s.hostId;
-  }else if(state==='won'||state==='lost'){state='playing';$('retry').disabled=false;setScreen('hud');}
+  const dead=!me.alive&&!me.waiting;
+  if(dead||['won','lost'].includes(s.phase)){
+    const won=!dead&&s.phase==='won';state=won?'won':'lost';setScreen('end');clearInput();releasePointer();mp.menu=mp.dialog=mp.composer=false;
+    $('mp-dialog').hidden=$('mp-composer').hidden=$('mp-online-hud').hidden=true;mpResetRecipients();$('danger').style.opacity=0;
+    $('end-kicker').textContent=won?'TRANSMISSION COMPLETE':'SIGNAL LOST';$('end-title').textContent=won?'You made it through.':"You weren't alone.";
+    $('end-description').textContent=s.global?(won?'You escaped all five levels. Restart to begin a fresh journey.':'Restart at this level’s checkpoint with a fresh timer. Other explorers keep playing.'):(dead?'Restart at this room’s current checkpoint. Other explorers keep playing.':'Your team made it through the final collapse.');
+    $('result').textContent=(s.global?'GLOBAL ROOM':'ROOM '+s.code)+' / YOUR TIME '+formatTime(me.elapsed??s.elapsed);
+    $('retry').textContent='RESTART';$('retry').disabled=!s.global&&!dead&&mp.id!==s.hostId;if($('retry').disabled)$('retry').textContent='WAITING FOR HOST';
+    $('end-menu').textContent='EXIT ROOM';if(!wasEnd){$('retry').focus();audio.end(won);const generation=mp.generation,life=mp.life;setTimeout(()=>{if(mp.active&&mp.generation===generation&&mp.life===life&&['won','lost'].includes(state))audio.pause();},2300);}
+  }else if(s.personal&&s.phase==='transition'){
+    state='transition';setScreen('transition');clearInput();$('mp-online-hud').hidden=true;
+    $('transition-title').textContent='Your next checkpoint.';$('transition-detail').textContent='Your journey continues. Other explorers stay on their own path.';
+  }else if(state==='won'||state==='lost'||state==='transition'){state='playing';$('retry').disabled=false;setScreen('hud');}
+
 }
 function mpApplyObjectives(s,changed){
   const o=s.objectives;
@@ -1289,7 +1297,7 @@ function mpApplyObjectives(s,changed){
 }
 function mpEvent(e){
   if(e.kind==='chat'){mpAddChat(e);if(e.type==='emoji'){const peer=mp.peers.get(e.playerId);if(peer){mpPaintTag(peer.emote,e.text,true);peer.emoteUntil=performance.now()+4000;}}return;}
-  if(e.kind==='start'||e.kind==='retry'||e.kind==='level'||e.kind==='escape'){
+  if(e.kind==='start'||e.kind==='retry'||e.kind==='level'||e.kind==='escape'||e.kind==='respawn'&&e.playerId===mp.id){
     mp.menu=mp.dialog=mp.composer=false;$('mp-dialog').hidden=true;$('mp-composer').hidden=true;state='playing';setScreen('hud');clearInput();audio.start().catch(()=>{});if(e.kind==='escape')audio.realityShift();else audio.transition();return;
   }
   if(e.kind==='strike'){audio.hammer({x:e.x,y:1,z:e.z},e.hits>=4);if(e.playerId===mp.id)env.hammerSwing=.55;}
@@ -1297,29 +1305,28 @@ function mpEvent(e){
   if(e.kind==='anchor'){audio.anchor(e.anchor,{x:e.x,y:1.6,z:e.z});collapse.notice='ANCHOR '+(e.anchor+1)+' SECURED BY YOUR TEAM';collapse.noticeTime=5;}
   if(e.kind==='warning')audio.shiftWarning();if(e.kind==='shift'){audio.realityShift();collapse.shake=.7;}
   if(e.kind==='giant'){audio.giantStep({x:63,y:4,z:3});collapse.shake=1;}
-  if(e.kind==='caught'&&e.playerId===mp.id){audio.end(false);clearInput();releasePointer();}
-  if(e.kind==='lost'||e.kind==='won'){audio.end(e.kind==='won');const generation=mp.generation;setTimeout(()=>{if(mp.active&&mp.generation===generation&&['won','lost'].includes(mp.snapshot?.phase))audio.pause();},2300);}
+  if(e.kind==='caught'&&e.playerId===mp.id){clearInput();releasePointer();}
   if(e.kind==='joined'||e.kind==='left')mpNotice(e.name+(e.kind==='joined'?' joined the room.':' left the room.'));
 }
 function mpUpdateRoom(){
   const s=mp.snapshot;if(!s)return;$('mp-room-code').textContent=s.global?'GLOBAL ROOM':s.code;$('mp-copy').hidden=!!s.global;$('mp-roster').replaceChildren();
-  for(const p of s.players){const li=document.createElement('li');li.textContent=p.name+(p.id===mp.id?' (you)':'')+(p.id===s.hostId?' · HOST':'');$('mp-roster').append(li);}
+  for(const p of s.roster||s.players){const li=document.createElement('li');li.textContent=p.name+(p.id===mp.id?' (you)':'')+(p.id===s.hostId?' · HOST':'')+(s.personal?' · LEVEL '+p.level+(p.run?' / FINAL CHASE':''):'');$('mp-roster').append(li);}
   $('mp-start-room').hidden=s.global||s.phase!=='lobby';$('mp-start-room').disabled=mp.id!==s.hostId;$('mp-start-room').textContent=mp.id===s.hostId?'START TOGETHER':'WAITING FOR HOST';
-  $('mp-room-detail').textContent='LEVEL '+s.level+' · '+s.players.length+' / '+(s.maxPlayers||4)+' PLAYERS · '+(s.global?'GLOBAL · AUTOMATIC START':s.publicRoom?'PUBLIC ROOM':'INVITE ONLY');
-  $('mp-room-rules').textContent=s.global?'One shared 16-player room. Caught players watch teammates and return at the next checkpoint. After the first escape, everyone has 45 seconds to reach safety. Late arrivals watch during the exit countdown or final chase. Restarts are automatic.':'Shared tools and objectives. Separate survival. Caught players can watch teammates and return at the next level. Everyone must escape or be caught before the team advances.';
+  $('mp-room-detail').textContent='LEVEL '+s.level+' · '+(s.playerCount||s.players.length)+' / '+(s.maxPlayers||4)+' PLAYERS · '+(s.global?'GLOBAL · AUTOMATIC START':s.publicRoom?'PUBLIC ROOM':'INVITE ONLY');
+  $('mp-room-rules').textContent=s.global?'Up to 16 explorers, each with their own timer and progress. New arrivals begin at the fixed Backrooms spawn. Each level has its own checkpoint, including the final chase. Restart returns only you to your checkpoint and resets your timer. Meet others on the same level and share its objectives. When caught, choose Restart or Exit Room.':'Shared tools and objectives. When caught, choose Restart or Exit Room. Restart returns you to this room’s current checkpoint without resetting other players.';
 }
 async function mpStart(){try{await mpRequest('/api/start',{});}catch(e){mpNotice(e.message);}}
-async function mpRestart(){try{await mpRequest('/api/retry',{});}catch(e){$('end-description').textContent=e.message;}}
-function mpPause(){if(!mp.active||['won','lost'].includes(mp.snapshot?.phase))return;mp.menu=true;clearInput();setScreen('pause');$('pause-copy').textContent='The room is still live. You can be caught while this menu is open.';releasePointer();$('resume').focus();}
+async function mpRestart(){if(mp.restarting)return;mp.restarting=true;$('retry').disabled=true;try{await audio.start();await mpRequest('/api/retry',{});}catch(e){$('end-description').textContent=e.message;}finally{mp.restarting=false;$('retry').disabled=false;}}
+function mpPause(){if(!mp.active||['won','lost','transition'].includes(state)||['won','lost'].includes(mp.snapshot?.phase))return;mp.menu=true;clearInput();setScreen('pause');$('pause-copy').textContent='The room is still live. You can be caught while this menu is open.';releasePointer();$('resume').focus();}
 async function mpResume(){
   if(mp.snapshot?.phase==='lobby'){mpOpen();return;}mp.menu=false;setScreen('hud');try{await audio.start();}catch{}if(mp.snapshot?.phase==='playing')lockPointer();
 }
 async function mpLeave(){
   if(mp.active){mpRequest('/api/leave',{}).catch(()=>{});}
-  mp.active=false;mp.connected=false;mp.generation++;mp.token=null;mp.snapshot=null;mp.epoch=-1;mp.menu=mp.composer=mp.dialog=false;mp.abort?.abort();clearInterval(mp.inputTimer);mp.inputTimer=null;mpClearPeers();
+  mp.active=false;mp.connected=false;mp.generation++;mp.token=null;mp.snapshot=null;mp.epoch=-1;mp.menu=mp.composer=mp.dialog=false;mp.abort?.abort();clearInterval(mp.inputTimer);mp.inputTimer=null;mpClearPeers();mpClearCheckpoint();
   for(const id of ['mp-dialog','mp-composer','mp-online-hud'])$(id).hidden=true;
   mpResetRecipients();mp.chatBusy=false;
-  document.body.classList.toggle('online',false);$('retry').disabled=false;$('pause-copy').textContent='Your time is paused. Take a moment.';title();
+  document.body.classList.toggle('online',false);$('retry').disabled=false;$('end-menu').textContent='RETURN TO TITLE';$('pause-copy').textContent='Your time is paused. Take a moment.';title();
 }
 function mpBuildComposer(){
   if(mp.builtComposer)return;mp.builtComposer=true;
@@ -1330,11 +1337,11 @@ function mpResetRecipients(){
   mp.recipientIds.clear();mp.recipientRosterKey='';$('mp-address').checked=false;$('mp-to-picker').hidden=true;
 }
 function mpRecipientSummary(){
-  const selected=(mp.snapshot?.players||[]).filter(p=>mp.recipientIds.has(p.id));
+  const selected=(mp.snapshot?.roster||mp.snapshot?.players||[]).filter(p=>mp.recipientIds.has(p.id));
   $('mp-to-summary').textContent=selected.length?'To: '+selected.map(p=>p.name).join(', '):'No names added. Choose one or more players, then a message or emoji.';
 }
 function mpUpdateRecipients(){
-  const players=(mp.snapshot?.players||[]).filter(p=>p.id!==mp.id),key=JSON.stringify(players.map(p=>[p.id,p.name]));
+  const players=(mp.snapshot?.roster||mp.snapshot?.players||[]).filter(p=>p.id!==mp.id),key=JSON.stringify(players.map(p=>[p.id,p.name]));
   if(key===mp.recipientRosterKey)return;mp.recipientRosterKey=key;
   for(const id of mp.recipientIds)if(!players.some(p=>p.id===id))mp.recipientIds.delete(id);
   const focusedId=document.activeElement?.id,buttons=new Map();$('mp-to-list').replaceChildren();
@@ -1348,7 +1355,7 @@ function mpUpdateRecipients(){
   if(focusedId?.startsWith('mp-recipient-'))(buttons.get(focusedId)||$('mp-address')).focus();
 }
 function mpToggleComposer(){
-  if(!mp.active)return;if(mp.composer){mpCloseComposer();return;}if(mp.dialog||mp.menu||mp.snapshot?.phase!=='playing')return;
+  if(!mp.active)return;if(mp.composer){mpCloseComposer();return;}if(mp.dialog||mp.menu||state!=='playing'||mp.snapshot?.phase!=='playing')return;
   mpBuildComposer();mpResetRecipients();mpUpdateRecipients();mp.composer=true;clearInput();$('mp-composer').hidden=false;$('mp-chat-status').textContent='The world keeps moving while you choose.';releasePointer();$('mp-address').focus();
 }
 function mpCloseComposer(){mp.composer=false;mpResetRecipients();$('mp-composer').hidden=true;if(mp.active&&!mp.menu&&!mp.dialog)lockPointer();}
@@ -1374,8 +1381,20 @@ function mpMakePeer(p){
 }
 function mpRemovePeer(id){const p=mp.peers.get(id);if(!p)return;env.scene.remove(p.group);for(const s of [p.label,p.emote]){s.material.map.dispose();s.material.dispose();}p.model.dispose();mp.peers.delete(id);}
 function mpClearPeers(){for(const id of [...mp.peers.keys()])mpRemovePeer(id);}
+function mpClearCheckpoint(){
+  const marker=mp.checkpointMarker;if(!marker)return;env.scene.remove(marker.group);for(const resource of marker.resources)resource.dispose();mp.checkpointMarker=null;
+}
+function mpBuildCheckpoint(s){
+  if(!s.personal||!s.checkpoint)return;
+  const group=new THREE.Group(),geometry=new THREE.RingGeometry(.72,.82,48),material=new THREE.MeshBasicMaterial({color:0xb9e6cf,side:THREE.DoubleSide,transparent:true,opacity:.72,depthWrite:false});
+  const ring=new THREE.Mesh(geometry,material);ring.rotation.x=-Math.PI/2;ring.position.y=s.level===3?.265:.035;group.add(ring);
+  const canvas=document.createElement('canvas');canvas.width=512;canvas.height=64;const texture=new THREE.CanvasTexture(canvas);texture.encoding=THREE.sRGBEncoding;
+  const labelMaterial=new THREE.SpriteMaterial({map:texture,transparent:true,depthWrite:false}),label=new THREE.Sprite(labelMaterial);label.userData.canvas=canvas;label.scale.set(2.6,.325,1);label.position.y=.8;group.add(label);mpPaintTag(label,s.checkpoint.label);
+  group.position.set(s.checkpoint.x,0,s.checkpoint.z);env.scene.add(group);mp.checkpointMarker={group,resources:[geometry,material,texture,labelMaterial]};
+}
 function mpFrame(dt){
   const s=mp.snapshot;if(!s)return;const me=s.players.find(p=>p.id===mp.id);if(!me)return;
+  if(state==='lost'||state==='won'){env.render();return;}
   const canMove=mpCanControl();if(canMove)stepPlayer(dt);else{clearInput();player.moving=player.running=false;player.bob=player.roll=0;player.noise=Math.max(0,player.noise-dt*.75);}
   if(me.alive&&!me.escaped){
     const target={x:me.x,z:me.z,radius:.26};
@@ -1402,9 +1421,9 @@ function mpFrame(dt){
 }
 function mpUpdateHud(){
   const s=mp.snapshot,me=s?.players.find(p=>p.id===mp.id);if(!mp.active||!me)return;$('mp-online-hud').hidden=false;
-  $('mp-badge').textContent=(s.global?'GLOBAL ROOM':'ROOM '+s.code)+' · '+s.players.length+'/'+(s.maxPlayers||4);$('mp-spectate').hidden=me.alive&&!me.escaped;
+  $('mp-badge').textContent=(s.global?'GLOBAL ROOM':'ROOM '+s.code)+' · '+(s.playerCount||s.players.length)+'/'+(s.maxPlayers||4);$('mp-spectate').hidden=!me.alive||!me.escaped||!!s.personal;if(s.personal)$('timer-label').textContent=s.level<3?'YOUR SURVIVAL TIMER':'YOUR TIME IN LEVEL';
   const remaining=s.players.filter(p=>p.alive&&!p.escaped).length;
-  $('mp-live-status').textContent=!mp.connected||performance.now()-mp.lastSnapshot>2500?'CONNECTION INTERRUPTED — RECONNECTING':s.phase==='lobby'?'WAITING IN LOBBY':s.phase==='transition'?'TEAM CHECKPOINT REACHED — NEXT LEVEL':me.waiting?'WATCHING — YOU JOIN AT THE NEXT CHECKPOINT':me.crawling?'CRAWLING TO SAFETY':!me.alive?'YOU WERE CAUGHT — WATCHING YOUR TEAM':me.escaped?'YOU ARE SAFE — WAITING FOR '+remaining+' EXPLORER'+(remaining===1?'':'S'):'I · MESSAGES & FACE EMOJIS';
+  $('mp-live-status').textContent=!mp.connected||performance.now()-mp.lastSnapshot>2500?'CONNECTION INTERRUPTED — RECONNECTING':s.phase==='lobby'?'WAITING IN LOBBY':s.phase==='transition'?'TEAM CHECKPOINT REACHED — NEXT LEVEL':me.waiting?'WATCHING — YOU JOIN AT THE NEXT CHECKPOINT':me.crawling?'CRAWLING TO SAFETY':!me.alive?'CHOOSE RESTART OR EXIT ROOM':me.escaped?'YOU ARE SAFE — WAITING FOR '+remaining+' EXPLORER'+(remaining===1?'':'S'):'I · MESSAGES & FACE EMOJIS';
   if(s.global&&s.phase==='playing'&&s.exitIn!==null&&s.exitIn!==undefined)$('mp-live-status').textContent+=' · EXIT CLOSES IN '+Math.ceil(s.exitIn)+'s';
   if(!me.alive||me.escaped||me.crawling||s.phase!=='playing')$('interaction').hidden=true;
   if(mp.dialog)mpUpdateRoom();
@@ -1524,7 +1543,7 @@ let lookPointer=null,lastX=0,lastY=0,stickPointer=null,stickOrigin={x:0,y:0};
 function bind(){
   if(typeof bindAvatar==='function')bindAvatar();
   if(typeof bindMultiplayer==='function')bindMultiplayer();
-  $('start').onclick=()=>begin();$('collapse-start').onclick=()=>begin(5);$('retry').onclick=()=>typeof mp!=='undefined'&&mp.active?mpRestart():state==='won'?begin():begin(checkpoint,checkpointTime,checkpointFinale);$('interaction').onclick=()=>{const target=sewerTarget();useInteraction(target?.exit?.open?'crawl':'use');};$('resume').onclick=resume;$('pause-button').onclick=pause;$('quit').onclick=title;$('end-menu').onclick=title;$('settings-open').onclick=openSettings;$('pause-settings').onclick=openSettings;$('settings-close').onclick=closeSettings;
+  $('start').onclick=()=>begin();$('retry').onclick=()=>typeof mp!=='undefined'&&mp.active?mpRestart():state==='won'?begin():begin(checkpoint,checkpointTime,checkpointFinale);$('interaction').onclick=()=>{const target=sewerTarget();useInteraction(target?.exit?.open?'crawl':'use');};$('resume').onclick=resume;$('pause-button').onclick=pause;$('quit').onclick=title;$('end-menu').onclick=title;$('settings-open').onclick=openSettings;$('pause-settings').onclick=openSettings;$('settings-close').onclick=closeSettings;
   $('volume').oninput=e=>{settings.volume=Number(e.target.value)/100;audio.setVolume(settings.volume);updateSettings();saveSettings();};$('brightness').oninput=e=>{settings.brightness=Number(e.target.value)/100;updateSettings();saveSettings();};$('sensitivity').oninput=e=>{settings.sensitivity=Number(e.target.value)/100;updateSettings();saveSettings();};$('quality').onchange=e=>{settings.quality=e.target.value;env.resize();saveSettings();};$('reduced').onchange=e=>{settings.reduced=e.target.checked;updateSettings();saveSettings();};$('show-map').onchange=e=>{settings.map=e.target.checked;saveSettings();};
   $('settings').addEventListener('keydown',e=>{if(e.key==='Tab'){const els=[...$('settings').querySelectorAll('button,input,select')];if(e.shiftKey&&document.activeElement===els[0]){els.at(-1).focus();e.preventDefault();}else if(!e.shiftKey&&document.activeElement===els.at(-1)){els[0].focus();e.preventDefault();}}});
   window.addEventListener('keydown',e=>{

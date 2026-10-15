@@ -1,17 +1,17 @@
 'use strict';
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),zlib=require('node:zlib');
-const {Room,GameError,protocol}=require('./engine.cjs');
+const {Room,GlobalRoom,GameError,protocol}=require('./engine.cjs');
 function createServer({maxRooms=32,now=()=>Date.now()}={}){
   const rooms=new Map(),sessions=new Map(),ipLimits=new Map();
   const html=fs.readFileSync(path.join(__dirname,'Backrooms-Enhanced.html'));
   const headers={'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Cross-Origin-Resource-Policy':'same-origin'};
   const json=(res,status,data)=>{res.writeHead(status,{...headers,'Content-Type':'application/json; charset=utf-8'});res.end(JSON.stringify(data));};
-  const snapshotMessage=room=>'data: '+JSON.stringify(room.snapshot(),room.global?(_key,value)=>typeof value==='number'?Math.round(value*1000)/1000:value:undefined)+'\n\n';
+  const snapshotMessage=(room,playerId)=>'data: '+JSON.stringify(room.snapshot(playerId),room.global?(_key,value)=>typeof value==='number'?Math.round(value*1000)/1000:value:undefined)+'\n\n';
   function sendSnapshot(session,message){const sink=session.gzip||session.stream;sink.write(message);if(session.gzip)session.gzip.flush(zlib.constants.Z_SYNC_FLUSH);}
   function roomCode(){const alphabet='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let code;do{code=Array.from(crypto.randomBytes(6),v=>alphabet[v%alphabet.length]).join('');}while(rooms.has(code));return code;}
   function authorization(req){const token=req.headers.authorization?.match(/^Bearer ([a-f0-9]{48})$/)?.[1],session=sessions.get(token);if(!session)throw new GameError('Your connection expired. Join the room again.',401);session.lastSeen=now();const p=session.room.players.get(session.playerId);if(!p)throw new GameError('You are no longer in this room.',401);return {session,p};}
   function leave(token){const s=sessions.get(token);if(!s)return;if(s.stream)s.stream.end();sessions.delete(token);s.room.removePlayer(s.playerId);if(!s.room.players.size)rooms.delete(s.room.code);}
-  function join(room,name,avatar){const p=room.addPlayer(name,avatar),token=crypto.randomBytes(24).toString('hex');sessions.set(token,{token,room,playerId:p.id,lastSeen:now(),window:now(),requests:0,actions:0,stream:null});return {token,playerId:p.id,snapshot:room.snapshot()};}
+  function join(room,name,avatar){const p=room.addPlayer(name,avatar),token=crypto.randomBytes(24).toString('hex');sessions.set(token,{token,room,playerId:p.id,lastSeen:now(),window:now(),requests:0,actions:0,stream:null});return {token,playerId:p.id,snapshot:room.snapshot(p.id)};}
   function rate(req){const key=req.socket.remoteAddress||'unknown',t=now();let limit=ipLimits.get(key);if(!limit||t-limit.start>60000){limit={start:t,count:0};ipLimits.set(key,limit);}if(++limit.count>30)throw new GameError('Too many room requests. Wait a minute and try again.',429);if(ipLimits.size>2048)for(const [k,v]of ipLimits)if(t-v.start>60000)ipLimits.delete(k);}
   async function body(req){
     if(!/^application\/json(?:;|$)/i.test(req.headers['content-type']||''))throw new GameError('Send JSON.',415);
@@ -28,7 +28,7 @@ function createServer({maxRooms=32,now=()=>Date.now()}={}){
       if(req.method==='POST'&&['/api/rooms','/api/join','/api/quick','/api/global'].includes(route)){
         rate(req);const data=await body(req);if(data.version!==protocol.version)throw new GameError('Refresh the game to update multiplayer.',409);
         if(route!=='/api/global'&&(!Number.isInteger(data.level)||data.level<1||data.level>5))throw new GameError('Choose a level from 1 to 5.');let room;
-        if(route==='/api/global'){room=rooms.get('GLOBAL');if(!room){room=new Room('GLOBAL',{global:true});rooms.set('GLOBAL',room);}}
+        if(route==='/api/global'){room=rooms.get('GLOBAL');if(!room){room=new GlobalRoom();rooms.set('GLOBAL',room);}}
         else if(route==='/api/join'){const code=String(data.code||'').trim().toUpperCase();if(!/^[A-HJ-NP-Z2-9]{6}$/.test(code))throw new GameError('Enter the six-character room code.');room=rooms.get(code);if(!room)throw new GameError('Room not found. Check the code or ask your friend to create a room.',404);}
         else{
           if(route==='/api/quick')room=[...rooms.values()].find(r=>!r.global&&r.publicRoom&&r.level===data.level&&r.phase==='lobby'&&r.players.size<r.maxPlayers);
@@ -41,14 +41,14 @@ function createServer({maxRooms=32,now=()=>Date.now()}={}){
         const compressed=session.room.global&&(req.headers['accept-encoding']||'').split(',').some(value=>/^gzip(?:\s*;|$)/i.test(value.trim())&&!/;\s*q\s*=\s*0(?:\.0*)?\s*$/i.test(value));
         res.writeHead(200,{...headers,'Content-Type':'text/event-stream; charset=utf-8','Connection':'keep-alive','X-Accel-Buffering':'no',...(compressed?{'Content-Encoding':'gzip','Vary':'Accept-Encoding'}:{})});res.flushHeaders();
         const gzip=compressed?zlib.createGzip({level:zlib.constants.Z_BEST_SPEED}):null;session.gzip=gzip;if(gzip){gzip.on('error',()=>res.destroy());gzip.pipe(res);}
-        sendSnapshot(session,snapshotMessage(session.room));
+        sendSnapshot(session,snapshotMessage(session.room,session.playerId));
         res.on('close',()=>{gzip?.destroy();if(session.stream===res){session.stream=null;session.gzip=null;}});return;
       }
       if(req.method==='POST'&&['/api/input','/api/action','/api/chat','/api/start','/api/retry','/api/leave'].includes(route)){
         const {session:s,p}=authorization(req),t=now();if(t-s.window>=1000){s.window=t;s.requests=0;s.actions=0;}if(++s.requests>55)throw new GameError('Slow down your requests.',429);
         const data=await body(req);if(route==='/api/input'){s.room.input(p,data);json(res,200,{ok:true});return;}
         if(++s.actions>8)throw new GameError('Give your last action a moment.',429);
-        if(route==='/api/action'){json(res,200,{ok:s.room.action(p,data.action,data.epoch)});return;}
+        if(route==='/api/action'){json(res,200,{ok:s.room.action(p,data.action,data.epoch,data.life)});return;}
         if(route==='/api/chat')s.room.chat(p,data.kind,data.index,t,data.to);
         if(route==='/api/start')s.room.start(p.id);
         if(route==='/api/retry')s.room.retry(p.id);
@@ -65,8 +65,7 @@ function createServer({maxRooms=32,now=()=>Date.now()}={}){
     while(accumulator>=1/30){for(const room of rooms.values())room.tick(1/30);accumulator-=1/30;}
     if(++frames%2===0){for(const room of rooms.values()){
       if(room.global&&frames%4!==0)continue; // 7.5 updates/sec; the client interpolates movement.
-      const message=snapshotMessage(room);
-      for(const s of sessions.values())if(s.room===room&&s.stream&&!s.stream.destroyed){const queued=s.stream.writableLength+(s.gzip?.writableLength||0);if(queued>262144){s.stream.end();s.gzip?.destroy();s.stream=null;s.gzip=null;}else if(queued<65536)sendSnapshot(s,message);}
+      for(const s of sessions.values())if(s.room===room&&s.stream&&!s.stream.destroyed){const queued=s.stream.writableLength+(s.gzip?.writableLength||0);if(queued>262144){s.stream.end();s.gzip?.destroy();s.stream=null;s.gzip=null;}else if(queued<65536)sendSnapshot(s,snapshotMessage(room,s.playerId));}
     }}
     if(frames%30===0){const t=now();for(const [token,s]of sessions)if(t-s.lastSeen>20000)leave(token);}
   },1000/30);timer.unref();
