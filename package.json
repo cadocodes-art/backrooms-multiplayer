@@ -1,0 +1,13 @@
+{
+  "name": "backrooms-after-hours-multiplayer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Four-player cooperative Backrooms with a same-origin authoritative game server.",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "start": "node server.cjs",
+    "build": "node --check server.cjs && node --check engine.cjs && node --check mp-shared.js"
+  }
+}
