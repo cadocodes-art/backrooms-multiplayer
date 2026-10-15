@@ -61,6 +61,22 @@ THE SOFTWARE.
 @media(pointer:coarse){#collapse-alert{top:auto;bottom:345px;max-width:85vw;font-size:9px}}
 @media(max-height:480px){.menu-footer{display:none}#collapse-alert{top:82px;bottom:auto;left:auto;right:15px;transform:none;max-width:43vw;font-size:8px;padding:6px 9px}}
 
+/* Explorer profile: a lit portrait beside the equipment record. */
+#avatar-summary{font-size:9px;letter-spacing:1.5px;color:#b8c5a5;margin:17px 0 0}.start-row{max-width:860px;gap:14px}
+.avatar-backdrop{position:fixed;inset:0;z-index:30;background:#080f0de8;backdrop-filter:blur(12px);padding:24px;display:flex;align-items:center;justify-content:center;user-select:text}
+.avatar-panel{width:min(1100px,100%);height:min(820px,95dvh);background:#14221c;border:1px solid #869b7055;box-shadow:0 22px 100px #000a;display:flex;flex-direction:column;min-height:0}
+.avatar-heading{padding:25px 30px 21px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #b8c2922b;gap:20px}.avatar-heading h2{font-size:32px;letter-spacing:-1px;margin:11px 0 0}.avatar-heading .eyebrow{color:#adc3ab;font-size:9px}.avatar-heading .icon-button{flex-shrink:0}
+.avatar-layout{display:grid;grid-template-columns:44% 56%;min-height:0;flex:1}.avatar-preview{position:relative;display:flex;flex-direction:column;background:radial-gradient(ellipse at 50% 40%,#3d5040,#182b23 65%,#112019);border-right:1px solid #b8c2922b;overflow:hidden}
+.avatar-preview-label{display:flex;justify-content:space-between;gap:10px;margin:24px;font-size:9px;letter-spacing:1.4px;color:#b3c4a6}.avatar-preview-label span:first-child:before{content:'';display:inline-block;width:5px;height:5px;background:#d4db9f;margin-right:8px;box-shadow:0 0 9px #d4db9f}
+#avatar-stage{position:relative;flex:1;min-height:170px}#avatar-canvas{display:block;width:100%;height:100%;position:absolute;inset:0;touch-action:none;cursor:grab}#avatar-canvas:active{cursor:grabbing}#avatar-preview-error{position:absolute;inset:20px;font-size:13px;line-height:1.6}
+.avatar-preview-tools{display:flex;justify-content:center;gap:12px;padding:12px 18px 0}.avatar-preview-tools button{min-height:44px;min-width:44px;background:#15291d99;border:1px solid #cad7aa55;color:#e4edcf;font:10px 'Courier New',monospace;letter-spacing:1px}.avatar-preview-tools button:first-child,.avatar-preview-tools button:last-child{font-size:22px}#avatar-zoom{padding:0 17px}.avatar-caption{font:9px 'Courier New',monospace;text-align:center;letter-spacing:1px;color:#a7b99d;margin:15px 0 22px}
+.avatar-options{overflow-y:auto;overscroll-behavior:contain;padding:26px 30px;scrollbar-color:#74866c #16251e}.avatar-name-label{font:11px 'Courier New',monospace;letter-spacing:1px;display:flex;justify-content:space-between;gap:10px}.avatar-name-label span{font-size:8px;color:#9aaa94}#avatar-name{width:100%;display:block;margin-top:12px;padding:13px 14px;color:#f0edcd;background:#0d1b15;border:1px solid #bdcc9755;border-radius:0;font-size:18px;min-height:48px}#avatar-name-help,.avatar-fineprint{color:#a2b39b;font-size:10px;line-height:1.6;margin:10px 0 22px}
+#avatar-fields fieldset{border:0;border-top:1px solid #b8c29230;margin:24px 0 0;padding:20px 0 0;min-width:0}#avatar-fields legend{padding:0 14px 0 0;font:12px 'Courier New',monospace;color:#e6dfb8;letter-spacing:1px}.avatar-fields{display:grid;grid-template-columns:1fr 1fr;gap:20px 18px}.avatar-fields label{display:flex;flex-direction:column;gap:9px;min-width:0;font-size:11px;color:#c7d3bc}.avatar-fields label>span{display:block}.avatar-fields output{float:right;font:10px 'Courier New',monospace;color:#9bb18e}.avatar-fields select{width:100%;min-width:0;min-height:43px;background:#20342a;border-color:#abc09940;color:#e8e9d4;border-radius:0}.avatar-fields input[type=color]{width:100%;height:43px;padding:4px;background:#20342a;border:1px solid #abc09940;cursor:pointer}.avatar-fields input[type=range]{width:100%;min-width:0;height:43px;margin:0;accent-color:#d5d399;cursor:pointer}.avatar-fineprint{margin:25px 0 0}
+.avatar-footer{padding:16px 25px;border-top:1px solid #b8c2922b;background:#112018}.avatar-footer p{font-size:10px;color:#a7b99d;margin:0 0 12px;line-height:1.5}.avatar-footer-actions{display:flex;gap:18px;align-items:center}.avatar-footer-actions .text-button{font-size:9px;min-height:44px;letter-spacing:.8px}.avatar-footer-actions #avatar-cancel{margin-left:auto}.avatar-footer-actions .primary{min-height:45px;padding:14px 20px;font-size:10px}.avatar-panel button:hover{filter:brightness(1.14)}
+@media(max-width:740px){.avatar-backdrop{padding:8px}.avatar-panel{height:97dvh}.avatar-heading{padding:16px 18px}.avatar-heading h2{font-size:24px}.avatar-heading .eyebrow{font-size:7px;letter-spacing:1px}.avatar-layout{grid-template-columns:40% 60%}.avatar-options{padding:20px 16px}.avatar-fields{grid-template-columns:1fr;gap:15px}.avatar-preview-label{margin:16px;font-size:8px}.avatar-preview-label span:last-child{display:none}.avatar-preview-tools{flex-wrap:wrap;gap:6px;padding:8px}.avatar-preview-tools button{min-width:40px}#avatar-zoom{order:3;flex-basis:100%;font-size:8px}.avatar-caption{padding:0 8px;line-height:1.8;font-size:8px}.avatar-name-label{font-size:10px}.avatar-name-label span{display:none}.avatar-footer{padding:12px 16px}.avatar-footer-actions{gap:10px;flex-wrap:wrap}.avatar-footer-actions .text-button{font-size:8px}.avatar-footer-actions .primary{padding:12px;font-size:9px;gap:12px}.avatar-footer-actions #avatar-cancel{margin-left:0}.avatar-footer-actions #avatar-save{margin-left:auto}.start-row{max-width:88vw;gap:10px}#avatar-summary{font-size:8px}}
+@media(max-width:420px){.avatar-layout{grid-template-columns:38% 62%}.avatar-preview-tools{gap:4px}.avatar-options{padding:18px 12px}.avatar-footer-actions{gap:8px}.avatar-footer-actions #avatar-save{flex:1}.avatar-heading h2{font-size:21px}.avatar-footer p{font-size:9px}}
+@media(max-height:600px){.avatar-backdrop{padding:8px}.avatar-panel{height:96dvh}.avatar-heading{padding:12px 18px}.avatar-heading h2{font-size:24px;margin-top:5px}.avatar-footer{padding:8px 18px}.avatar-footer p{margin-bottom:4px}.avatar-preview-label{margin:12px 18px}.avatar-caption{display:none}.avatar-preview-tools{padding-bottom:8px}#avatar-stage{min-height:70px}#avatar-summary{margin-top:9px}.intro{top:16%}}
+
 /* Multiplayer rooms and the I-key communication menu. */
 .mp-backdrop{position:fixed;inset:0;z-index:24;background:#081311c9;backdrop-filter:blur(9px);display:flex;align-items:center;justify-content:center;padding:22px;user-select:text}
 .mp-panel{width:min(640px,100%);max-height:90dvh;overflow:auto;background:#182820;border:1px solid #7cb5a455;padding:30px;color:#d9e4ce;box-shadow:0 20px 90px #0007}.mp-heading{display:flex;align-items:center;justify-content:space-between;gap:15px}.mp-panel h2{font-size:37px;margin:24px 0 16px;letter-spacing:-1px}.mp-panel p{font-size:12px;line-height:1.75;color:#becfbd}.mp-panel .mp-small{font-size:11px;color:#a3b7a4}.mp-panel a{text-decoration:none;font-size:10px}.mp-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px}.mp-panel label{display:block;font:11px 'Courier New',monospace;color:#c5d5c2}.mp-panel input:not([type=checkbox]),.mp-panel select{display:block;width:100%;margin-top:9px;padding:12px;background:#0d1b17;border:1px solid #789b8166;color:#ecf2d4;border-radius:0;min-width:0}.mp-panel .mp-check{display:flex;align-items:center;gap:8px;margin:17px 0}.mp-check input{margin:0}.mp-buttons{display:flex;gap:13px;align-items:center;flex-wrap:wrap}.mp-buttons .primary{flex:1;min-width:170px;font-size:10px;justify-content:center;padding:15px}.mp-join-row{display:flex;align-items:flex-end;gap:14px;margin-top:24px;padding-top:22px;border-top:1px solid #a4b59c33}.mp-join-row label{flex:1}.mp-join-row .primary{padding:14px;min-height:43px;white-space:nowrap;font-size:10px}.mp-code-line{display:flex;align-items:center;gap:24px}.mp-code-line strong{font:36px 'Courier New',monospace;color:#bdffdf;letter-spacing:6px}#mp-roster{padding:0;list-style:none;margin:20px 0}#mp-roster li{padding:12px 0;border-bottom:1px solid #a4b59c22;font:12px 'Courier New',monospace}
@@ -82,7 +98,8 @@ THE SOFTWARE.
       <div class="eyebrow"><span class="pulse"></span> A PLACE YOU WERE NEVER MEANT TO FIND</div>
       <h1>THE<br>BACKROOMS<span>AFTER HOURS</span></h1>
       <p class="description">The lights are still on.<br>Something else is still here.</p>
-      <div class="start-row"><button id="start" class="primary">ENTER THE BACKROOMS <span>↗</span></button><button id="collapse-start" class="primary collapse-test" title="Start directly in Reality Collapse">TEST LEVEL 5 <span>↗</span></button><button id="settings-open" class="text-button">SETTINGS</button></div>
+      <div class="start-row"><button id="start" class="primary">ENTER THE BACKROOMS <span>↗</span></button><button id="collapse-start" class="primary collapse-test" title="Start directly in Reality Collapse">TEST LEVEL 5 <span>↗</span></button><button id="avatar-open" class="primary collapse-test">CHANGE AVATAR <span>↗</span></button><button id="settings-open" class="text-button">SETTINGS</button></div>
+      <p id="avatar-summary" class="mono" role="status"></p>
       <p class="audio-note"><span>◖◗</span> Headphones recommended · Sound begins when you enter</p>
     </section>
     <div class="archive-stamp mono"><span>CAM 01 / STANDBY</span><div class="signal-bars"><b></b><b></b><b></b><b></b><b></b></div><small>NO KNOWN EXIT</small></div>
@@ -95,6 +112,14 @@ THE SOFTWARE.
       <div class="controls-summary mono">WASD MOVE · MOUSE LOOK<br>SHIFT RUN · C CROUCH · F LIGHT</div>
     </footer>
   </div>
+  <div id="avatar-editor" class="avatar-backdrop" hidden><section class="avatar-panel" role="dialog" aria-modal="true" aria-labelledby="avatar-title">
+    <header class="avatar-heading"><div><div class="eyebrow">THRESHOLD ARCHIVE / EXPLORER PROFILE</div><h2 id="avatar-title">Who enters the unknown?</h2></div><button id="avatar-close" class="icon-button" aria-label="Close avatar editor without saving">×</button></header>
+    <div class="avatar-layout">
+      <div class="avatar-preview"><div class="avatar-preview-label mono"><span>LIVE PORTRAIT</span><span>01 / EXPLORER</span></div><div id="avatar-stage"><canvas id="avatar-canvas" aria-label="3D avatar preview. Drag to rotate."></canvas><p id="avatar-preview-error" hidden>Preview unavailable. You can still customize and save your avatar.</p></div><div class="avatar-preview-tools"><button id="avatar-left" aria-label="Rotate avatar left">↶</button><button id="avatar-zoom">FACE CLOSE-UP</button><button id="avatar-right" aria-label="Rotate avatar right">↷</button></div><p class="avatar-caption">Drag to turn · Made for the unknown</p></div>
+      <div class="avatar-options"><label class="avatar-name-label" for="avatar-name">PLAYER NAME <span>SEEN BY YOUR TEAM</span></label><input id="avatar-name" maxlength="18" autocomplete="off" spellcheck="false" aria-describedby="avatar-name-help"><p id="avatar-name-help">Up to 18 letters, numbers, spaces, underscores or hyphens.</p><div id="avatar-fields"></div><p class="avatar-fineprint">Appearance only. Movement, camera height and collision stay the same for everyone.</p></div>
+    </div>
+    <footer class="avatar-footer"><p id="avatar-status" role="status"></p><div class="avatar-footer-actions"><button id="avatar-random" class="text-button">RANDOMIZE LOOK</button><button id="avatar-reset" class="text-button">RESET LOOK</button><button id="avatar-cancel" class="text-button">CANCEL</button><button id="avatar-save" class="primary">SAVE AVATAR <span>↗</span></button></div></footer>
+  </section></div>
   <div id="hud" hidden>
     <div class="hud-top"><div><div class="eyebrow"><span class="record-dot"></span> REC <span id="tape">TAPE 01</span></div><div id="level-name">THE BACKROOMS</div></div><div class="time-wrap"><span class="eyebrow" id="timer-label">SURVIVE THE SIGNAL</span><strong id="timer">02:00</strong><button id="pause-button" class="icon-button" aria-label="Pause game">Ⅱ</button></div></div>
     <div id="crosshair"></div><div id="collapse-alert" role="status" aria-live="polite" hidden></div>
@@ -893,9 +918,250 @@ function updateCollapseHud(){
   const messages=["Hi.","You are good at this game.","How are you.","I'm feeling good.","I'm not feeling good.","Follow me.","LOL","I'm laughing right now.","Bruh.","What the heck.","Let's go.","Yes.","No.","Wait for me.","I'm so goated, I know.","You are goated.","Frick.","BRB.","Is the monster here?","IDK.","Help!","You're on your own, buddy.","Go away.","AAAAAA","Why did you do that?"];
   // Unicode Smileys & Emotion face groups, including cats and the three monkeys.
   const faces='😀 😃 😄 😁 😆 😅 🤣 😂 🙂 🙃 🫠 🫫 😉 😊 😇 🥰 😍 🤩 😘 😗 ☺️ 😚 😙 🥲 😋 😛 😜 🤪 😝 🤑 🤗 🤭 🫢 🫣 🤫 🤔 🫡 🤐 🤨 😐 😑 😶 🫥 😶‍🌫️ 😏 😒 🙄 😬 😮‍💨 🤥 🫨 🙂‍↔️ 🙂‍↕️ 😌 😔 😪 🤤 😴 🫩 😷 🤒 🤕 🤢 🤮 🤧 🥵 🥶 🥴 😵 😵‍💫 🤯 🤠 🥳 🥸 😎 🤓 🧐 😕 🫤 😟 🙁 ☹️ 😮 😯 😲 😳 🫪 🥺 🥹 😦 😧 😨 😰 😥 😢 😭 😱 😖 😣 😞 😓 😩 😫 🥱 😤 😡 😠 🤬 😈 👿 💀 ☠️ 💩 🤡 👹 👺 👻 👽 👾 🤖 😺 😸 😹 😻 😼 😽 🙀 😿 😾 🙈 🙉 🙊'.split(' ');
-  const protocol=Object.freeze({version:1,messages:Object.freeze(messages),faces:Object.freeze(faces),maxPlayers:4});
+  // Cosmetic data is bounded here on both client and server. It never changes physics.
+  const avatarChoices=Object.freeze({
+    hair:['short','swept','bob','long','curly','afro','bun','ponytail','mohawk','bald'],
+    face:['oval','round','square'],eyes:['round','almond'],brows:['soft','straight','angled'],
+    mouth:['neutral','smile','serious'],facialHair:['none','stubble','beard','mustache'],
+    top:['jacket','shirt','hoodie','vest'],pants:['trousers','shorts'],
+    eyewear:['none','round','square','sunglasses'],hat:['none','beanie','cap'],
+    accessory:['none','mask','earrings'],backpack:['none','pack']
+  });
+  Object.values(avatarChoices).forEach(Object.freeze);
+  const avatarDefaults=Object.freeze({skin:'#bc8865',hairColor:'#30251f',eyeColor:'#749c88',topColor:'#a9ac7b',pantsColor:'#34483e',shoeColor:'#252c28',accentColor:'#e3d18f',hair:'swept',face:'oval',eyes:'almond',brows:'soft',mouth:'neutral',facialHair:'none',top:'jacket',pants:'trousers',eyewear:'none',hat:'none',accessory:'none',backpack:'pack',height:100,build:100,shoulders:100,headSize:100,eyeSize:100});
+  const avatarRanges=Object.freeze({height:[90,110],build:[80,125],shoulders:[80,120],headSize:[85,115],eyeSize:[85,120]});
+  Object.values(avatarRanges).forEach(Object.freeze);
+  function normalizeAvatar(value){
+    const input=value&&typeof value==='object'&&!Array.isArray(value)?value:{},out={};
+    for(const [key,fallback] of Object.entries(avatarDefaults)){
+      const v=input[key];
+      if(avatarChoices[key])out[key]=avatarChoices[key].includes(v)?v:fallback;
+      else if(avatarRanges[key]){const [min,max]=avatarRanges[key];out[key]=typeof v==='number'&&Number.isFinite(v)?Math.round(Math.max(min,Math.min(max,v))):fallback;}
+      else out[key]=typeof v==='string'&&/^#[0-9a-f]{6}$/i.test(v)?v.toLowerCase():fallback;
+    }return out;
+  }
+  function cleanName(name){const s=(typeof name==='string'?name:'Explorer').normalize('NFKC').replace(/[^\p{L}\p{N} _-]/gu,'').trim().slice(0,18);return s||'Explorer';}
+  const protocol=Object.freeze({version:1,messages:Object.freeze(messages),faces:Object.freeze(faces),maxPlayers:4,avatarChoices,avatarDefaults,avatarRanges,normalizeAvatar,cleanName});
   if(typeof module!=='undefined'&&module.exports)module.exports=protocol;else root.BackroomsNetProtocol=protocol;
 })(globalThis);
+
+</script>
+<script>
+// The editor and online teammates use this exact same lightweight character model.
+const AvatarModel=(()=>{
+  function create(value){
+    const a=BackroomsNetProtocol.normalizeAvatar(value),group=new THREE.Group(),body=new THREE.Group();group.add(body);
+    const geometries=[],materials=[];
+    const geo=g=>(geometries.push(g),g),box=geo(new THREE.BoxGeometry(1,1,1)),sphere=geo(new THREE.SphereGeometry(1,16,12)),cap=geo(new THREE.SphereGeometry(1,20,12,0,Math.PI*2,0,Math.PI*.43));
+    const mat=(color,roughness=.8)=>{const m=new THREE.MeshStandardMaterial({color,roughness});materials.push(m);return m;};
+    const skin=mat(a.skin),hair=mat(a.hairColor),eyes=mat(a.eyeColor,.4),white=mat('#edeadf'),dark=mat('#1a2221'),top=mat(a.topColor),pants=mat(a.pantsColor),shoes=mat(a.shoeColor),accent=mat(a.accentColor,.55);
+    function shape(parent,g,m,x,y,z,sx,sy,sz){const mesh=new THREE.Mesh(g,m);mesh.position.set(x,y,z);mesh.scale.set(sx,sy,sz);parent.add(mesh);return mesh;}
+    const b=(p,m,x,y,z,w,h,d)=>shape(p,box,m,x,y,z,w,h,d),s=(p,m,x,y,z,w,h,d)=>shape(p,sphere,m,x,y,z,w,h,d);
+    const build=a.build/100,shoulders=a.shoulders/100,torsoW=.43*build,shoulderW=.44*shoulders*build;
+    body.scale.y=a.height/100;
+    // Softly rounded torso, sewn panels, pockets and contrasting cuffs.
+    s(body,top,0,1.07,0,shoulderW*.59,.38,.18*build);
+    b(body,top,0,.98,0,torsoW,.45,.31*build);
+    b(body,pants,0,.69,0,torsoW*.95,.12,.30*build);
+    b(body,accent,0,.7,-.161*build,.075,.055,.024);
+    if(a.top==='jacket'||a.top==='hoodie'){
+      b(body,accent,0,1.06,-.174*build,.018,.56,.014);
+      for(const sign of [-1,1]){b(body,accent,sign*.12*build,.93,-.18*build,.105,.014,.012);b(body,top,sign*.075,1.35,-.07,.10,.12,.15).rotation.z=sign*.25;}
+    }
+    if(a.top==='shirt')b(body,accent,-.10,1.19,-.176*build,.07,.07,.012);
+    if(a.top==='hoodie'){
+      s(body,top,0,1.36,.075,.24,.15,.22);
+      for(const sign of [-1,1])b(body,accent,sign*.065,1.25,-.18,.012,.17,.012);
+    }
+    if(a.top==='vest')for(const sign of [-1,1]){b(body,accent,sign*.14*build,1.08,-.19*build,.15,.38,.035);b(body,top,sign*.14*build,1.13,-.215*build,.11,.09,.02);}
+    const limbs=[];
+    for(const sign of [-1,1]){
+      const arm=new THREE.Group();arm.position.set(sign*(shoulderW*.5+.09),1.3,0);body.add(arm);limbs.push(arm);
+      const short=a.top==='shirt'||a.top==='vest';
+      s(arm,short?skin:top,0,-.245,0,.072*build,.29,.08*build);
+      s(arm,top,0,-.08,0,.09*build,short?.12:.20,.095*build);
+      if(!short)b(arm,accent,0,-.48,0,.14*build,.055,.16*build);
+      s(arm,skin,0,-.56,-.005,.073,.10,.068);
+      const leg=new THREE.Group();leg.position.set(sign*.12*build,.67,0);body.add(leg);limbs.push(leg);
+      b(leg,pants,0,-.17,0,.18*build,.36,.24);
+      b(leg,a.pants==='shorts'?skin:pants,0,-.43,0,.14*build,.26,.17);
+      s(leg,shoes,0,-.58,-.045,.105*build,.09,.17);
+      b(leg,accent,0,-.635,-.04,.20*build,.035,.30);
+    }
+    b(body,skin,0,1.43,0,.13,.19,.13);
+    const head=new THREE.Group();head.position.y=1.64;head.scale.setScalar(a.headSize/100);body.add(head);
+    const fx=a.face==='round'?1.08:a.face==='square'?1.04:1,fy=a.face==='round'?.94:1;
+    s(head,skin,0,0,0,.205*fx,.255*fy,.19);
+    if(a.face==='square')b(head,skin,0,-.075,-.005,.30,.19,.29);
+    for(const sign of [-1,1])s(head,skin,sign*.205,-.015,0,.043,.071,.034);
+    s(head,skin,0,-.025,-.188,.035,.052,.05);
+    const eyeScale=a.eyeSize/100;
+    for(const sign of [-1,1]){
+      const ex=sign*.083,ey=.035;
+      s(head,white,ex,ey,-.174,.056*eyeScale,(a.eyes==='round'?.039:.028)*eyeScale,.021);
+      s(head,eyes,ex,ey,-.195,.025*eyeScale,.027*eyeScale,.008);
+      s(head,dark,ex,ey,-.202,.012*eyeScale,.016*eyeScale,.005);
+      s(head,white,ex-.006,ey+.009,-.207,.006,.007,.003);
+      const brow=b(head,hair,ex,.104,-.175,.094,.017,.019);brow.rotation.z=a.brows==='angled'?sign*-.25:a.brows==='soft'?sign*.12:0;
+    }
+    const lip=mat(new THREE.Color(a.skin).multiplyScalar(.53));
+    if(a.mouth==='smile'){
+      b(head,lip,0,-.125,-.174,.067,.014,.018);
+      for(const sign of [-1,1])b(head,lip,sign*.04,-.115,-.17,.033,.013,.015).rotation.z=-sign*.5;
+    }else b(head,lip,0,-.12,-.175,a.mouth==='serious'?.07:.085,.013,.02);
+    if(a.facialHair==='stubble'||a.facialHair==='beard'){
+      s(head,hair,0,-.19,-.035,.176,a.facialHair==='beard'?.13:.075,.151);
+      for(const sign of [-1,1])b(head,hair,sign*.145,-.13,-.10,.038,.10,.09);
+    }
+    if(a.facialHair==='mustache'||a.facialHair==='beard')for(const sign of [-1,1])s(head,hair,sign*.036,-.086,-.186,.047,.019,.016);
+    const tuft=(x,y,z,w,h,d)=>s(head,hair,x,y,z,w,h,d);
+    if(a.hair!=='bald'){
+      shape(head,cap,hair,0,.038,.009,.218,.233,.205);
+      if(a.hair==='short')for(let i=0;i<5;i++)tuft((i-2)*.075,.237,-.04,.065,.048,.13);
+      if(a.hair==='swept')for(let i=0;i<5;i++){const t=tuft((i-2)*.065,.18+i*.016,-.13,.07,.10,.085);t.rotation.z=-.5;}
+      if(['bob','long','ponytail'].includes(a.hair)){
+        const len=a.hair==='long'?.30:.18;
+        tuft(0,-.02,.125,.21,len,.105);
+        if(a.hair!=='ponytail')for(const sign of [-1,1])tuft(sign*.18,-.01,0,.065,len,.16);
+      }
+      if(a.hair==='curly'||a.hair==='afro'){
+        const big=a.hair==='afro';
+        for(let row=0;row<3;row++)for(let i=0;i<9;i++){
+          const angle=i*Math.PI*2/9,ring=(big?.22:.185)*(1-row*.23);
+          tuft(Math.sin(angle)*ring,.08+row*.09,Math.cos(angle)*ring,big?.105:.075,big?.11:.078,big?.105:.075);
+        }
+      }
+      if(a.hair==='bun')tuft(0,.25,.14,.13,.13,.13);
+      if(a.hair==='ponytail'){tuft(0,.09,.25,.09,.11,.12);tuft(0,-.12,.28,.075,.22,.085);}
+      if(a.hair==='mohawk')for(let i=0;i<6;i++)tuft(0,.26,-.15+i*.06,.04,.10,.045);
+    }
+    if(a.eyewear!=='none'){
+      const frames=mat(a.eyewear==='sunglasses'?'#1c2428':a.accentColor,.35);
+      for(const sign of [-1,1]){
+        const x=sign*.086;
+        if(a.eyewear==='round'){
+          const ring=geo(new THREE.TorusGeometry(.061,.008,6,20));shape(head,ring,frames,x,.033,-.216,1,1,1);
+        }else{
+          if(a.eyewear==='sunglasses')b(head,frames,x,.033,-.218,.116,.068,.013);
+          else{for(const y of [-.003,.070])b(head,frames,x,y,-.216,.12,.01,.012);for(const dx of [-.056,.056])b(head,frames,x+dx,.033,-.216,.01,.073,.012);}
+        }
+        b(head,frames,sign*.197,.04,-.1,.012,.013,.22);
+      }b(head,frames,0,.04,-.215,.06,.01,.01);
+    }
+    if(a.hat!=='none'){
+      shape(head,cap,accent,0,.103,.006,.242,.21,.224);
+      if(a.hat==='cap')s(head,accent,0,.10,-.21,.23,.018,.15);
+      else{b(head,accent,0,.11,-.203,.35,.067,.024);s(head,accent,0,.32,.006,.055,.055,.055);}
+    }
+    if(a.accessory==='mask'){s(head,accent,0,-.095,-.173,.151,.075,.063);for(const sign of [-1,1])b(head,accent,sign*.167,-.06,-.08,.013,.02,.19);}
+    if(a.accessory==='earrings')for(const sign of [-1,1])s(head,accent,sign*.222,-.083,-.006,.027,.04,.02);
+    if(a.backpack==='pack'){
+      b(body,pants,0,1.07,.25,.34*build,.44,.17);
+      b(body,accent,0,1.05,.344,.24*build,.24,.025);
+      for(const sign of [-1,1])b(body,pants,sign*.17*build,1.15,-.187*build,.045,.37,.024);
+    }
+    group.userData.avatar=a;
+    return {group,body,head,limbs,dispose(){for(const g of geometries)g.dispose();for(const m of materials)m.dispose();}};
+  }
+  return {create};
+})();
+
+const avatarEditor={open:false,profile:null,draft:null,model:null,renderer:null,scene:null,camera:null,angle:.24,zoom:'full',dirty:false};
+function readAvatarProfile(){
+  let saved={},oldName='Explorer';try{saved=JSON.parse(localStorage.getItem('backrooms-avatar-v1')||'{}')||{};oldName=localStorage.getItem('backrooms-mp-name')||oldName;}catch{}
+  return {name:BackroomsNetProtocol.cleanName(saved.name||oldName),avatar:BackroomsNetProtocol.normalizeAvatar(saved.avatar)};
+}
+function saveAvatarProfile(profile){
+  avatarEditor.profile={name:BackroomsNetProtocol.cleanName(profile.name),avatar:BackroomsNetProtocol.normalizeAvatar(profile.avatar)};
+  try{localStorage.setItem('backrooms-avatar-v1',JSON.stringify(avatarEditor.profile));localStorage.setItem('backrooms-mp-name',avatarEditor.profile.name);return true;}catch{return false;}
+}
+function avatarSetName(name){saveAvatarProfile({...avatarEditor.profile,name});$('avatar-summary').textContent=avatarEditor.profile.name+' · YOUR EXPLORER';}
+function avatarPreviewBuild(){
+  const ed=avatarEditor;if(!ed.scene)return;
+  if(ed.model){ed.scene.remove(ed.model.group);ed.model.dispose();}
+  ed.model=AvatarModel.create(ed.draft.avatar);ed.scene.add(ed.model.group);ed.model.group.rotation.y=Math.PI+ed.angle;
+}
+function avatarPreviewInit(){
+  const ed=avatarEditor;if(ed.renderer)return;
+  ed.renderer=new THREE.WebGLRenderer({canvas:$('avatar-canvas'),antialias:true,alpha:true});ed.renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));ed.renderer.outputEncoding=THREE.sRGBEncoding;
+  ed.scene=new THREE.Scene();ed.camera=new THREE.PerspectiveCamera(32,1,.05,30);
+  ed.scene.add(new THREE.HemisphereLight(0xe9f3df,0x4c584e,1.5));
+  const key=new THREE.DirectionalLight(0xffe5ba,2.4);key.position.set(-3,4,5);ed.scene.add(key);
+  const rim=new THREE.DirectionalLight(0x91d6c3,2);rim.position.set(2,3,-3);ed.scene.add(rim);
+  const floor=new THREE.Mesh(new THREE.CylinderGeometry(.68,.74,.06,48),new THREE.MeshStandardMaterial({color:0x283b32,roughness:.6,metalness:.3}));floor.position.y=-.04;ed.scene.add(floor);
+  const halo=new THREE.Mesh(new THREE.TorusGeometry(.68,.009,8,64),new THREE.MeshBasicMaterial({color:0xc8d494}));halo.rotation.x=Math.PI/2;ed.scene.add(halo);
+}
+function avatarPreviewFrame(now){
+  const ed=avatarEditor;if(!ed.open||!ed.renderer)return;
+  const rect=$('avatar-stage').getBoundingClientRect(),w=Math.max(1,Math.round(rect.width)),h=Math.max(1,Math.round(rect.height));
+  if(ed.w!==w||ed.h!==h){ed.w=w;ed.h=h;ed.renderer.setSize(w,h,false);ed.camera.aspect=w/h;ed.camera.updateProjectionMatrix();}
+  const close=ed.zoom==='face',target=close?1.67*ed.draft.avatar.height/100:1.10,distance=(close?1.7*ed.draft.avatar.headSize/100:4.6)*Math.max(1,.75/(w/h));
+  ed.camera.position.set(0,close?target+.03:1.38,distance);ed.camera.lookAt(0,target,0);
+  if(ed.model){ed.model.group.rotation.y=Math.PI+ed.angle;ed.model.head.rotation.z=settings.reduced?0:Math.sin(now*.0007)*.015;}
+  ed.renderer.render(ed.scene,ed.camera);
+}
+function avatarSyncControls(){
+  for(const [key,value] of Object.entries(avatarEditor.draft.avatar)){
+    const field=$('avatar-'+key);if(field){field.value=String(value);const output=$('avatar-'+key+'-out');if(output)output.textContent=value+'%';}
+  }
+  $('avatar-name').value=avatarEditor.draft.name;
+}
+function avatarOpen(){
+  if(state!=='title')return;const ed=avatarEditor;ed.draft=JSON.parse(JSON.stringify(ed.profile));ed.open=true;ed.dirty=false;ed.angle=.24;ed.zoom='full';
+  $('avatar-editor').hidden=false;$('avatar-status').textContent='Saved on this device. Your team sees this avatar in multiplayer.';
+  $('avatar-zoom').textContent='FACE CLOSE-UP';avatarSyncControls();
+  try{avatarPreviewInit();avatarPreviewBuild();$('avatar-preview-error').hidden=true;}catch{ $('avatar-preview-error').hidden=false;}
+  $('avatar-name').focus();
+}
+function avatarClose(save=false){
+  const ed=avatarEditor;
+  if(save){ed.draft.name=$('avatar-name').value;const stored=saveAvatarProfile(ed.draft);$('mp-name').value=ed.profile.name;$('avatar-summary').textContent=stored?ed.profile.name+' · AVATAR SAVED':'Saved for this session · device storage unavailable';}
+  ed.open=false;$('avatar-editor').hidden=true;if(ed.model){ed.scene.remove(ed.model.group);ed.model.dispose();ed.model=null;}$('avatar-open').focus();
+}
+function avatarRandomize(){
+  const P=BackroomsNetProtocol,pick=list=>list[Math.floor(Math.random()*list.length)],a={...P.avatarDefaults};
+  for(const [k,v] of Object.entries(P.avatarChoices))a[k]=pick(v);
+  for(const [k,[min,max]] of Object.entries(P.avatarRanges))a[k]=Math.round(min+Math.random()*(max-min));
+  a.skin=pick(['#f1c7a5','#dfac86','#bc8865','#956345','#704832','#4a3025']);a.hairColor=pick(['#201c1b','#4c3024','#936437','#e0ba78','#b14832','#d8d4cb','#755990','#306773']);a.eyeColor=pick(['#799eab','#53745b','#644431','#a98c50','#6e678c']);
+  a.topColor=pick(['#a9ac7b','#456c61','#a26e52','#64788d','#847493','#d0c7b0']);a.pantsColor=pick(['#34483e','#373d4f','#665a49','#2a272e']);a.accentColor=pick(['#e3d18f','#bad4c3','#d59a71']);
+  avatarEditor.draft.avatar=a;avatarSyncControls();avatarPreviewBuild();
+}
+function bindAvatar(){
+  const P=BackroomsNetProtocol;avatarEditor.profile=readAvatarProfile();$('avatar-summary').textContent=avatarEditor.profile.name+' · YOUR EXPLORER';
+  const sections=[
+    ['Face & skin',[['skin','Skin tone','color'],['face','Face shape'],['eyeColor','Eye color','color'],['eyes','Eye shape'],['eyeSize','Eye size','range'],['brows','Eyebrows'],['mouth','Expression'],['facialHair','Facial hair']]],
+    ['Hair',[['hair','Hair style'],['hairColor','Hair color','color']]],
+    ['Body',[['height','Height','range'],['build','Body width','range'],['shoulders','Shoulder width','range'],['headSize','Head size','range']]],
+    ['Clothes',[['top','Top style'],['topColor','Top color','color'],['pants','Bottoms'],['pantsColor','Bottoms color','color'],['shoeColor','Shoe color','color'],['accentColor','Accent color','color']]],
+    ['Accessories',[['eyewear','Glasses'],['hat','Headwear'],['accessory','Face accessory'],['backpack','Backpack']]]
+  ];
+  const names={swept:'Side swept',curly:'Curls',long:'Long',pack:'Field pack',short:'Short crop',bald:'No hair',none:'None',shirt:'T-shirt',trousers:'Trousers'};
+  for(const [title,fields] of sections){
+    const section=document.createElement('fieldset'),legend=document.createElement('legend');legend.textContent=title;section.append(legend);const grid=document.createElement('div');grid.className='avatar-fields';section.append(grid);
+    for(const [key,label,type] of fields){
+      const wrap=document.createElement('label'),caption=document.createElement('span');caption.textContent=label;wrap.append(caption);
+      const field=document.createElement(type?'input':'select');field.id='avatar-'+key;field.setAttribute('aria-label',label);
+      if(type){field.type=type;if(type==='range'){const [min,max]=P.avatarRanges[key];field.min=min;field.max=max;field.step=1;const output=document.createElement('output');output.id=field.id+'-out';caption.append(output);}}
+      else for(const value of P.avatarChoices[key]){const option=document.createElement('option');option.value=value;option.textContent=names[value]||value.charAt(0).toUpperCase()+value.slice(1);field.append(option);}
+      field.addEventListener('input',()=>{avatarEditor.draft.avatar[key]=type==='range'?Number(field.value):field.value;const out=$('avatar-'+key+'-out');if(out)out.textContent=field.value+'%';avatarEditor.dirty=true;});
+      wrap.append(field);grid.append(wrap);
+    }$('avatar-fields').append(section);
+  }
+  $('avatar-open').onclick=avatarOpen;$('avatar-close').onclick=()=>avatarClose();$('avatar-cancel').onclick=()=>avatarClose();$('avatar-save').onclick=()=>avatarClose(true);
+  $('avatar-random').onclick=avatarRandomize;$('avatar-reset').onclick=()=>{avatarEditor.draft.avatar={...P.avatarDefaults};avatarSyncControls();avatarPreviewBuild();};
+  // Preserve a typed name while randomizing or resetting only appearance.
+  $('avatar-name').addEventListener('input',()=>avatarEditor.draft.name=$('avatar-name').value);
+  $('avatar-left').onclick=()=>avatarEditor.angle-=Math.PI/4;$('avatar-right').onclick=()=>avatarEditor.angle+=Math.PI/4;
+  $('avatar-zoom').onclick=()=>{avatarEditor.zoom=avatarEditor.zoom==='face'?'full':'face';$('avatar-zoom').textContent=avatarEditor.zoom==='face'?'FULL BODY':'FACE CLOSE-UP';};
+  let pointer=null,lastX=0;const stage=$('avatar-canvas');
+  stage.addEventListener('pointerdown',e=>{pointer=e.pointerId;lastX=e.clientX;stage.setPointerCapture(pointer);});
+  stage.addEventListener('pointermove',e=>{if(pointer===e.pointerId){avatarEditor.angle+=(e.clientX-lastX)*.012;lastX=e.clientX;}});
+  for(const event of ['pointerup','pointercancel','lostpointercapture'])stage.addEventListener(event,()=>pointer=null);
+  $('avatar-editor').addEventListener('keydown',e=>{
+    if(e.key!=='Tab')return;const fields=[...$('avatar-editor').querySelectorAll('button,input,select')].filter(el=>!el.disabled&&el.getClientRects().length);
+    if(e.shiftKey&&document.activeElement===fields[0]){fields.at(-1).focus();e.preventDefault();}else if(!e.shiftKey&&document.activeElement===fields.at(-1)){fields[0].focus();e.preventDefault();}
+  });
+}
 
 </script>
 <script>
@@ -910,7 +1176,7 @@ async function mpRequest(route,data,token=mp.token){
 }
 async function mpOpen(){
   if(!mp.active&&state==='playing')pause();mp.dialog=true;clearInput();releasePointer();$('mp-dialog').hidden=false;$('mp-offline').hidden=true;$('mp-connect').hidden=mp.active;$('mp-room').hidden=!mp.active;
-  $('mp-level').value=String(level);try{$('mp-name').value=localStorage.getItem('backrooms-mp-name')||'Explorer';}catch{$('mp-name').value='Explorer';}
+  $('mp-level').value=String(level);$('mp-name').value=avatarEditor.profile.name;
   if(!['http:','https:'].includes(location.protocol)){$('mp-connect').hidden=true;$('mp-offline').hidden=false;mpNotice('The downloaded edition plays solo. Open the multiplayer edition to join people.');return;}
   if(mp.active){mpUpdateRoom();mpNotice('The world keeps running while this menu is open.');$('mp-close').focus();return;}
   mpNotice('Checking multiplayer connection…');mpSetBusy(true);
@@ -920,12 +1186,12 @@ function mpClose(){mp.dialog=false;$('mp-dialog').hidden=true;if(mp.active){if(m
 function mpSetBusy(on){mp.busy=on;for(const id of ['mp-create','mp-join','mp-quick'])$(id).disabled=on;}
 async function mpJoin(kind){
   if(mp.busy||mp.active)return;mpSetBusy(true);mpNotice('Connecting…');
-  const data={version:MP.version,name:$('mp-name').value,level:Number($('mp-level').value),publicRoom:$('mp-public').checked,code:$('mp-code').value};
+  const data={version:MP.version,name:MP.cleanName($('mp-name').value),avatar:avatarEditor.profile.avatar,level:Number($('mp-level').value),publicRoom:$('mp-public').checked,code:$('mp-code').value};
   try{
     const result=await mpRequest(kind==='create'?'/api/rooms':kind==='quick'?'/api/quick':'/api/join',data);
     if(!mp.dialog){mpRequest('/api/leave',{},result.token).catch(()=>{});return;}
     mp.active=true;mp.connected=true;mp.token=result.token;mp.id=result.playerId;mp.epoch=-1;mp.lastEvent=0;mp.generation++;mp.feed=[];mp.spectate=null;mp.menu=false;
-    try{localStorage.setItem('backrooms-mp-name',data.name);await audio.start();}catch{}
+    avatarSetName(data.name);try{await audio.start();}catch{}
     audio.setVolume(settings.volume);state='playing';setScreen('hud');document.body.classList.toggle('online',true);mpApplySnapshot(result.snapshot,true);
     $('mp-connect').hidden=true;$('mp-room').hidden=false;mpNotice('Share the room code. The host starts when everyone is ready.');
     for(const chat of result.snapshot.messages||[])mpAddChat(chat);
@@ -1041,16 +1307,12 @@ function mpPaintTag(sprite,text,emoji=false){
   const canvas=sprite.userData.canvas,g=canvas.getContext('2d');g.clearRect(0,0,canvas.width,canvas.height);if(!emoji){g.fillStyle='#102321cc';g.fillRect(0,0,canvas.width,canvas.height);}g.textAlign='center';g.textBaseline='middle';g.font=emoji?'88px "Segoe UI Emoji", sans-serif':'bold 27px Arial';g.fillStyle='#ecfff2';g.fillText(text,canvas.width/2,canvas.height/2);sprite.material.map.needsUpdate=true;
 }
 function mpMakePeer(p){
-  const group=new THREE.Group(),color=[0xc8bc6c,0x6cc4b2,0xc68168,0x9c95d2][p.color%4],suit=new THREE.MeshStandardMaterial({color,roughness:.75}),visor=new THREE.MeshStandardMaterial({color:0x192a2c,roughness:.28,metalness:.3});
-  const part=(w,h,d,x,y,z,mat=suit)=>env.box(group,w,h,d,x,y,z,mat);
-  part(.43,.72,.29,0,1.05,0);part(.38,.07,.31,0,.68,0,visor);
-  const head=new THREE.Mesh(env.sphere,suit);head.scale.set(.235,.25,.225);head.position.set(0,1.65,0);group.add(head);part(.32,.14,.04,0,1.65,-.22,visor);
-  const limbs=[];for(const sign of [-1,1]){limbs.push(part(.13,.6,.15,sign*.29,1.02,0));limbs.push(part(.14,.57,.16,sign*.12,.36,0));}
+  const model=AvatarModel.create(p.avatar),group=model.group,limbs=model.limbs;
   const tag=(emoji=false)=>{const canvas=document.createElement('canvas');canvas.width=emoji?128:384;canvas.height=emoji?128:64;const tex=new THREE.CanvasTexture(canvas);tex.encoding=THREE.sRGBEncoding;const material=new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:true,depthWrite:false});const sprite=new THREE.Sprite(material);sprite.scale.set(emoji?.75:2.5,emoji?.75:.42,1);sprite.position.y=emoji?2.8:2.18;sprite.userData.canvas=canvas;group.add(sprite);return sprite;};
   const label=tag(),emote=tag(true);mpPaintTag(label,p.name);emote.visible=false;group.position.set(p.x,p.y,p.z);env.scene.add(group);
-  const peer={group,limbs,label,emote,suit,visor,emoteUntil:0,step:p.step};mp.peers.set(p.id,peer);return peer;
+  const peer={group,limbs,label,emote,model,emoteUntil:0,step:p.step};mp.peers.set(p.id,peer);return peer;
 }
-function mpRemovePeer(id){const p=mp.peers.get(id);if(!p)return;env.scene.remove(p.group);for(const s of [p.label,p.emote]){s.material.map.dispose();s.material.dispose();}p.suit.dispose();p.visor.dispose();mp.peers.delete(id);}
+function mpRemovePeer(id){const p=mp.peers.get(id);if(!p)return;env.scene.remove(p.group);for(const s of [p.label,p.emote]){s.material.map.dispose();s.material.dispose();}p.model.dispose();mp.peers.delete(id);}
 function mpClearPeers(){for(const id of [...mp.peers.keys()])mpRemovePeer(id);}
 function mpFrame(dt){
   const s=mp.snapshot;if(!s)return;const me=s.players.find(p=>p.id===mp.id);if(!me)return;
@@ -1069,7 +1331,7 @@ function mpFrame(dt){
   if(level===5){collapse.progress=collapseRunProgress(player.x,player.z);collapse.noticeTime=Math.max(0,collapse.noticeTime-dt);collapse.shake=Math.max(0,collapse.shake-dt*.65);}
   for(const p of s.players){if(p.id===mp.id)continue;const peer=mp.peers.get(p.id)||mpMakePeer(p);peer.group.visible=p.alive&&!p.escaped&&pose!==p;
     const blend=1-Math.exp(-14*dt);peer.group.position.lerp(new THREE.Vector3(p.x,p.y,p.z),blend);peer.group.rotation.y+=Math.atan2(Math.sin(p.yaw-peer.group.rotation.y),Math.cos(p.yaw-peer.group.rotation.y))*blend;peer.group.scale.y=p.crouch?.68:1;
-    peer.limbs.forEach((limb,i)=>limb.rotation.x=p.moving?Math.sin(p.step*5+(i%2?Math.PI:0))*.35:0);peer.emote.visible=performance.now()<peer.emoteUntil;
+    peer.limbs.forEach((limb,i)=>limb.rotation.x=p.moving?Math.sin(p.step*5+([0,3].includes(i)?0:Math.PI))*.35:0);peer.emote.visible=performance.now()<peer.emoteUntil;
     if(p.step-peer.step>1.65){if(Math.hypot(p.x-pose.x,p.z-pose.z)<20)audio.step(p.crouch,p.running,{x:p.x,y:.2,z:p.z});peer.step=p.step;}
   }
   for(const id of mp.peers.keys())if(!s.players.some(p=>p.id===id))mpRemovePeer(id);
@@ -1197,11 +1459,13 @@ function openSettings(){settingsFocus=document.activeElement;$('settings').hidde
 function closeSettings(){$('settings').hidden=true;settingsFocus?.focus();saveSettings();}
 let lookPointer=null,lastX=0,lastY=0,stickPointer=null,stickOrigin={x:0,y:0};
 function bind(){
+  if(typeof bindAvatar==='function')bindAvatar();
   if(typeof bindMultiplayer==='function')bindMultiplayer();
   $('start').onclick=()=>begin();$('collapse-start').onclick=()=>begin(5);$('retry').onclick=()=>typeof mp!=='undefined'&&mp.active?mpRestart():state==='won'?begin():begin(checkpoint,checkpointTime,checkpointFinale);$('interaction').onclick=()=>{const target=sewerTarget();useInteraction(target?.exit?.open?'crawl':'use');};$('resume').onclick=resume;$('pause-button').onclick=pause;$('quit').onclick=title;$('end-menu').onclick=title;$('settings-open').onclick=openSettings;$('pause-settings').onclick=openSettings;$('settings-close').onclick=closeSettings;
   $('volume').oninput=e=>{settings.volume=Number(e.target.value)/100;audio.setVolume(settings.volume);updateSettings();saveSettings();};$('brightness').oninput=e=>{settings.brightness=Number(e.target.value)/100;updateSettings();saveSettings();};$('sensitivity').oninput=e=>{settings.sensitivity=Number(e.target.value)/100;updateSettings();saveSettings();};$('quality').onchange=e=>{settings.quality=e.target.value;env.resize();saveSettings();};$('reduced').onchange=e=>{settings.reduced=e.target.checked;updateSettings();saveSettings();};$('show-map').onchange=e=>{settings.map=e.target.checked;saveSettings();};
   $('settings').addEventListener('keydown',e=>{if(e.key==='Tab'){const els=[...$('settings').querySelectorAll('button,input,select')];if(e.shiftKey&&document.activeElement===els[0]){els.at(-1).focus();e.preventDefault();}else if(!e.shiftKey&&document.activeElement===els.at(-1)){els[0].focus();e.preventDefault();}}});
   window.addEventListener('keydown',e=>{
+    if(typeof avatarEditor!=='undefined'&&avatarEditor.open){if(e.code==='Escape'){e.preventDefault();avatarClose();}return;}
     if(e.code==='KeyI'&&!e.repeat&&typeof mp!=='undefined'&&mp.active){e.preventDefault();mpToggleComposer();return;}
     if(e.code==='Escape'){if(typeof mp!=='undefined'&&mp.composer){mpCloseComposer();return;}if(typeof mp!=='undefined'&&mp.dialog){mpClose();return;}if(!$('settings').hidden)closeSettings();else if(state==='paused'||(typeof mp!=='undefined'&&mp.active&&mp.menu))resume();else pause();return;}
     if(typeof mp!=='undefined'&&(mp.dialog||mp.composer))return;
@@ -1221,6 +1485,7 @@ function bind(){
 function loop(now){
   requestAnimationFrame(loop);const dt=Math.min((now-last)/1000||0,.08);last=now;worldTime+=dt;
   if(document.hidden)return;
+  if(typeof avatarEditor!=='undefined'&&avatarEditor.open){if(avatarEditor.dirty){avatarEditor.dirty=false;avatarPreviewBuild();}avatarPreviewFrame(now);return;}
   if(typeof mp!=='undefined'&&mp.active){mpFrame(dt);return;}
   if(state==='title'){
     menuAngle+=dt;const pose={...player,x:6.8,z:30,eye:1.66,y:0,yaw:-Math.PI/2+.13+Math.sin(menuAngle*.12)*.11,pitch:-.025,bob:0,roll:0,flash:false};env.update(dt,worldTime,pose,monster,0,true);

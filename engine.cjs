@@ -14,17 +14,23 @@ class Room{
     this.monster={...this.base.monster,angle:0,walk:0,mode:'patrol',target:null,path:[],memory:0,repath:0};
     this.objectives={hammer:false,hits:[0,0,0,0,0],opened:[],opener:false,unlocked:false,doorOpen:0,anchors:run?[true,true,true]:[false,false,false],gates:(this.base.gates||[]).map(()=>false),warning:0,shifts:0};
     this.hiddenOpener=level===4?crypto.randomInt(this.base.units.length):-1;this.revealedOpener=-1;this.openTimes={};this.hammerCooldown=0;this.shiftIn=24;this.footIn=13;this.finalCheckpoint=run;
-    for(const p of this.players.values())this.spawnPlayer(p);
+    const placed=[];for(const p of this.players.values()){this.spawnPlayer(p,this.spawnPoint,placed);placed.push(p);}
   }
-  spawnPlayer(p){
-    Object.assign(p,{...this.spawnPoint,y:0,vy:0,ground:true,eye:1.65,pitch:0,stamina:100,exhausted:false,noise:0,crouch:false,running:false,moving:false,flash:true,alive:true,escaped:false,crawl:null,cooldown:0,grace:7,step:0,seq:0,input:{f:0,s:0,yaw:this.spawnPoint.yaw,pitch:0,crouch:false,run:false,flash:true},inputAge:0});
+  spawnPlayer(p,origin=this.spawnPoint,peers=[...this.players.values()]){
+    // Keep cameras out of teammates' heads, including at checkpoints and late joins.
+    const occupied=peers.filter(q=>q.id!==p.id&&q.alive&&!q.escaped),offsets=[[0,0]];
+    for(const radius of [1.2,2.4,3.6])for(const [x,z] of [[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1]])offsets.push([x*radius,z*radius]);
+    const position=offsets.map(([x,z])=>({x:origin.x+x,z:origin.z+z})).find(q=>!this.blocked(q.x,q.z,.29)&&occupied.every(other=>dist(q,other)>=1)&&this.line(origin,q,true,.26));
+    if(!position)throw new GameError('There is no clear space beside your team. Try joining again in a moment.',409);
+    Object.assign(p,{...origin,...position,y:0,vy:0,ground:true,eye:1.65,pitch:0,stamina:100,exhausted:false,noise:0,crouch:false,running:false,moving:false,flash:true,alive:true,escaped:false,crawl:null,cooldown:0,grace:7,step:0,seq:0,input:{f:0,s:0,yaw:origin.yaw,pitch:0,crouch:false,run:false,flash:true},inputAge:0});
   }
-  addPlayer(name){
+  addPlayer(name,avatar){
     if(this.players.size>=protocol.maxPlayers)throw new GameError('This room is full.',409);
     if(['won','lost'].includes(this.phase))throw new GameError('This room has finished. Create a new room.',409);
     const id=crypto.randomBytes(8).toString('hex');
-    const p={id,name:cleanName(name),color:this.players.size,lastChat:-Infinity,lastSeen:Date.now(),rate:0};this.spawnPlayer(p);
-    if(this.phase==='playing'){const buddy=[...this.players.values()].find(q=>q.alive&&!q.escaped&&!q.crawl);if(buddy){p.x=buddy.x;p.z=buddy.z;}else throw new GameError('Wait for the next checkpoint before joining.',409);}
+    const p={id,name:protocol.cleanName(name),avatar:protocol.normalizeAvatar(avatar),color:this.players.size,lastChat:-Infinity,lastSeen:Date.now(),rate:0};let origin=this.spawnPoint;
+    if(this.phase==='playing'){const buddy=[...this.players.values()].find(q=>q.alive&&!q.escaped&&!q.crawl);if(buddy)origin={x:buddy.x,z:buddy.z,yaw:buddy.yaw};else throw new GameError('Wait for the next checkpoint before joining.',409);}
+    this.spawnPlayer(p,origin);
     this.players.set(id,p);if(!this.hostId)this.hostId=id;this.emit('joined',{playerId:id,name:p.name});return p;
   }
   removePlayer(id){const p=this.players.get(id);if(!p)return;this.players.delete(id);this.emit('left',{playerId:id,name:p.name});if(this.hostId===id){this.hostId=this.players.keys().next().value||null;this.emit('host',{playerId:this.hostId});}this.checkResolved();}
@@ -149,9 +155,9 @@ class Room{
     this.checkResolved();if(this.phase==='playing'&&this.level<3&&this.elapsed>=(this.level===1?120:300))this.nextLevel();
   }
   snapshot(){
-    const players=[...this.players.values()].map(p=>{const out={};for(const k of ['id','name','color','x','z','y','vy','ground','eye','yaw','pitch','stamina','crouch','running','moving','flash','alive','escaped','seq','grace','step'])out[k]=p[k];out.crawling=!!p.crawl;return out;});
+    const players=[...this.players.values()].map(p=>{const out={};for(const k of ['id','name','avatar','color','x','z','y','vy','ground','eye','yaw','pitch','stamina','crouch','running','moving','flash','alive','escaped','seq','grace','step'])out[k]=p[k];out.crawling=!!p.crawl;return out;});
     const m=this.monster;return {version:protocol.version,code:this.code,hostId:this.hostId,publicRoom:this.publicRoom,phase:this.phase,level:this.level,epoch:this.epoch,elapsed:this.elapsed,transition:this.transition,run:this.run,runTime:this.runTime,front:this.front,players,monster:{x:m.x,z:m.z,angle:m.angle,walk:m.walk,mode:m.mode},objectives:{...this.objectives,revealedOpener:this.revealedOpener},events:this.events.slice(-24),messages:this.messages};
   }
 }
-function cleanName(name){const s=String(name||'Explorer').normalize('NFKC').replace(/[^\p{L}\p{N} _-]/gu,'').trim().slice(0,18);return s||'Explorer';}
+const cleanName=protocol.cleanName;
 module.exports={Room,GameError,cleanName,worlds,protocol};

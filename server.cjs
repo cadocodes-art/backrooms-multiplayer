@@ -9,7 +9,7 @@ function createServer({maxRooms=32,now=()=>Date.now()}={}){
   function roomCode(){const alphabet='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let code;do{code=Array.from(crypto.randomBytes(6),v=>alphabet[v%alphabet.length]).join('');}while(rooms.has(code));return code;}
   function authorization(req){const token=req.headers.authorization?.match(/^Bearer ([a-f0-9]{48})$/)?.[1],session=sessions.get(token);if(!session)throw new GameError('Your connection expired. Join the room again.',401);session.lastSeen=now();const p=session.room.players.get(session.playerId);if(!p)throw new GameError('You are no longer in this room.',401);return {session,p};}
   function leave(token){const s=sessions.get(token);if(!s)return;if(s.stream)s.stream.end();sessions.delete(token);s.room.removePlayer(s.playerId);if(!s.room.players.size)rooms.delete(s.room.code);}
-  function join(room,name){const p=room.addPlayer(name),token=crypto.randomBytes(24).toString('hex');sessions.set(token,{token,room,playerId:p.id,lastSeen:now(),window:now(),requests:0,actions:0,stream:null});return {token,playerId:p.id,snapshot:room.snapshot()};}
+  function join(room,name,avatar){const p=room.addPlayer(name,avatar),token=crypto.randomBytes(24).toString('hex');sessions.set(token,{token,room,playerId:p.id,lastSeen:now(),window:now(),requests:0,actions:0,stream:null});return {token,playerId:p.id,snapshot:room.snapshot()};}
   function rate(req){const key=req.socket.remoteAddress||'unknown',t=now();let limit=ipLimits.get(key);if(!limit||t-limit.start>60000){limit={start:t,count:0};ipLimits.set(key,limit);}if(++limit.count>30)throw new GameError('Too many room requests. Wait a minute and try again.',429);if(ipLimits.size>2048)for(const [k,v]of ipLimits)if(t-v.start>60000)ipLimits.delete(k);}
   async function body(req){
     if(!/^application\/json(?:;|$)/i.test(req.headers['content-type']||''))throw new GameError('Send JSON.',415);
@@ -31,7 +31,7 @@ function createServer({maxRooms=32,now=()=>Date.now()}={}){
           if(route==='/api/quick')room=[...rooms.values()].find(r=>r.publicRoom&&r.level===data.level&&r.phase==='lobby'&&r.players.size<protocol.maxPlayers);
           if(!room){if(rooms.size>=maxRooms)throw new GameError('The server is full. Try again shortly.',503);room=new Room(roomCode(),{level:data.level,publicRoom:route==='/api/quick'||data.publicRoom===true});rooms.set(room.code,room);}
         }
-        json(res,201,join(room,data.name));return;
+        json(res,201,join(room,data.name,data.avatar));return;
       }
       if(req.method==='GET'&&route==='/api/events'){
         const {session}=authorization(req);if(session.stream)session.stream.end();session.stream=res;
