@@ -1,11 +1,26 @@
 'use strict';
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),zlib=require('node:zlib');
 const {IndependentRoom,GlobalRoom,changeRoomSettings,changePlayerRole,setMonitor,hostMap,teleportPlayer,GameError,protocol}=require('./engine.cjs');
-function createServer({maxRooms=32,now=()=>Date.now()}={}){
-  const rooms=new Map(),sessions=new Map(),ipLimits=new Map();
+function createServer({maxRooms=32,maxPresence=5000,now=()=>Date.now()}={}){
+  const rooms=new Map(),sessions=new Map(),ipLimits=new Map(),presence=new Map();
   const html=fs.readFileSync(path.join(__dirname,'Backrooms-Enhanced.html'));
   const headers={'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Cross-Origin-Resource-Policy':'same-origin'};
   const json=(res,status,data)=>{res.writeHead(status,{...headers,'Content-Type':'application/json; charset=utf-8'});res.end(JSON.stringify(data));};
+  // Anonymous, short-lived page presence includes menus and solo play as well as rooms.
+  // One browser counts once; each tab has its own lease so closing a duplicate is safe.
+  function prunePresence(t=now()){
+    for(const [id,tabs]of presence){for(const [tab,lastSeen]of tabs)if(t-lastSeen>=35000)tabs.delete(tab);if(!tabs.size)presence.delete(id);}
+  }
+  function updatePresence(data){
+    if(typeof data.browserId!=='string'||!/^[a-f0-9]{32}$/.test(data.browserId)||typeof data.tabId!=='string'||!/^[a-f0-9]{32}$/.test(data.tabId)||typeof data.online!=='boolean')throw new GameError('Invalid presence update.');
+    const t=now();prunePresence(t);let tabs=presence.get(data.browserId);
+    if(data.online){
+      if(!tabs){if(presence.size>=maxPresence)throw new GameError('Online count is temporarily unavailable.',503);tabs=new Map();presence.set(data.browserId,tabs);}
+      if(!tabs.has(data.tabId)&&tabs.size>=32)throw new GameError('Too many game tabs in this browser.',429);
+      tabs.set(data.tabId,t);
+    }else if(tabs){tabs.delete(data.tabId);if(!tabs.size)presence.delete(data.browserId);}
+    return {onlinePlayers:presence.size};
+  }
   const snapshotMessage=(room,playerId)=>'data: '+JSON.stringify(room.snapshot(playerId),room.global?(_key,value)=>typeof value==='number'?Math.round(value*1000)/1000:value:undefined)+'\n\n';
   function sendSnapshot(session,message){const sink=session.gzip||session.stream;sink.write(message);if(session.gzip)session.gzip.flush(zlib.constants.Z_SYNC_FLUSH);}
   function roomCode(){const alphabet='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let code;do{code=Array.from(crypto.randomBytes(6),v=>alphabet[v%alphabet.length]).join('');}while(rooms.has(code));return code;}
@@ -25,6 +40,7 @@ function createServer({maxRooms=32,now=()=>Date.now()}={}){
       if(req.method==='GET'&&route==='/api/health'){const global=rooms.get('GLOBAL');json(res,200,{ok:true,version:protocol.version,maxPlayers:protocol.maxPlayers,globalMaxPlayers:protocol.globalMaxPlayers,globalPlayers:global?.players.size||0,globalLevel:global?.level||1});return;}
       // An exact same-origin connection: no CORS keys or editable server URL.
       if(req.headers.origin){let origin;try{origin=new URL(req.headers.origin);}catch{throw new GameError('Invalid origin.',403);}const allowed=process.env.PUBLIC_ORIGIN?new URL(process.env.PUBLIC_ORIGIN).origin:null;if(allowed?origin.origin!==allowed:origin.host!==req.headers.host)throw new GameError('Open the game from this server to connect.',403);}
+      if(req.method==='POST'&&route==='/api/presence'){json(res,200,updatePresence(await body(req)));return;}
       if(req.method==='POST'&&['/api/rooms','/api/join','/api/quick','/api/global'].includes(route)){
         rate(req);const data=await body(req);if(data.version!==protocol.version)throw new GameError('Refresh the game to update multiplayer.',409);
         if(route!=='/api/global'&&(!Number.isInteger(data.level)||data.level<1||data.level>5))throw new GameError('Choose a level from 1 to 5.');let room;
@@ -73,9 +89,9 @@ function createServer({maxRooms=32,now=()=>Date.now()}={}){
       if(room.global&&frames%4!==0)continue; // 7.5 updates/sec; the client interpolates movement.
       for(const s of sessions.values())if(s.room===room&&s.stream&&!s.stream.destroyed){const queued=s.stream.writableLength+(s.gzip?.writableLength||0);if(queued>262144){s.stream.end();s.gzip?.destroy();s.stream=null;s.gzip=null;}else if(queued<65536)sendSnapshot(s,snapshotMessage(room,s.playerId));}
     }}
-    if(frames%30===0){const t=now();for(const [token,s]of sessions)if(t-s.lastSeen>20000)leave(token);}
+    if(frames%30===0){const t=now();prunePresence(t);for(const [token,s]of sessions)if(t-s.lastSeen>20000)leave(token);}
   },1000/30);timer.unref();
-  server.shutdown=async()=>{clearInterval(timer);for(const s of sessions.values())s.stream?.end();sessions.clear();rooms.clear();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));};
+  server.shutdown=async()=>{clearInterval(timer);for(const s of sessions.values())s.stream?.end();sessions.clear();rooms.clear();presence.clear();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));};
   return {server,rooms,sessions};
 }
 if(require.main===module){

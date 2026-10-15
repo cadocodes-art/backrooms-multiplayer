@@ -99,6 +99,8 @@ THE SOFTWARE.
 
 .mp-role-section{border-top:1px solid #a9bc9860;padding-top:16px;margin-top:18px}.mp-role-section h3{font-size:18px;font-weight:500}.mp-panel .mp-role-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid #a4b59c22}.mp-role-row span{overflow-wrap:anywhere;min-width:0}.mp-role-row select{width:115px;flex-shrink:0;margin:0}.mp-panel select:disabled,.mp-panel input:disabled{opacity:.55}#mp-role-status{min-height:20px;color:#dce7b5}
 
+.online-count-box{display:flex;align-items:center;gap:9px;flex-shrink:0;padding:10px 13px;border:1px solid #bac5a348;background:#152119b8;color:#bdc7ab;font:11px/1.4 'Courier New',monospace;letter-spacing:.2px;text-transform:uppercase}.online-count-box>i{width:6px;height:6px;border-radius:50%;background:#949b83;flex-shrink:0}.online-count-box.is-live>i{background:#b6df9d;box-shadow:0 0 9px #a8dc8a66}.online-count-box.is-live{color:#e1edcc}@media(max-width:600px){.masthead{flex-wrap:wrap;gap:14px}.online-count-box{font-size:9px;padding:7px 9px}}
+
 </style>
 </head>
 <body>
@@ -106,7 +108,7 @@ THE SOFTWARE.
   <canvas id="world" aria-label="First-person Backrooms game"></canvas>
   <div id="grain"></div><div id="shade"></div><div id="danger"></div>
   <div id="menu" class="screen">
-    <header class="masthead"><span class="brand"><i></i> THRESHOLD ARCHIVE</span><span class="mono">RECOVERED EXPERIENCE / 007</span></header>
+    <header class="masthead"><span class="brand"><i></i> THRESHOLD ARCHIVE</span><div id="online-count-box" class="online-count-box" title="Everyone with the hosted game open, including you. Refreshes every 10 seconds; disconnected games expire shortly afterward."><i aria-hidden="true"></i><span id="online-count" role="status" aria-live="polite" aria-atomic="true">Checking players online…</span></div></header>
     <section class="intro">
       <div class="eyebrow"><span class="pulse"></span> A PLACE YOU WERE NEVER MEANT TO FIND</div>
       <h1>THE<br>BACKROOMS<span>AFTER HOURS</span></h1>
@@ -1206,6 +1208,32 @@ function bindAvatar(){
 // Same-origin multiplayer: HTTP commands and a streaming authoritative world.
 const mp={active:false,busy:false,token:null,id:null,snapshot:null,epoch:-1,life:-1,seq:0,peers:new Map(),lastEvent:0,lastSnapshot:0,rtt:100,menu:false,composer:false,dialog:false,connected:false,inputTimer:null,abort:null,feed:[],spectate:null,generation:0};
 const MP=BackroomsNetProtocol;
+const mpPresence={active:false,busy:false,timer:null,controller:null,generation:0,browserId:null,tabId:null};
+function mpPresenceId(){
+  const bytes=new Uint8Array(16);if(window.crypto?.getRandomValues)window.crypto.getRandomValues(bytes);else for(let i=0;i<bytes.length;i++)bytes[i]=Math.floor(Math.random()*256);
+  return Array.from(bytes,n=>n.toString(16).padStart(2,'0')).join('');
+}
+function mpShowPresence(text,live=false){$('online-count').textContent=text;$('online-count-box').classList.toggle('is-live',live);}
+async function mpRefreshPresence(){
+  if(!mpPresence.active||mpPresence.busy)return;mpPresence.busy=true;const generation=mpPresence.generation,controller=new AbortController();mpPresence.controller=controller;
+  const timeout=setTimeout(()=>controller.abort(),8000);
+  try{
+    const res=await fetch('/api/presence',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({browserId:mpPresence.browserId,tabId:mpPresence.tabId,online:true}),signal:controller.signal,cache:'no-store'});
+    if(!res.ok)throw Error('Count unavailable');const data=await res.json();if(!Number.isSafeInteger(data.onlinePlayers)||data.onlinePlayers<1)throw Error('Invalid count');
+    if(mpPresence.active&&generation===mpPresence.generation)mpShowPresence(data.onlinePlayers+' '+(data.onlinePlayers===1?'player':'players')+' online',true);
+  }catch{if(mpPresence.active&&generation===mpPresence.generation)mpShowPresence('Online count unavailable');}
+  finally{clearTimeout(timeout);if(generation===mpPresence.generation){mpPresence.busy=false;mpPresence.controller=null;}}
+}
+function mpStartPresence(){
+  if(mpPresence.active)return;
+  if(!['http:','https:'].includes(location.protocol)){mpShowPresence('Offline edition');return;}
+  if(!mpPresence.browserId){try{const saved=localStorage.getItem('backrooms-online-id');mpPresence.browserId=/^[a-f0-9]{32}$/.test(saved||'')?saved:mpPresenceId();localStorage.setItem('backrooms-online-id',mpPresence.browserId);}catch{mpPresence.browserId=mpPresenceId();}}
+  mpPresence.tabId??=mpPresenceId();mpPresence.active=true;mpPresence.generation++;mpShowPresence('Checking players online…');mpRefreshPresence();mpPresence.timer=setInterval(mpRefreshPresence,10000);
+}
+function mpStopPresence(){
+  if(!mpPresence.active)return;mpPresence.active=false;mpPresence.generation++;clearInterval(mpPresence.timer);mpPresence.timer=null;mpPresence.controller?.abort();mpPresence.controller=null;mpPresence.busy=false;
+  return fetch('/api/presence',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({browserId:mpPresence.browserId,tabId:mpPresence.tabId,online:false}),keepalive:true}).catch(()=>{});
+}
 mp.recipientIds=new Set();mp.recipientRosterKey='';
 mp.roomSettingsOpen=false;mp.roomSettingsBusy=false;mp.roleBusy=false;
 const mpSettingFields={independentProgress:['mp-independent-progress',true],roomSpeed:['mp-room-speed',1],deathLink:['mp-death-link',false],monsterEnabled:['mp-monster-enabled',true],monsterSpeed:['mp-monster-speed',1],infiniteStamina:['mp-infinite-stamina',false]};
@@ -1504,6 +1532,7 @@ function mpUpdateHud(){
   if(s.monitor)$('mp-live-status').textContent='OBSERVING · Your explorer is safe';else if(!s.global)$('mp-live-status').textContent+=' · '+(s.roomSettings?.roomSpeed||1)+'× SPEED'+(s.roomSettings?.deathLink?' · DEATH LINK':'')+(s.roomSettings?.monsterEnabled===false?' · MONSTER OFF':'')+(s.roomSettings?.infiniteStamina?' · ∞ STAMINA':'');if(mp.dialog)mpUpdateRoom();
 }
 function bindMultiplayer(){
+  mpStartPresence();window.addEventListener('pagehide',mpStopPresence);window.addEventListener('pageshow',mpStartPresence);document.addEventListener('visibilitychange',()=>{if(!document.hidden)mpRefreshPresence();});
   mpBindHostTools();
   $('mp-room-settings-open').onclick=$('mp-lobby-settings').onclick=mpOpenRoomSettings;$('mp-room-settings-close').onclick=$('mp-room-settings-back').onclick=mpCloseRoomSettings;$('mp-room-settings-apply').onclick=mpSaveRoomSettings;$('mp-independent-progress').onchange=()=>{$('mp-room-settings-status').textContent='';mpUpdateRoomSettings();};
   $('mp-global').onclick=()=>mpJoin('global');
