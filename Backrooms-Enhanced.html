@@ -77,6 +77,9 @@ THE SOFTWARE.
 @media(max-width:420px){.avatar-layout{grid-template-columns:38% 62%}.avatar-preview-tools{gap:4px}.avatar-options{padding:18px 12px}.avatar-footer-actions{gap:8px}.avatar-footer-actions #avatar-save{flex:1}.avatar-heading h2{font-size:21px}.avatar-footer p{font-size:9px}}
 @media(max-height:600px){.avatar-backdrop{padding:8px}.avatar-panel{height:96dvh}.avatar-heading{padding:12px 18px}.avatar-heading h2{font-size:24px;margin-top:5px}.avatar-footer{padding:8px 18px}.avatar-footer p{margin-bottom:4px}.avatar-preview-label{margin:12px 18px}.avatar-caption{display:none}.avatar-preview-tools{padding-bottom:8px}#avatar-stage{min-height:70px}#avatar-summary{margin-top:9px}.intro{top:16%}}
 
+/* Optional recipient names annotate room-wide chat. */
+.mp-address-box{border:1px solid #789b8144;background:#10221b;padding:12px 14px;margin:15px 0}.mp-panel .mp-address-box .mp-check{margin:0;min-height:32px;flex-wrap:wrap;cursor:pointer}.mp-address-box .mp-check .mp-small{margin-left:auto;font-size:8px;letter-spacing:1px}.mp-address-box #mp-address-help{margin:5px 0 0;font-size:10px}#mp-to-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.mp-recipient{min-height:44px;padding:10px 14px;max-width:100%;overflow-wrap:anywhere;background:#20392b;border:1px solid #79947766;color:#dfe9cf;font:11px 'Courier New',monospace}.mp-recipient[aria-pressed=true]{background:#d9dfae;color:#17251c;border-color:#e8edc7}.mp-recipient[aria-pressed=true]:before{content:'✓ ';font-weight:bold}#mp-to-summary{margin:12px 0 0;overflow-wrap:anywhere}#mp-feed .mp-to-suffix{color:#c8dfab}#mp-feed .mp-addressed{border-left-color:#e4d895;background:#263b25d9}
+
 /* Multiplayer rooms and the I-key communication menu. */
 .mp-backdrop{position:fixed;inset:0;z-index:24;background:#081311c9;backdrop-filter:blur(9px);display:flex;align-items:center;justify-content:center;padding:22px;user-select:text}
 .mp-panel{width:min(640px,100%);max-height:90dvh;overflow:auto;background:#182820;border:1px solid #7cb5a455;padding:30px;color:#d9e4ce;box-shadow:0 20px 90px #0007}.mp-heading{display:flex;align-items:center;justify-content:space-between;gap:15px}.mp-panel h2{font-size:37px;margin:24px 0 16px;letter-spacing:-1px}.mp-panel p{font-size:12px;line-height:1.75;color:#becfbd}.mp-panel .mp-small{font-size:11px;color:#a3b7a4}.mp-panel a{text-decoration:none;font-size:10px}.mp-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px}.mp-panel label{display:block;font:11px 'Courier New',monospace;color:#c5d5c2}.mp-panel input:not([type=checkbox]),.mp-panel select{display:block;width:100%;margin-top:9px;padding:12px;background:#0d1b17;border:1px solid #789b8166;color:#ecf2d4;border-radius:0;min-width:0}.mp-panel .mp-check{display:flex;align-items:center;gap:8px;margin:17px 0}.mp-check input{margin:0}.mp-buttons{display:flex;gap:13px;align-items:center;flex-wrap:wrap}.mp-buttons .primary{flex:1;min-width:170px;font-size:10px;justify-content:center;padding:15px}.mp-join-row{display:flex;align-items:flex-end;gap:14px;margin-top:24px;padding-top:22px;border-top:1px solid #a4b59c33}.mp-join-row label{flex:1}.mp-join-row .primary{padding:14px;min-height:43px;white-space:nowrap;font-size:10px}.mp-code-line{display:flex;align-items:center;gap:24px}.mp-code-line strong{font:36px 'Courier New',monospace;color:#bdffdf;letter-spacing:6px}#mp-roster{padding:0;list-style:none;margin:20px 0}#mp-roster li{padding:12px 0;border-bottom:1px solid #a4b59c22;font:12px 'Courier New',monospace}
@@ -85,6 +88,9 @@ THE SOFTWARE.
 @media(max-width:700px){.mp-panel{padding:20px}.mp-panel h2{font-size:29px}.mp-fields{grid-template-columns:1fr}.mp-join-row{gap:10px}.mp-code-line strong{font-size:27px}#mp-faces{grid-template-columns:repeat(5,1fr)}#mp-messages{grid-template-columns:1fr}#mp-feed{top:295px;right:15px;max-width:45vw;font-size:9px}#mp-feed>div{padding:5px 7px}#mp-feed>div:nth-last-child(n+4){display:none}#mp-badge{top:93px;font-size:8px;left:auto;right:20px;transform:none}#mp-live-status{width:80%;bottom:13px}#mp-talk{bottom:48px}}
 @media(pointer:coarse){#mp-talk{bottom:218px;left:auto;right:22px;transform:none}#mp-live-status{bottom:165px;width:80%}#mp-spectate{bottom:270px}.mp-backdrop{padding:12px}.mp-panel{max-height:94dvh}}
 @media(max-height:550px){.mp-backdrop{padding:10px}.mp-panel{padding:17px;max-height:94dvh}#pause{gap:6px}#pause .primary{margin:2px 0;padding:10px 20px;min-height:39px}#pause h2{font-size:30px}#mp-feed{top:90px}#mp-feed>div:nth-last-child(n+3){display:none}#mp-live-status{bottom:9px}#mp-talk{bottom:36px}#mp-spectate{bottom:83px}}
+
+/* The shared room stays prominent without crowding small screens. */
+.mp-global-card{margin:22px 0;padding:21px;border:1px solid #a6d5a66b;background:linear-gradient(135deg,#2b4737,#152d24);box-shadow:inset 0 1px #d9efc111}.mp-global-card .eyebrow{color:#b4cda6;font-size:9px;letter-spacing:2px}.mp-global-card h3{margin:10px 0 6px;font-size:27px;font-weight:500;letter-spacing:-.7px}.mp-global-card #mp-global-count{font-size:10px;color:#d6e8b8;letter-spacing:1px;margin:10px 0}.mp-global-card p{margin:8px 0 16px}.mp-global-card .primary{width:100%;font-size:11px;min-height:48px;justify-content:space-between}.mp-code-line strong{overflow-wrap:anywhere}#mp-roster{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:16px}#mp-roster li{overflow-wrap:anywhere}@media(max-width:420px){.mp-global-card{padding:16px}.mp-code-line strong{letter-spacing:3px;font-size:24px}}
 
 </style>
 </head>
@@ -132,12 +138,14 @@ THE SOFTWARE.
   </div>
   <div id="transition" class="screen centered" hidden><div class="eyebrow">SIGNAL INTERRUPTED</div><h2 id="transition-title">There is another place.</h2><p id="transition-detail">Establishing connection / Tape 02</p><div class="loading-line"></div></div>
   <div id="pause" class="screen centered panel-screen" hidden><div class="eyebrow">RECORDING SUSPENDED</div><h2>Hold your breath.</h2><p id="pause-copy">Your time is paused. Take a moment.</p><button id="resume" class="primary">RESUME RECORDING <span>↗</span></button><button id="multiplayer-open" class="primary collapse-test">MULTIPLAYER <span>↗</span></button><button id="pause-settings" class="text-button">SETTINGS</button><button id="quit" class="text-button muted">RETURN TO TITLE</button></div>
-  <div id="mp-dialog" class="mp-backdrop" hidden><section class="mp-panel" role="dialog" aria-modal="true" aria-labelledby="mp-title"><div class="mp-heading"><span class="eyebrow">SHARED FREQUENCY / UP TO 4 PLAYERS</span><button id="mp-close" class="icon-button" aria-label="Close multiplayer">×</button></div><h2 id="mp-title">Don't go alone.</h2><p id="mp-status" role="status" aria-live="polite"></p>
+  <div id="mp-dialog" class="mp-backdrop" hidden><section class="mp-panel" role="dialog" aria-modal="true" aria-labelledby="mp-title"><div class="mp-heading"><span class="eyebrow">SHARED FREQUENCY / GLOBAL 16 · ROOMS 4</span><button id="mp-close" class="icon-button" aria-label="Close multiplayer">×</button></div><h2 id="mp-title">Don't go alone.</h2><p id="mp-status" role="status" aria-live="polite"></p>
     <div id="mp-offline" hidden><p>To play together on this computer, open <b>Play Multiplayer.cmd</b> from the game folder. Then use the multiplayer edition below.</p><a class="primary" href="http://localhost:8787/">OPEN MULTIPLAYER EDITION ↗</a><p class="mp-small">For friends on the internet, everyone will need the same hosted game link. The downloaded file still works for solo play.</p></div>
-    <div id="mp-connect"><div class="mp-fields"><label>Your name<input id="mp-name" maxlength="18" value="Explorer" autocomplete="off"></label><label>Starting level<select id="mp-level"><option value="1">1 · The Backrooms</option><option value="2">2 · The Haunted House</option><option value="3">3 · The Sewers</option><option value="4">4 · The School</option><option value="5">5 · Reality Collapse</option></select></label></div><p class="mp-small">Creating a room starts a fresh shared level. Joining follows that room's current level.</p><label class="mp-check"><input id="mp-public" type="checkbox"> Let other players find my room</label><div class="mp-buttons"><button id="mp-create" class="primary">CREATE ROOM</button><button id="mp-quick" class="primary collapse-test">FIND PLAYERS</button></div><div class="mp-join-row"><label>Friend's room code<input id="mp-code" maxlength="6" placeholder="ABC234" autocomplete="off" autocapitalize="characters" spellcheck="false"></label><button id="mp-join" class="primary collapse-test">JOIN ROOM</button></div></div>
-    <div id="mp-room" hidden><div class="mp-code-line"><strong id="mp-room-code"></strong><button id="mp-copy" class="text-button">COPY CODE</button></div><p id="mp-room-detail" class="mp-small"></p><ul id="mp-roster"></ul><p class="mp-small">Shared tools and objectives. Separate survival. Caught players can watch teammates and return at the next level. Everyone must escape or be caught before the team advances.</p><div class="mp-buttons"><button id="mp-start-room" class="primary">START TOGETHER</button><button id="mp-leave" class="text-button">LEAVE ROOM</button></div></div>
+    <div id="mp-connect"><div class="mp-fields"><label>Your name<input id="mp-name" maxlength="18" value="Explorer" autocomplete="off"></label><label>Separate room starting level<select id="mp-level"><option value="1">1 · The Backrooms</option><option value="2">2 · The Haunted House</option><option value="3">3 · The Sewers</option><option value="4">4 · The School</option><option value="5">5 · Reality Collapse</option></select></label></div><div class="mp-global-card"><div><span class="eyebrow">ONE SHARED WORLD</span><h3>The global room.</h3><p id="mp-global-count" class="mono">UP TO 16 EXPLORERS</p><p>Drop into the current level with everyone. No code or host needed. The next run starts automatically.</p></div><button id="mp-global" class="primary">JOIN GLOBAL ROOM <span>↗</span></button></div><p class="mp-small">SEPARATE ROOMS · UP TO 4 PLAYERS<br>Create a fresh run at your chosen level, find a public room, or join a friend by code.</p><label class="mp-check"><input id="mp-public" type="checkbox"> Let other players find my room</label><div class="mp-buttons"><button id="mp-create" class="primary">CREATE ROOM</button><button id="mp-quick" class="primary collapse-test">FIND PLAYERS</button></div><div class="mp-join-row"><label>Friend's room code<input id="mp-code" maxlength="6" placeholder="ABC234" autocomplete="off" autocapitalize="characters" spellcheck="false"></label><button id="mp-join" class="primary collapse-test">JOIN ROOM</button></div></div>
+    <div id="mp-room" hidden><div class="mp-code-line"><strong id="mp-room-code"></strong><button id="mp-copy" class="text-button">COPY CODE</button></div><p id="mp-room-detail" class="mp-small"></p><ul id="mp-roster"></ul><p id="mp-room-rules" class="mp-small">Shared tools and objectives. Separate survival. Caught players can watch teammates and return at the next level. Everyone must escape or be caught before the team advances.</p><div class="mp-buttons"><button id="mp-start-room" class="primary">START TOGETHER</button><button id="mp-leave" class="text-button">LEAVE ROOM</button></div></div>
   </section></div>
-  <div id="mp-composer" class="mp-backdrop" hidden><section class="mp-panel mp-composer-panel" role="dialog" aria-modal="true" aria-labelledby="mp-composer-title"><div class="mp-heading"><h2 id="mp-composer-title">Send a signal.</h2><button id="mp-composer-close" class="icon-button" aria-label="Close messages">×</button></div><p id="mp-chat-status" role="status"></p><div class="mp-tabs" role="tablist" aria-label="Communication"><button id="mp-tab-messages" role="tab" aria-selected="true" aria-controls="mp-messages">QUICK MESSAGES</button><button id="mp-tab-faces" role="tab" aria-selected="false" aria-controls="mp-faces">FACE EMOJIS</button></div><div id="mp-messages" role="tabpanel" aria-labelledby="mp-tab-messages"></div><div id="mp-faces" role="tabpanel" aria-labelledby="mp-tab-faces" hidden></div></section></div>
+  <div id="mp-composer" class="mp-backdrop" hidden><section class="mp-panel mp-composer-panel" role="dialog" aria-modal="true" aria-labelledby="mp-composer-title"><div class="mp-heading"><h2 id="mp-composer-title">Send a signal.</h2><button id="mp-composer-close" class="icon-button" aria-label="Close messages">×</button></div><p id="mp-chat-status" role="status"></p>
+    <div class="mp-address-box"><label class="mp-check"><input id="mp-address" type="checkbox" aria-controls="mp-to-picker" aria-describedby="mp-address-help">Add “To” names <span class="mp-small">OPTIONAL</span></label><p id="mp-address-help" class="mp-small">Everyone in the room can see your message.</p><div id="mp-to-picker" hidden><div id="mp-to-list" role="group" aria-label="Players to address"></div><p id="mp-to-empty" class="mp-small" hidden>No other players are in the room yet.</p><p id="mp-to-summary" class="mp-small" role="status" aria-live="polite"></p></div></div>
+    <div class="mp-tabs" role="tablist" aria-label="Communication"><button id="mp-tab-messages" role="tab" aria-selected="true" aria-controls="mp-messages">QUICK MESSAGES</button><button id="mp-tab-faces" role="tab" aria-selected="false" aria-controls="mp-faces">FACE EMOJIS</button></div><div id="mp-messages" role="tabpanel" aria-labelledby="mp-tab-messages"></div><div id="mp-faces" role="tabpanel" aria-labelledby="mp-tab-faces" hidden></div></section></div>
   <div id="end" class="screen centered panel-screen" hidden><div id="end-kicker" class="eyebrow">SIGNAL LOST</div><h2 id="end-title">You weren't alone.</h2><p id="end-description"></p><div id="result" class="result mono"></div><button id="retry" class="primary">TRY AGAIN <span>↗</span></button><button id="end-menu" class="text-button">RETURN TO TITLE</button></div>
   <div id="settings" class="settings-backdrop" hidden><section class="settings-panel" aria-label="Settings" role="dialog" aria-modal="true"><div class="settings-heading"><span class="eyebrow">FIELD EQUIPMENT</span><button id="settings-close" class="icon-button" aria-label="Close settings">×</button></div><h2>Adjust the signal.</h2><label>Master volume <output id="volume-out">65%</output><input id="volume" type="range" min="0" max="100" value="65"></label><label>Brightness <output id="brightness-out">100%</output><input id="brightness" type="range" min="70" max="160" value="100"></label><label>Look sensitivity <output id="sensitivity-out">50%</output><input id="sensitivity" type="range" min="10" max="100" value="50"></label><label class="select-label">Graphics quality<select id="quality"><option value="low">Performance</option><option value="medium">Balanced</option><option value="high">High</option></select></label><label class="check-label"><span>Reduced motion &amp; flicker<small>Less camera motion, steady lights, no distortion</small></span><input id="reduced" type="checkbox"></label><label class="check-label"><span>Show floor plan<small>Only reveals places you have explored</small></span><input id="show-map" type="checkbox" checked></label><div class="key-guide"><span>W A S D / ARROWS <b>Move</b></span><span>MOUSE / DRAG <b>Look</b></span><span>SHIFT / C <b>Run / Crouch</b></span><span>SPACE / F <b>Jump / Flashlight</b></span><span>ESC / P / M <b>Pause / Pause / Map</b></span><span>E / CLICK <b>Search / Pick up / Use tool</b></span><span>ENTER <b>Crawl through open grate</b></span></div><p class="settings-note">Running carries farther. Crouching is quieter.<br>Break line of sight to lose what follows you.</p></section></div>
   <div id="error" class="screen centered panel-screen" hidden><div class="eyebrow">SIGNAL UNAVAILABLE</div><h2>We couldn't render this room.</h2><p id="error-text">This experience needs a browser with WebGL enabled. Try opening this file in a recent version of Chrome, Edge, Firefox, or Safari.</p><button class="primary" onclick="location.reload()">RELOAD</button></div>
@@ -941,7 +949,7 @@ function updateCollapseHud(){
     }return out;
   }
   function cleanName(name){const s=(typeof name==='string'?name:'Explorer').normalize('NFKC').replace(/[^\p{L}\p{N} _-]/gu,'').trim().slice(0,18);return s||'Explorer';}
-  const protocol=Object.freeze({version:1,messages:Object.freeze(messages),faces:Object.freeze(faces),maxPlayers:4,avatarChoices,avatarDefaults,avatarRanges,normalizeAvatar,cleanName});
+  const protocol=Object.freeze({version:1,messages:Object.freeze(messages),faces:Object.freeze(faces),maxPlayers:4,globalMaxPlayers:16,avatarChoices,avatarDefaults,avatarRanges,normalizeAvatar,cleanName});
   if(typeof module!=='undefined'&&module.exports)module.exports=protocol;else root.BackroomsNetProtocol=protocol;
 })(globalThis);
 
@@ -949,7 +957,7 @@ function updateCollapseHud(){
 <script>
 // The editor and online teammates use this exact same lightweight character model.
 const AvatarModel=(()=>{
-  function create(value){
+  function create(value,{batch=false}={}){
     const a=BackroomsNetProtocol.normalizeAvatar(value),group=new THREE.Group(),body=new THREE.Group();group.add(body);
     const geometries=[],materials=[];
     const geo=g=>(geometries.push(g),g),box=geo(new THREE.BoxGeometry(1,1,1)),sphere=geo(new THREE.SphereGeometry(1,16,12)),cap=geo(new THREE.SphereGeometry(1,20,12,0,Math.PI*2,0,Math.PI*.43));
@@ -1060,6 +1068,26 @@ const AvatarModel=(()=>{
       b(body,accent,0,1.05,.344,.24*build,.24,.025);
       for(const sign of [-1,1])b(body,pants,sign*.17*build,1.15,-.187*build,.045,.37,.024);
     }
+    if(batch){
+      // Combine static pieces that share a material; keep head/limb pivots animated.
+      const merge=parent=>{
+        for(const child of [...parent.children])if(child.isGroup)merge(child);
+        const buckets=new Map();
+        for(const child of parent.children)if(child.isMesh){const list=buckets.get(child.material)||[];list.push(child);buckets.set(child.material,list);}
+        for(const [material,meshes] of buckets){
+          if(meshes.length<2)continue;
+          const pieces=meshes.map(mesh=>{mesh.updateMatrix();const geometry=mesh.geometry.index?mesh.geometry.toNonIndexed():mesh.geometry.clone();geometry.applyMatrix4(mesh.matrix);return geometry;});
+          const geometry=geo(new THREE.BufferGeometry());
+          for(const name of ['position','normal','uv']){
+            const size=pieces[0].getAttribute(name).itemSize,arrays=pieces.map(g=>g.getAttribute(name).array),data=new Float32Array(arrays.reduce((n,a)=>n+a.length,0));let offset=0;
+            for(const array of arrays){data.set(array,offset);offset+=array.length;}
+            geometry.setAttribute(name,new THREE.BufferAttribute(data,size));
+          }
+          for(const mesh of meshes)parent.remove(mesh);
+          parent.add(new THREE.Mesh(geometry,material));for(const piece of pieces)piece.dispose();
+        }
+      };merge(body);
+    }
     group.userData.avatar=a;
     return {group,body,head,limbs,dispose(){for(const g of geometries)g.dispose();for(const m of materials)m.dispose();}};
   }
@@ -1168,6 +1196,7 @@ function bindAvatar(){
 // Same-origin multiplayer: HTTP commands and a streaming authoritative world.
 const mp={active:false,busy:false,token:null,id:null,snapshot:null,epoch:-1,seq:0,peers:new Map(),lastEvent:0,lastSnapshot:0,rtt:100,menu:false,composer:false,dialog:false,connected:false,inputTimer:null,abort:null,feed:[],spectate:null,generation:0};
 const MP=BackroomsNetProtocol;
+mp.recipientIds=new Set();mp.recipientRosterKey='';
 function mpNotice(text){$('mp-status').textContent=text;}
 function mpCanControl(){const p=mp.snapshot?.players.find(p=>p.id===mp.id);return mp.active&&mp.connected&&mp.snapshot?.phase==='playing'&&p?.alive&&!p.escaped&&!p.crawling&&!mp.menu&&!mp.composer&&!mp.dialog&&$('settings').hidden&&performance.now()-mp.lastSnapshot<2500;}
 async function mpRequest(route,data,token=mp.token){
@@ -1180,22 +1209,23 @@ async function mpOpen(){
   if(!['http:','https:'].includes(location.protocol)){$('mp-connect').hidden=true;$('mp-offline').hidden=false;mpNotice('The downloaded edition plays solo. Open the multiplayer edition to join people.');return;}
   if(mp.active){mpUpdateRoom();mpNotice('The world keeps running while this menu is open.');$('mp-close').focus();return;}
   mpNotice('Checking multiplayer connection…');mpSetBusy(true);
-  try{const health=await mpRequest('/api/health');if(health.version!==MP.version)throw Error('Refresh the game to update multiplayer.');mpNotice('Create a room, join a friend, or find a public room.');if(mp.dialog)$('mp-name').focus();}catch{mpNotice('This page is not connected to a multiplayer server. Open the game through the multiplayer launcher.');}finally{mpSetBusy(false);}
+  try{const health=await mpRequest('/api/health');if(health.version!==MP.version)throw Error('Refresh the game to update multiplayer.');$('mp-global-count').textContent=health.globalMaxPlayers?health.globalPlayers+' / '+health.globalMaxPlayers+' EXPLORERS · LEVEL '+health.globalLevel:'Refresh after the server update to use the global room.';mpNotice('Join the global room, create a room, or join a friend.');if(mp.dialog)$('mp-name').focus();}catch{mpNotice('This page is not connected to a multiplayer server. Open the game through the multiplayer launcher.');}finally{mpSetBusy(false);}
 }
 function mpClose(){mp.dialog=false;$('mp-dialog').hidden=true;if(mp.active){if(mp.snapshot?.phase==='lobby'){mpPause();}else{mp.menu=false;setScreen('hud');lockPointer();}}else $('resume').focus();}
-function mpSetBusy(on){mp.busy=on;for(const id of ['mp-create','mp-join','mp-quick'])$(id).disabled=on;}
+function mpSetBusy(on){mp.busy=on;for(const id of ['mp-create','mp-join','mp-quick','mp-global'])$(id).disabled=on;}
 async function mpJoin(kind){
   if(mp.busy||mp.active)return;mpSetBusy(true);mpNotice('Connecting…');
   const data={version:MP.version,name:MP.cleanName($('mp-name').value),avatar:avatarEditor.profile.avatar,level:Number($('mp-level').value),publicRoom:$('mp-public').checked,code:$('mp-code').value};
   try{
-    const result=await mpRequest(kind==='create'?'/api/rooms':kind==='quick'?'/api/quick':'/api/join',data);
+    const result=await mpRequest(kind==='global'?'/api/global':kind==='create'?'/api/rooms':kind==='quick'?'/api/quick':'/api/join',data);
     if(!mp.dialog){mpRequest('/api/leave',{},result.token).catch(()=>{});return;}
     mp.active=true;mp.connected=true;mp.token=result.token;mp.id=result.playerId;mp.epoch=-1;mp.lastEvent=0;mp.generation++;mp.feed=[];mp.spectate=null;mp.menu=false;
     avatarSetName(data.name);try{await audio.start();}catch{}
     audio.setVolume(settings.volume);state='playing';setScreen('hud');document.body.classList.toggle('online',true);mpApplySnapshot(result.snapshot,true);
     $('mp-connect').hidden=true;$('mp-room').hidden=false;mpNotice('Share the room code. The host starts when everyone is ready.');
     for(const chat of result.snapshot.messages||[])mpAddChat(chat);
-    mp.inputTimer=setInterval(mpSendInput,60);mpReadStream(mp.generation);
+    if(result.snapshot.global){mp.dialog=false;$('mp-dialog').hidden=true;if(result.snapshot.phase==='playing')lockPointer();}
+    mp.inputTimer=setInterval(mpSendInput,result.snapshot.global?100:60);mpReadStream(mp.generation);
   }catch(e){mpNotice(e.name==='AbortError'?'The server took too long to respond. Try again.':e.message);}finally{mpSetBusy(false);}
 }
 async function mpReadStream(generation){
@@ -1229,7 +1259,11 @@ async function mpSendInput(){
 function mpApplySnapshot(s,initial=false){
   if(!mp.active||s.version!==MP.version)return;mp.snapshot=s;mp.connected=true;mp.lastSnapshot=performance.now();const me=s.players.find(p=>p.id===mp.id);if(!me)return;
   const changed=mp.epoch!==s.epoch;
-  if(changed){mp.epoch=s.epoch;mp.seq=0;mp.monsterStep=s.monster.walk;mpClearPeers();reset(s.level);if(s.run){env.build(5,'escape');explored=Array.from({length:env.size},()=>Array(env.size).fill(false));}Object.assign(player,{x:me.x,z:me.z,y:me.y,yaw:me.yaw,pitch:me.pitch,eye:me.eye,ground:me.ground,vy:me.vy});state='playing';}
+  if(mp.composer)mpUpdateRecipients();
+  if(changed){mp.epoch=s.epoch;mp.seq=0;mp.monsterStep=s.monster.walk;mpClearPeers();reset(s.level);if(s.run){env.build(5,'escape');explored=Array.from({length:env.size},()=>Array(env.size).fill(false));}Object.assign(player,{x:me.x,z:me.z,y:me.y,yaw:me.yaw,pitch:me.pitch,eye:me.eye,ground:me.ground,vy:me.vy});state='playing';
+    // A reconnect can miss the short event history; the checkpoint is authoritative.
+    if(!initial&&s.phase==='playing'){mp.menu=mp.dialog=mp.composer=false;$('mp-dialog').hidden=true;$('mp-composer').hidden=true;$('retry').disabled=false;setScreen('hud');clearInput();audio.start().catch(()=>{});}
+  }
   elapsed=s.elapsed;checkpoint=s.level;player.stamina=me.stamina;
   mpApplyObjectives(s,changed);
   if(initial)mp.lastEvent=Math.max(0,...s.events.map(e=>e.id));else for(const e of s.events)if(e.id>mp.lastEvent){mp.lastEvent=e.id;mpEvent(e);}
@@ -1237,8 +1271,8 @@ function mpApplySnapshot(s,initial=false){
   if(['won','lost'].includes(s.phase)){
     state=s.phase;setScreen('end');releasePointer();$('mp-dialog').hidden=true;mp.dialog=false;$('mp-composer').hidden=true;mp.composer=false;
     $('end-kicker').textContent=s.phase==='won'?'TEAM TRANSMISSION COMPLETE':'TEAM SIGNAL LOST';$('end-title').textContent=s.phase==='won'?'You escaped together.':'The last signal went quiet.';
-    $('end-description').textContent=s.phase==='won'?'Your team made it through the final collapse.':'No explorers remain in the level. The host can restart this checkpoint.';$('result').textContent='ROOM '+s.code+' / '+s.players.length+' EXPLORERS';
-    $('retry').textContent=mp.id===s.hostId?(s.phase==='won'?'START NEW CAMPAIGN':'RETRY CHECKPOINT'):'WAITING FOR HOST';$('retry').disabled=mp.id!==s.hostId;
+    $('end-description').textContent=s.global?(s.phase==='won'?'Your team escaped! A new global run starts automatically.':'The global room will restart this checkpoint automatically.'):(s.phase==='won'?'Your team made it through the final collapse.':'No explorers remain in the level. The host can restart this checkpoint.');$('result').textContent=(s.global?'GLOBAL ROOM':'ROOM '+s.code)+' / '+s.players.length+' EXPLORERS';
+    $('retry').textContent=s.global?'RESTARTING IN '+Math.ceil(s.restartIn)+'s':mp.id===s.hostId?(s.phase==='won'?'START NEW CAMPAIGN':'RETRY CHECKPOINT'):'WAITING FOR HOST';$('retry').disabled=s.global||mp.id!==s.hostId;
   }else if(state==='won'||state==='lost'){state='playing';$('retry').disabled=false;setScreen('hud');}
 }
 function mpApplyObjectives(s,changed){
@@ -1268,10 +1302,11 @@ function mpEvent(e){
   if(e.kind==='joined'||e.kind==='left')mpNotice(e.name+(e.kind==='joined'?' joined the room.':' left the room.'));
 }
 function mpUpdateRoom(){
-  const s=mp.snapshot;if(!s)return;$('mp-room-code').textContent=s.code;$('mp-roster').replaceChildren();
+  const s=mp.snapshot;if(!s)return;$('mp-room-code').textContent=s.global?'GLOBAL ROOM':s.code;$('mp-copy').hidden=!!s.global;$('mp-roster').replaceChildren();
   for(const p of s.players){const li=document.createElement('li');li.textContent=p.name+(p.id===mp.id?' (you)':'')+(p.id===s.hostId?' · HOST':'');$('mp-roster').append(li);}
-  $('mp-start-room').hidden=s.phase!=='lobby';$('mp-start-room').disabled=mp.id!==s.hostId;$('mp-start-room').textContent=mp.id===s.hostId?'START TOGETHER':'WAITING FOR HOST';
-  $('mp-room-detail').textContent='LEVEL '+s.level+' · '+s.players.length+' / 4 PLAYERS · '+(s.publicRoom?'PUBLIC ROOM':'INVITE ONLY');
+  $('mp-start-room').hidden=s.global||s.phase!=='lobby';$('mp-start-room').disabled=mp.id!==s.hostId;$('mp-start-room').textContent=mp.id===s.hostId?'START TOGETHER':'WAITING FOR HOST';
+  $('mp-room-detail').textContent='LEVEL '+s.level+' · '+s.players.length+' / '+(s.maxPlayers||4)+' PLAYERS · '+(s.global?'GLOBAL · AUTOMATIC START':s.publicRoom?'PUBLIC ROOM':'INVITE ONLY');
+  $('mp-room-rules').textContent=s.global?'One shared 16-player room. Caught players watch teammates and return at the next checkpoint. After the first escape, everyone has 45 seconds to reach safety. Late arrivals watch during the exit countdown or final chase. Restarts are automatic.':'Shared tools and objectives. Separate survival. Caught players can watch teammates and return at the next level. Everyone must escape or be caught before the team advances.';
 }
 async function mpStart(){try{await mpRequest('/api/start',{});}catch(e){mpNotice(e.message);}}
 async function mpRestart(){try{await mpRequest('/api/retry',{});}catch(e){$('end-description').textContent=e.message;}}
@@ -1283,6 +1318,7 @@ async function mpLeave(){
   if(mp.active){mpRequest('/api/leave',{}).catch(()=>{});}
   mp.active=false;mp.connected=false;mp.generation++;mp.token=null;mp.snapshot=null;mp.epoch=-1;mp.menu=mp.composer=mp.dialog=false;mp.abort?.abort();clearInterval(mp.inputTimer);mp.inputTimer=null;mpClearPeers();
   for(const id of ['mp-dialog','mp-composer','mp-online-hud'])$(id).hidden=true;
+  mpResetRecipients();mp.chatBusy=false;
   document.body.classList.toggle('online',false);$('retry').disabled=false;$('pause-copy').textContent='Your time is paused. Take a moment.';title();
 }
 function mpBuildComposer(){
@@ -1290,24 +1326,48 @@ function mpBuildComposer(){
   const fill=(container,list,kind)=>{list.forEach((text,index)=>{const button=document.createElement('button');button.type='button';button.textContent=text;button.className=kind==='emoji'?'mp-face':'mp-message';button.title=kind==='emoji'?'Send '+text:text;button.onclick=()=>mpSendChat(kind,index);container.append(button);});};
   fill($('mp-messages'),MP.messages,'message');fill($('mp-faces'),MP.faces,'emoji');
 }
+function mpResetRecipients(){
+  mp.recipientIds.clear();mp.recipientRosterKey='';$('mp-address').checked=false;$('mp-to-picker').hidden=true;
+}
+function mpRecipientSummary(){
+  const selected=(mp.snapshot?.players||[]).filter(p=>mp.recipientIds.has(p.id));
+  $('mp-to-summary').textContent=selected.length?'To: '+selected.map(p=>p.name).join(', '):'No names added. Choose one or more players, then a message or emoji.';
+}
+function mpUpdateRecipients(){
+  const players=(mp.snapshot?.players||[]).filter(p=>p.id!==mp.id),key=JSON.stringify(players.map(p=>[p.id,p.name]));
+  if(key===mp.recipientRosterKey)return;mp.recipientRosterKey=key;
+  for(const id of mp.recipientIds)if(!players.some(p=>p.id===id))mp.recipientIds.delete(id);
+  const focusedId=document.activeElement?.id,buttons=new Map();$('mp-to-list').replaceChildren();
+  players.forEach((p,index)=>{
+    const button=document.createElement('button');button.type='button';button.id='mp-recipient-'+p.id;button.className='mp-recipient';
+    button.textContent=p.name+(players.filter(q=>q.name===p.name).length>1?' (player '+(index+1)+')':'');button.setAttribute('aria-pressed',String(mp.recipientIds.has(p.id)));
+    button.onclick=()=>{if(mp.recipientIds.has(p.id))mp.recipientIds.delete(p.id);else mp.recipientIds.add(p.id);button.setAttribute('aria-pressed',String(mp.recipientIds.has(p.id)));mpRecipientSummary();};
+    $('mp-to-list').append(button);buttons.set(button.id,button);
+  });
+  $('mp-to-empty').hidden=players.length>0;mpRecipientSummary();
+  if(focusedId?.startsWith('mp-recipient-'))(buttons.get(focusedId)||$('mp-address')).focus();
+}
 function mpToggleComposer(){
   if(!mp.active)return;if(mp.composer){mpCloseComposer();return;}if(mp.dialog||mp.menu||mp.snapshot?.phase!=='playing')return;
-  mpBuildComposer();mp.composer=true;clearInput();$('mp-composer').hidden=false;$('mp-chat-status').textContent='The world keeps moving while you choose.';releasePointer();$('mp-tab-messages').focus();
+  mpBuildComposer();mpResetRecipients();mpUpdateRecipients();mp.composer=true;clearInput();$('mp-composer').hidden=false;$('mp-chat-status').textContent='The world keeps moving while you choose.';releasePointer();$('mp-address').focus();
 }
-function mpCloseComposer(){mp.composer=false;$('mp-composer').hidden=true;if(mp.active&&!mp.menu&&!mp.dialog)lockPointer();}
+function mpCloseComposer(){mp.composer=false;mpResetRecipients();$('mp-composer').hidden=true;if(mp.active&&!mp.menu&&!mp.dialog)lockPointer();}
 async function mpSendChat(kind,index){
-  if(mp.chatBusy)return;mp.chatBusy=true;
-  try{await mpRequest('/api/chat',{kind,index});mpCloseComposer();}catch(e){$('mp-chat-status').textContent=e.message;}finally{setTimeout(()=>mp.chatBusy=false,900);}
+  if(mp.chatBusy)return;mp.chatBusy=true;const generation=mp.generation,to=$('mp-address').checked?[...mp.recipientIds]:[];
+  try{await mpRequest('/api/chat',{kind,index,to});if(mp.active&&mp.generation===generation)mpCloseComposer();}catch(e){if(mp.generation===generation)$('mp-chat-status').textContent=e.message;}finally{setTimeout(()=>{if(mp.generation===generation)mp.chatBusy=false;},mp.snapshot?.global?1800:900);}
 }
 function mpAddChat(e){
   mp.feed.push(e);if(mp.feed.length>6)mp.feed.shift();$('mp-feed').replaceChildren();
-  for(const item of mp.feed){const row=document.createElement('div'),name=document.createElement('b'),content=document.createElement('span');name.textContent=item.name+': ';content.textContent=item.text;row.append(name,content);$('mp-feed').append(row);}
+  for(const item of mp.feed){const row=document.createElement('div'),name=document.createElement('b'),content=document.createElement('span');name.textContent=item.name+': ';content.textContent=item.text;row.append(name,content);
+    if(item.to?.length){const suffix=document.createElement('span');suffix.className='mp-to-suffix';suffix.textContent=' To: '+item.to.map(p=>p.name).join(', ');row.append(suffix);if(item.to.some(p=>p.id===mp.id))row.classList.add('mp-addressed');}
+    $('mp-feed').append(row);
+  }
 }
 function mpPaintTag(sprite,text,emoji=false){
   const canvas=sprite.userData.canvas,g=canvas.getContext('2d');g.clearRect(0,0,canvas.width,canvas.height);if(!emoji){g.fillStyle='#102321cc';g.fillRect(0,0,canvas.width,canvas.height);}g.textAlign='center';g.textBaseline='middle';g.font=emoji?'88px "Segoe UI Emoji", sans-serif':'bold 27px Arial';g.fillStyle='#ecfff2';g.fillText(text,canvas.width/2,canvas.height/2);sprite.material.map.needsUpdate=true;
 }
 function mpMakePeer(p){
-  const model=AvatarModel.create(p.avatar),group=model.group,limbs=model.limbs;
+  const model=AvatarModel.create(p.avatar,{batch:!!mp.snapshot?.global}),group=model.group,limbs=model.limbs;
   const tag=(emoji=false)=>{const canvas=document.createElement('canvas');canvas.width=emoji?128:384;canvas.height=emoji?128:64;const tex=new THREE.CanvasTexture(canvas);tex.encoding=THREE.sRGBEncoding;const material=new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:true,depthWrite:false});const sprite=new THREE.Sprite(material);sprite.scale.set(emoji?.75:2.5,emoji?.75:.42,1);sprite.position.y=emoji?2.8:2.18;sprite.userData.canvas=canvas;group.add(sprite);return sprite;};
   const label=tag(),emote=tag(true);mpPaintTag(label,p.name);emote.visible=false;group.position.set(p.x,p.y,p.z);env.scene.add(group);
   const peer={group,limbs,label,emote,model,emoteUntil:0,step:p.step};mp.peers.set(p.id,peer);return peer;
@@ -1329,7 +1389,7 @@ function mpFrame(dt){
   const distance=Math.hypot(monster.x-pose.x,monster.z-pose.z);lastSeen=distance<25&&clearLine(monster.x,monster.z,pose.x,pose.z,false);
   threat=s.run?clamp(1-(collapseRunProgress(pose.x,pose.z)-s.front)/35,.15,.95):clamp((18-distance)/17,0,1)*(lastSeen?1:.4);if(s.phase==='lobby')threat=0;
   if(level===5){collapse.progress=collapseRunProgress(player.x,player.z);collapse.noticeTime=Math.max(0,collapse.noticeTime-dt);collapse.shake=Math.max(0,collapse.shake-dt*.65);}
-  for(const p of s.players){if(p.id===mp.id)continue;const peer=mp.peers.get(p.id)||mpMakePeer(p);peer.group.visible=p.alive&&!p.escaped&&pose!==p;
+  for(const p of s.players){if(p.id===mp.id)continue;const peer=mp.peers.get(p.id)||mpMakePeer(p);peer.group.visible=p.alive&&!p.escaped&&(!s.global||Math.hypot(p.x-pose.x,p.z-pose.z)<(settings.quality==='low'?20:36));
     const blend=1-Math.exp(-14*dt);peer.group.position.lerp(new THREE.Vector3(p.x,p.y,p.z),blend);peer.group.rotation.y+=Math.atan2(Math.sin(p.yaw-peer.group.rotation.y),Math.cos(p.yaw-peer.group.rotation.y))*blend;peer.group.scale.y=p.crouch?.68:1;
     peer.limbs.forEach((limb,i)=>limb.rotation.x=p.moving?Math.sin(p.step*5+([0,3].includes(i)?0:Math.PI))*.35:0);peer.emote.visible=performance.now()<peer.emoteUntil;
     if(p.step-peer.step>1.65){if(Math.hypot(p.x-pose.x,p.z-pose.z)<20)audio.step(p.crouch,p.running,{x:p.x,y:.2,z:p.z});peer.step=p.step;}
@@ -1342,13 +1402,16 @@ function mpFrame(dt){
 }
 function mpUpdateHud(){
   const s=mp.snapshot,me=s?.players.find(p=>p.id===mp.id);if(!mp.active||!me)return;$('mp-online-hud').hidden=false;
-  $('mp-badge').textContent='ROOM '+s.code+' · '+s.players.length+'/4';$('mp-spectate').hidden=me.alive&&!me.escaped;
+  $('mp-badge').textContent=(s.global?'GLOBAL ROOM':'ROOM '+s.code)+' · '+s.players.length+'/'+(s.maxPlayers||4);$('mp-spectate').hidden=me.alive&&!me.escaped;
   const remaining=s.players.filter(p=>p.alive&&!p.escaped).length;
-  $('mp-live-status').textContent=!mp.connected||performance.now()-mp.lastSnapshot>2500?'CONNECTION INTERRUPTED — RECONNECTING':s.phase==='lobby'?'WAITING IN LOBBY':s.phase==='transition'?'TEAM CHECKPOINT REACHED — NEXT LEVEL':me.crawling?'CRAWLING TO SAFETY':!me.alive?'YOU WERE CAUGHT — WATCHING YOUR TEAM':me.escaped?'YOU ARE SAFE — WAITING FOR '+remaining+' EXPLORER'+(remaining===1?'':'S'):'I · MESSAGES & FACE EMOJIS';
+  $('mp-live-status').textContent=!mp.connected||performance.now()-mp.lastSnapshot>2500?'CONNECTION INTERRUPTED — RECONNECTING':s.phase==='lobby'?'WAITING IN LOBBY':s.phase==='transition'?'TEAM CHECKPOINT REACHED — NEXT LEVEL':me.waiting?'WATCHING — YOU JOIN AT THE NEXT CHECKPOINT':me.crawling?'CRAWLING TO SAFETY':!me.alive?'YOU WERE CAUGHT — WATCHING YOUR TEAM':me.escaped?'YOU ARE SAFE — WAITING FOR '+remaining+' EXPLORER'+(remaining===1?'':'S'):'I · MESSAGES & FACE EMOJIS';
+  if(s.global&&s.phase==='playing'&&s.exitIn!==null&&s.exitIn!==undefined)$('mp-live-status').textContent+=' · EXIT CLOSES IN '+Math.ceil(s.exitIn)+'s';
   if(!me.alive||me.escaped||me.crawling||s.phase!=='playing')$('interaction').hidden=true;
   if(mp.dialog)mpUpdateRoom();
 }
 function bindMultiplayer(){
+  $('mp-global').onclick=()=>mpJoin('global');
+  $('mp-address').onchange=()=>{$('mp-to-picker').hidden=!$('mp-address').checked;if(!$('mp-address').checked){mp.recipientIds.clear();mp.recipientRosterKey='';}mpUpdateRecipients();};
   $('multiplayer-open').onclick=mpOpen;$('mp-close').onclick=mpClose;$('mp-create').onclick=()=>mpJoin('create');$('mp-join').onclick=()=>mpJoin('join');$('mp-quick').onclick=()=>mpJoin('quick');$('mp-start-room').onclick=mpStart;$('mp-leave').onclick=mpLeave;
   $('mp-talk').onclick=mpToggleComposer;$('mp-composer-close').onclick=mpCloseComposer;$('mp-tab-messages').onclick=()=>{$('mp-messages').hidden=false;$('mp-faces').hidden=true;$('mp-tab-messages').setAttribute('aria-selected','true');$('mp-tab-faces').setAttribute('aria-selected','false');};
   $('mp-tab-faces').onclick=()=>{$('mp-messages').hidden=true;$('mp-faces').hidden=false;$('mp-tab-messages').setAttribute('aria-selected','false');$('mp-tab-faces').setAttribute('aria-selected','true');};

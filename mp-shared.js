@@ -26,6 +26,6 @@
     }return out;
   }
   function cleanName(name){const s=(typeof name==='string'?name:'Explorer').normalize('NFKC').replace(/[^\p{L}\p{N} _-]/gu,'').trim().slice(0,18);return s||'Explorer';}
-  const protocol=Object.freeze({version:1,messages:Object.freeze(messages),faces:Object.freeze(faces),maxPlayers:4,avatarChoices,avatarDefaults,avatarRanges,normalizeAvatar,cleanName});
+  const protocol=Object.freeze({version:1,messages:Object.freeze(messages),faces:Object.freeze(faces),maxPlayers:4,globalMaxPlayers:16,avatarChoices,avatarDefaults,avatarRanges,normalizeAvatar,cleanName});
   if(typeof module!=='undefined'&&module.exports)module.exports=protocol;else root.BackroomsNetProtocol=protocol;
 })(globalThis);

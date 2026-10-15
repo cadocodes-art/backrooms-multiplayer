@@ -2,7 +2,7 @@
   "name": "backrooms-after-hours-multiplayer",
   "version": "1.0.0",
   "private": true,
-  "description": "Four-player cooperative Backrooms with a same-origin authoritative game server.",
+  "description": "Cooperative Backrooms with one 16-player global room and separate four-player rooms.",
   "engines": {
     "node": "24.x"
   },

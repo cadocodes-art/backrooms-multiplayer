@@ -1,11 +1,13 @@
 'use strict';
-const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),zlib=require('node:zlib');
 const {Room,GameError,protocol}=require('./engine.cjs');
 function createServer({maxRooms=32,now=()=>Date.now()}={}){
   const rooms=new Map(),sessions=new Map(),ipLimits=new Map();
   const html=fs.readFileSync(path.join(__dirname,'Backrooms-Enhanced.html'));
   const headers={'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Cross-Origin-Resource-Policy':'same-origin'};
   const json=(res,status,data)=>{res.writeHead(status,{...headers,'Content-Type':'application/json; charset=utf-8'});res.end(JSON.stringify(data));};
+  const snapshotMessage=room=>'data: '+JSON.stringify(room.snapshot(),room.global?(_key,value)=>typeof value==='number'?Math.round(value*1000)/1000:value:undefined)+'\n\n';
+  function sendSnapshot(session,message){const sink=session.gzip||session.stream;sink.write(message);if(session.gzip)session.gzip.flush(zlib.constants.Z_SYNC_FLUSH);}
   function roomCode(){const alphabet='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let code;do{code=Array.from(crypto.randomBytes(6),v=>alphabet[v%alphabet.length]).join('');}while(rooms.has(code));return code;}
   function authorization(req){const token=req.headers.authorization?.match(/^Bearer ([a-f0-9]{48})$/)?.[1],session=sessions.get(token);if(!session)throw new GameError('Your connection expired. Join the room again.',401);session.lastSeen=now();const p=session.room.players.get(session.playerId);if(!p)throw new GameError('You are no longer in this room.',401);return {session,p};}
   function leave(token){const s=sessions.get(token);if(!s)return;if(s.stream)s.stream.end();sessions.delete(token);s.room.removePlayer(s.playerId);if(!s.room.players.size)rooms.delete(s.room.code);}
@@ -20,30 +22,34 @@ function createServer({maxRooms=32,now=()=>Date.now()}={}){
       const url=new URL(req.url,'http://localhost'),route=url.pathname;
       if(req.method==='GET'&&['/','/Backrooms-Enhanced.html'].includes(route)){res.writeHead(200,{...headers,'Content-Type':'text/html; charset=utf-8','Content-Security-Policy':"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'self'"});res.end(html);return;}
       if(req.method==='GET'&&route==='/favicon.ico'){res.writeHead(204,headers);res.end();return;}
-      if(req.method==='GET'&&route==='/api/health'){json(res,200,{ok:true,version:protocol.version,maxPlayers:protocol.maxPlayers});return;}
+      if(req.method==='GET'&&route==='/api/health'){const global=rooms.get('GLOBAL');json(res,200,{ok:true,version:protocol.version,maxPlayers:protocol.maxPlayers,globalMaxPlayers:protocol.globalMaxPlayers,globalPlayers:global?.players.size||0,globalLevel:global?.level||1});return;}
       // An exact same-origin connection: no CORS keys or editable server URL.
       if(req.headers.origin){let origin;try{origin=new URL(req.headers.origin);}catch{throw new GameError('Invalid origin.',403);}const allowed=process.env.PUBLIC_ORIGIN?new URL(process.env.PUBLIC_ORIGIN).origin:null;if(allowed?origin.origin!==allowed:origin.host!==req.headers.host)throw new GameError('Open the game from this server to connect.',403);}
-      if(req.method==='POST'&&['/api/rooms','/api/join','/api/quick'].includes(route)){
+      if(req.method==='POST'&&['/api/rooms','/api/join','/api/quick','/api/global'].includes(route)){
         rate(req);const data=await body(req);if(data.version!==protocol.version)throw new GameError('Refresh the game to update multiplayer.',409);
-        if(!Number.isInteger(data.level)||data.level<1||data.level>5)throw new GameError('Choose a level from 1 to 5.');let room;
-        if(route==='/api/join'){const code=String(data.code||'').trim().toUpperCase();if(!/^[A-HJ-NP-Z2-9]{6}$/.test(code))throw new GameError('Enter the six-character room code.');room=rooms.get(code);if(!room)throw new GameError('Room not found. Check the code or ask your friend to create a room.',404);}
+        if(route!=='/api/global'&&(!Number.isInteger(data.level)||data.level<1||data.level>5))throw new GameError('Choose a level from 1 to 5.');let room;
+        if(route==='/api/global'){room=rooms.get('GLOBAL');if(!room){room=new Room('GLOBAL',{global:true});rooms.set('GLOBAL',room);}}
+        else if(route==='/api/join'){const code=String(data.code||'').trim().toUpperCase();if(!/^[A-HJ-NP-Z2-9]{6}$/.test(code))throw new GameError('Enter the six-character room code.');room=rooms.get(code);if(!room)throw new GameError('Room not found. Check the code or ask your friend to create a room.',404);}
         else{
-          if(route==='/api/quick')room=[...rooms.values()].find(r=>r.publicRoom&&r.level===data.level&&r.phase==='lobby'&&r.players.size<protocol.maxPlayers);
-          if(!room){if(rooms.size>=maxRooms)throw new GameError('The server is full. Try again shortly.',503);room=new Room(roomCode(),{level:data.level,publicRoom:route==='/api/quick'||data.publicRoom===true});rooms.set(room.code,room);}
+          if(route==='/api/quick')room=[...rooms.values()].find(r=>!r.global&&r.publicRoom&&r.level===data.level&&r.phase==='lobby'&&r.players.size<r.maxPlayers);
+          if(!room){if(rooms.size-(rooms.has('GLOBAL')?1:0)>=maxRooms)throw new GameError('The server is full. Try again shortly.',503);room=new Room(roomCode(),{level:data.level,publicRoom:route==='/api/quick'||data.publicRoom===true});rooms.set(room.code,room);}
         }
         json(res,201,join(room,data.name,data.avatar));return;
       }
       if(req.method==='GET'&&route==='/api/events'){
-        const {session}=authorization(req);if(session.stream)session.stream.end();session.stream=res;
-        res.writeHead(200,{...headers,'Content-Type':'text/event-stream; charset=utf-8','Connection':'keep-alive','X-Accel-Buffering':'no'});res.flushHeaders();res.write('data: '+JSON.stringify(session.room.snapshot())+'\n\n');
-        res.on('close',()=>{if(session.stream===res)session.stream=null;});return;
+        const {session}=authorization(req);if(session.stream)session.stream.end();session.gzip?.destroy();session.gzip=null;session.stream=res;
+        const compressed=session.room.global&&(req.headers['accept-encoding']||'').split(',').some(value=>/^gzip(?:\s*;|$)/i.test(value.trim())&&!/;\s*q\s*=\s*0(?:\.0*)?\s*$/i.test(value));
+        res.writeHead(200,{...headers,'Content-Type':'text/event-stream; charset=utf-8','Connection':'keep-alive','X-Accel-Buffering':'no',...(compressed?{'Content-Encoding':'gzip','Vary':'Accept-Encoding'}:{})});res.flushHeaders();
+        const gzip=compressed?zlib.createGzip({level:zlib.constants.Z_BEST_SPEED}):null;session.gzip=gzip;if(gzip){gzip.on('error',()=>res.destroy());gzip.pipe(res);}
+        sendSnapshot(session,snapshotMessage(session.room));
+        res.on('close',()=>{gzip?.destroy();if(session.stream===res){session.stream=null;session.gzip=null;}});return;
       }
       if(req.method==='POST'&&['/api/input','/api/action','/api/chat','/api/start','/api/retry','/api/leave'].includes(route)){
         const {session:s,p}=authorization(req),t=now();if(t-s.window>=1000){s.window=t;s.requests=0;s.actions=0;}if(++s.requests>55)throw new GameError('Slow down your requests.',429);
         const data=await body(req);if(route==='/api/input'){s.room.input(p,data);json(res,200,{ok:true});return;}
         if(++s.actions>8)throw new GameError('Give your last action a moment.',429);
         if(route==='/api/action'){json(res,200,{ok:s.room.action(p,data.action,data.epoch)});return;}
-        if(route==='/api/chat')s.room.chat(p,data.kind,data.index,t);
+        if(route==='/api/chat')s.room.chat(p,data.kind,data.index,t,data.to);
         if(route==='/api/start')s.room.start(p.id);
         if(route==='/api/retry')s.room.retry(p.id);
         if(route==='/api/leave')leave(s.token);
@@ -58,8 +64,9 @@ function createServer({maxRooms=32,now=()=>Date.now()}={}){
     const t=performance.now();accumulator+=Math.min(.25,(t-previous)/1000);previous=t;
     while(accumulator>=1/30){for(const room of rooms.values())room.tick(1/30);accumulator-=1/30;}
     if(++frames%2===0){for(const room of rooms.values()){
-      const message='data: '+JSON.stringify(room.snapshot())+'\n\n';
-      for(const s of sessions.values())if(s.room===room&&s.stream&&!s.stream.destroyed){if(s.stream.writableLength>262144){s.stream.end();s.stream=null;}else if(s.stream.writableLength<65536)s.stream.write(message);}
+      if(room.global&&frames%4!==0)continue; // 7.5 updates/sec; the client interpolates movement.
+      const message=snapshotMessage(room);
+      for(const s of sessions.values())if(s.room===room&&s.stream&&!s.stream.destroyed){const queued=s.stream.writableLength+(s.gzip?.writableLength||0);if(queued>262144){s.stream.end();s.gzip?.destroy();s.stream=null;s.gzip=null;}else if(queued<65536)sendSnapshot(s,message);}
     }}
     if(frames%30===0){const t=now();for(const [token,s]of sessions)if(t-s.lastSeen>20000)leave(token);}
   },1000/30);timer.unref();
